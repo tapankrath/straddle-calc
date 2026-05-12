@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="Straddle"/>
+<title>Straddle Calc</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0a0a0b;--panel:#131316;--panel2:#1a1a1f;--border:#26262d;
+  --text:#f5f5f7;--dim:#8a8a93;--green:#4ade80;--red:#f87171;--amber:#fbbf24;
+}
+html,body{background:var(--bg);color:var(--text);font-family:'Courier New',Courier,monospace;font-size:12px;-webkit-font-smoothing:antialiased;min-height:100vh;overscroll-behavior:none}
+button{font-family:inherit;touch-action:manipulation;cursor:pointer;user-select:none;-webkit-user-select:none;border:none;outline:none}
+input{outline:none;-webkit-appearance:none;appearance:none;-moz-appearance:textfield}
+input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.app{max-width:430px;margin:0 auto;padding:12px 12px 48px}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:4px;margin-bottom:10px}
+.tab{background:transparent;color:var(--dim);padding:12px 8px;border-radius:7px;font-size:12px;font-weight:700;letter-spacing:.06em}
+.tab.active{background:var(--amber);color:#000}
+.pane{display:none}.pane.show{display:block}
+.section{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:10px}
+.slabel{font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:.18em;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.slabel::before{content:'';width:4px;height:4px;background:var(--amber);border-radius:50%;flex-shrink:0}
+.ticker-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.tk{background:var(--panel2);border:1px solid var(--border);color:var(--dim);padding:11px;border-radius:8px;font-size:13px;font-weight:700;letter-spacing:.05em}
+.tk.active{background:rgba(251,191,36,.15);color:var(--amber);border-color:var(--amber)}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.field{display:flex;flex-direction:column;gap:4px}
+.field-full{grid-column:1/-1}
+.flabel{font-size:10px;color:var(--dim);padding-left:2px}
+.fsub{font-size:11px;color:var(--dim);font-style:italic;padding-left:2px}
+.field input{background:var(--panel2);border:1px solid var(--border);color:var(--text);font-family:inherit;font-size:16px;font-weight:600;padding:10px 12px;border-radius:8px;width:100%}
+.field input:focus{border-color:var(--amber)}
+.field.accent input{color:var(--amber)}
+.days-toggle{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.day-btn{background:var(--panel2);border:1px solid var(--border);color:var(--dim);padding:10px 2px;border-radius:6px;font-size:11px;font-weight:500}
+.day-btn.active{background:rgba(251,191,36,.15);color:var(--amber);border-color:var(--amber)}
+.results{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px 14px;margin-bottom:10px;position:relative;overflow:hidden}
+.results::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--amber),transparent)}
+.pnl-label{font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:.18em;margin-bottom:6px}
+.pnl-amount{font-size:44px;font-weight:700;line-height:1;letter-spacing:-.02em}
+.pnl-amount.profit{color:var(--green)}.pnl-amount.loss{color:var(--red)}
+.pnl-return{font-size:12px;margin-top:6px;color:var(--dim)}
+.pct{font-weight:700}.pct.profit{color:var(--green)}.pct.loss{color:var(--red)}
+.dgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
+.detail{background:rgba(0,0,0,.2);padding:9px 10px;border-radius:6px}
+.dl{font-size:8px;color:var(--dim);text-transform:uppercase;letter-spacing:.12em;margin-bottom:3px}
+.dv{font-size:13px;font-weight:500}
+.footnote{margin-top:12px;color:var(--dim);text-align:center;font-style:italic;font-size:10px;line-height:1.6}
+.rec-card{background:var(--panel);border:1px solid var(--amber);border-radius:12px;padding:16px;margin-bottom:10px}
+.rec-badge{font-size:9px;color:var(--amber);text-transform:uppercase;letter-spacing:.18em;margin-bottom:8px}
+.rec-title{font-size:28px;font-weight:700;letter-spacing:-.02em;line-height:1.1;margin-bottom:4px}
+.rec-sub{font-size:11px;color:var(--dim);margin-bottom:12px}
+.rec-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.rstat{background:rgba(0,0,0,.25);padding:10px;border-radius:6px}
+.rstat-lbl{font-size:8px;color:var(--dim);text-transform:uppercase;letter-spacing:.12em;margin-bottom:3px}
+.rstat-val{font-size:14px;font-weight:600}
+.rstat-val.green{color:var(--green)}.rstat-val.amber{color:var(--amber)}
+.tbl{background:var(--panel);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.thead{display:grid;grid-template-columns:.7fr 1fr 1fr 1fr;padding:9px 12px;background:var(--panel2);font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:.12em}
+.thead span:nth-child(n+2){text-align:right}
+.trow{display:grid;grid-template-columns:.7fr 1fr 1fr 1fr;padding:10px 12px;border-top:1px solid var(--border);font-size:12px;align-items:center}
+.trow>span:nth-child(n+2){text-align:right;font-weight:500}
+.trow .dc{color:var(--dim)}.trow .pc{font-size:11px}
+.pos{color:var(--green)}.neg{color:var(--red)}
+.trow.hl{background:rgba(251,191,36,.07)}
+.trow.hl .dc{color:var(--amber);font-weight:700}
+.pill{display:inline-block;padding:3px 9px;border-radius:10px;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.pill.easy{background:rgba(74,222,128,.15);color:var(--green)}
+.pill.mod{background:rgba(251,191,36,.15);color:var(--amber)}
+.pill.hard{background:rgba(248,113,113,.15);color:var(--red)}
+@supports(padding-bottom:env(safe-area-inset-bottom)){
+  .app{padding-bottom:calc(48px + env(safe-area-inset-bottom))}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="tabs">
+    <button class="tab active" id="t1" onclick="showTab(1)">Calculator</button>
+    <button class="tab" id="t2" onclick="showTab(2)">Find Trade</button>
+  </div>
+
+  <div class="pane show" id="p1">
+    <div class="section">
+      <div class="slabel">Position Builder</div>
+      <div class="ticker-row">
+        <button class="tk" id="c-spy" onclick="setCalcTicker('spy')">SPY</button>
+        <button class="tk active" id="c-qqq" onclick="setCalcTicker('qqq')">QQQ</button>
+      </div>
+      <div class="fgrid">
+        <div class="field"><label class="flabel">Underlying $</label><input type="number" id="spot" value="712" step="0.5" inputmode="decimal" oninput="updateCalc()"/></div>
+        <div class="field"><label class="flabel">Straddle Cost $</label><input type="number" id="cost" value="17" step="0.25" inputmode="decimal" oninput="updateCalc()"/></div>
+        <div class="field"><label class="flabel">Delta (50=ATM)</label><input type="number" id="delta" value="50" step="5" min="15" max="50" inputmode="decimal" oninput="updateCalc()"/></div>
+        <div class="field"><label class="flabel">Contracts</label><input type="number" id="contracts" value="1" step="1" min="1" inputmode="decimal" oninput="updateCalc()"/></div>
+        <div class="field"><label class="flabel">DTE</label><input type="number" id="dte" value="8" step="1" min="1" inputmode="decimal" oninput="updateCalc()"/></div>
+        <div class="field accent"><label class="flabel">Move %</label><input type="number" id="move" value="2" step="0.1" inputmode="decimal" oninput="updateCalc()"/></div>
+        <div class="field field-full"><span class="fsub" id="strikeInfo"></span></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="slabel">Days Since Entry</div>
+      <div class="days-toggle">
+        <button class="day-btn active" onclick="setDay(this,1)">1 day</button>
+        <button class="day-btn" onclick="setDay(this,2)">2 days</button>
+        <button class="day-btn" onclick="setDay(this,3)">3 days</button>
+        <button class="day-btn" onclick="setDay(this,0)">Expiry</button>
+      </div>
+    </div>
+    <div class="results">
+      <div class="pnl-label">Estimated P&amp;L</div>
+      <div class="pnl-amount" id="pnlAmt">+$0</div>
+      <div class="pnl-return">Return <span class="pct" id="pnlPct">0.0%</span></div>
+      <div class="dgrid">
+        <div class="detail"><div class="dl">Position Value</div><div class="dv" id="posVal">$0.00</div></div>
+        <div class="detail"><div class="dl">Cost Basis</div><div class="dv" id="costBasis">$0</div></div>
+        <div class="detail"><div class="dl">Break-even Up</div><div class="dv" id="beUp">$0.00</div></div>
+        <div class="detail"><div class="dl">Break-even Down</div><div class="dv" id="beDown">$0.00</div></div>
+      </div>
+    </div>
+    <div class="footnote">~25% IV crush on day 1 after a known event.<br/>Real fills will vary.</div>
+  </div>
+
+  <div class="pane" id="p2">
+    <div class="section">
+      <div class="slabel">Trade Goal</div>
+      <div class="ticker-row">
+        <button class="tk" id="r-spy" onclick="setRecTicker('spy')">SPY</button>
+        <button class="tk active" id="r-qqq" onclick="setRecTicker('qqq')">QQQ</button>
+      </div>
+      <div class="fgrid">
+        <div class="field"><label class="flabel">Stock Price $</label><input type="number" id="recSpot" value="712" step="0.5" inputmode="decimal" oninput="updateRec()"/></div>
+        <div class="field accent"><label class="flabel">Profit Target $</label><input type="number" id="recTarget" value="500" step="50" inputmode="decimal" oninput="updateRec()"/></div>
+        <div class="field"><label class="flabel">Expected Move %</label><input type="number" id="recMove" value="2.5" step="0.1" inputmode="decimal" oninput="updateRec()"/></div>
+        <div class="field"><label class="flabel">Implied Vol %</label><input type="number" id="recIV" value="20" step="1" inputmode="decimal" oninput="updateRec()"/></div>
+      </div>
+    </div>
+    <div class="rec-card">
+      <div class="rec-badge">RECOMMENDED TRADE</div>
+      <div class="rec-title" id="recTitle">8 DTE ATM Straddle</div>
+      <div class="rec-sub" id="recSub">Strike $712</div>
+      <div class="rec-stats">
+        <div class="rstat"><div class="rstat-lbl">Contracts to Buy</div><div class="rstat-val amber" id="recContracts">1 contract</div></div>
+        <div class="rstat"><div class="rstat-lbl">Total Cost</div><div class="rstat-val" id="recCost">$0</div></div>
+        <div class="rstat"><div class="rstat-lbl">Best Exit Day</div><div class="rstat-val amber" id="recExit">Day 1</div></div>
+        <div class="rstat"><div class="rstat-lbl">P&amp;L at Target</div><div class="rstat-val green" id="recPnl">+$0</div></div>
+        <div class="rstat" style="grid-column:1/-1"><div class="rstat-lbl">Difficulty</div><div class="rstat-val" id="recDiff"><span class="pill mod">Moderate</span></div></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="slabel">P&amp;L by Hold Time</div>
+      <div class="tbl">
+        <div class="thead"><span>Day</span><span>Value</span><span>P&amp;L</span><span>Return</span></div>
+        <div id="holdTbl"></div>
+      </div>
+      <div class="footnote">Assuming the underlying moves <span id="moveEcho">2.5%</span> on Day 1.</div>
+    </div>
+    <div class="section">
+      <div class="slabel">DTE Comparison</div>
+      <div class="tbl">
+        <div class="thead"><span>DTE</span><span>Cost</span><span>Day 1 P&amp;L</span><span>Best Exit</span></div>
+        <div id="dteTbl"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var daysElapsed = 1;
+
+function $(id){ return document.getElementById(id); }
+function fmt(n){ return Math.abs(n).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,','); }
+
+function showTab(n){
+  $('t1').className = n===1 ? 'tab active' : 'tab';
+  $('t2').className = n===2 ? 'tab active' : 'tab';
+  $('p1').className = n===1 ? 'pane show' : 'pane';
+  $('p2').className = n===2 ? 'pane show' : 'pane';
+  if(n===2) updateRec();
+}
+
+function setDay(btn, d){
+  document.querySelectorAll('.day-btn').forEach(function(b){ b.className='day-btn'; });
+  btn.className = 'day-btn active';
+  daysElapsed = d;
+  updateCalc();
+}
+
+function setCalcTicker(t){
+  $('c-spy').className = t==='spy' ? 'tk active' : 'tk';
+  $('c-qqq').className = t==='qqq' ? 'tk active' : 'tk';
+  if(t==='spy'){ $('spot').value=601; $('cost').value=5; }
+  else { $('spot').value=712; $('cost').value=17; }
+  updateCalc();
+}
+
+function setRecTicker(t){
+  $('r-spy').className = t==='spy' ? 'tk active' : 'tk';
+  $('r-qqq').className = t==='qqq' ? 'tk active' : 'tk';
+  if(t==='spy'){ $('recSpot').value=601; $('recIV').value=16; }
+  else { $('recSpot').value=712; $('recIV').value=20; }
+  updateRec();
+}
+
+function callPut(spot,strike,dteRem,iv,isCall){
+  if(dteRem<=0) return isCall ? Math.max(spot-strike,0) : Math.max(strike-spot,0);
+  var T=Math.max(dteRem,0.01)/365, sigT=iv*Math.sqrt(T)||0.01;
+  var m=(spot-strike)/(spot*sigT), atm=spot*sigT*0.4;
+  var intr=isCall?Math.max(spot-strike,0):Math.max(strike-spot,0);
+  return intr + atm*Math.exp(-0.5*m*m);
+}
+function strikesFromDelta(spot,delta,dte,iv){
+  var T=Math.max(dte,0.01)/365, z=(50-delta)/25, off=spot*iv*Math.sqrt(T)*z*0.8;
+  return { call:spot+off, put:spot-off };
+}
+function straddleCost(spot,dte,iv){ return spot*iv*Math.sqrt(dte/365)*0.8; }
+function straddleAfter(spot,strike,newPrice,dte,daysSince,iv){
+  var rem=Math.max(dte-daysSince,0), effIV=(daysSince>=1&&daysSince<dte)?iv*0.75:iv;
+  return callPut(newPrice,strike,rem,effIV,true)+callPut(newPrice,strike,rem,effIV,false);
+}
+
+function updateCalc(){
+  var spot=parseFloat($('spot').value)||0;
+  var costIn=parseFloat($('cost').value)||0;
+  var contracts=parseInt($('contracts').value)||1;
+  var dte=parseInt($('dte').value)||1;
+  var move=parseFloat($('move').value)||0;
+  var delta=Math.min(50,Math.max(15,parseInt($('delta').value)||50));
+  var T=dte/365, iv=(spot>0&&T>0) ? costIn/(spot*Math.sqrt(T)*0.8) : 0.2;
+  var callStrike,putStrike,actualCost;
+  if(delta>=50){
+    callStrike=spot; putStrike=spot; actualCost=costIn;
+  } else {
+    var st=strikesFromDelta(spot,delta,dte,iv);
+    callStrike=st.call; putStrike=st.put;
+    actualCost=callPut(spot,callStrike,dte,iv,true)+callPut(spot,putStrike,dte,iv,false);
+  }
+  var newPrice=spot*(1+move/100);
+  $('strikeInfo').textContent = delta>=50
+    ? 'ATM @ $'+spot.toFixed(0)+' / Target: $'+newPrice.toFixed(0)
+    : 'Put $'+putStrike.toFixed(0)+' / Call $'+callStrike.toFixed(0)+' / Target: $'+newPrice.toFixed(0);
+  var rem=daysElapsed===0 ? 0 : Math.max(dte-daysElapsed,0);
+  var effIV=daysElapsed===0 ? iv : (daysElapsed>=1 ? iv*0.75 : iv);
+  var newVal=callPut(newPrice,callStrike,rem,effIV,true)+callPut(newPrice,putStrike,rem,effIV,false);
+  var pnlPer=(newVal-actualCost)*100, totPnl=pnlPer*contracts;
+  var retPct=actualCost>0 ? (pnlPer/(actualCost*100))*100 : 0;
+  $('pnlAmt').textContent=(totPnl>=0?'+':'-')+'$'+fmt(Math.abs(totPnl));
+  $('pnlAmt').className='pnl-amount '+(totPnl>50?'profit':totPnl<-50?'loss':'');
+  $('pnlPct').textContent=(retPct>=0?'+':'')+retPct.toFixed(1)+'%';
+  $('pnlPct').className='pct '+(retPct>2?'profit':retPct<-2?'loss':'');
+  $('posVal').textContent='$'+newVal.toFixed(2);
+  $('costBasis').textContent='$'+fmt(actualCost*100*contracts);
+  $('beUp').textContent='$'+(callStrike+actualCost).toFixed(2);
+  $('beDown').textContent='$'+(putStrike-actualCost).toFixed(2);
+}
+
+function updateRec(){
+  var spot=parseFloat($('recSpot').value)||0;
+  var target=parseFloat($('recTarget').value)||0;
+  var move=parseFloat($('recMove').value)||0;
+  var iv=(parseFloat($('recIV').value)||20)/100;
+  if(spot<=0||iv<=0) return;
+  var newPrice=spot*(1+move/100);
+  var dteOpts=[2,5,8,14,21,30], results=[];
+  for(var i=0;i<dteOpts.length;i++){
+    var dte=dteOpts[i], c=straddleCost(spot,dte,iv), maxHold=Math.max(Math.min(dte-1,5),1);
+    var bestPnl=-Infinity, bestDay=1, d1Pnl=0;
+    for(var d=1;d<=maxHold;d++){
+      var v=straddleAfter(spot,spot,newPrice,dte,d,iv), pnl=(v-c)*100;
+      if(d===1) d1Pnl=pnl;
+      if(pnl>bestPnl){ bestPnl=pnl; bestDay=d; }
+    }
+    results.push({dte:dte,cost:c,d1Pnl:d1Pnl,bestPnl:bestPnl,bestDay:bestDay});
+  }
+  var bestIdx=0, foundTarget=false;
+  for(var k=0;k<results.length;k++){
+    if(results[k].bestPnl>=target){ if(!foundTarget||results[k].cost<results[bestIdx].cost){ bestIdx=k; foundTarget=true; } }
+  }
+  if(!foundTarget){
+    var bestRatio=-Infinity;
+    for(var k2=0;k2<results.length;k2++){
+      var r=results[k2].cost>0?results[k2].bestPnl/(results[k2].cost*100):-Infinity;
+      if(r>bestRatio){ bestRatio=r; bestIdx=k2; }
+    }
+  }
+  var best=results[bestIdx], numC=1;
+  if(best.bestPnl>0&&target>best.bestPnl) numC=Math.min(10,Math.ceil(target/best.bestPnl));
+  $('recTitle').textContent=best.dte+' DTE ATM Straddle';
+  $('recSub').textContent='Strike $'+spot.toFixed(0);
+  $('recContracts').textContent=numC+(numC===1?' contract':' contracts');
+  $('recCost').textContent='$'+fmt(best.cost*100*numC);
+  $('recExit').textContent='Day '+best.bestDay;
+  var pab=best.bestPnl*numC;
+  $('recPnl').textContent=(pab>=0?'+$':'-$')+fmt(Math.abs(pab));
+  $('recPnl').className='rstat-val '+(pab>=0?'green':'');
+  $('recDiff').innerHTML=move>=3?'<span class="pill easy">Easy</span>':move>=2?'<span class="pill mod">Moderate</span>':'<span class="pill hard">Hard</span>';
+  var ht=$('holdTbl'); ht.innerHTML='';
+  for(var dd=1;dd<=Math.min(best.dte,7);dd++){
+    var vv=straddleAfter(spot,spot,newPrice,best.dte,dd,iv);
+    var pp=(vv-best.cost)*100*numC, pct=((vv-best.cost)/best.cost)*100;
+    var cl=pp>30?'pos':pp<-30?'neg':'', hl=dd===best.bestDay?'trow hl':'trow';
+    ht.insertAdjacentHTML('beforeend','<div class="'+hl+'"><span class="dc">Day '+dd+'</span><span>$'+vv.toFixed(2)+'</span><span class="'+cl+'">'+(pp>=0?'+$':'-$')+fmt(Math.abs(pp))+'</span><span class="pc '+cl+'">'+(pct>=0?'+':'')+pct.toFixed(0)+'%</span></div>');
+  }
+  var dt=$('dteTbl'); dt.innerHTML='';
+  for(var m=0;m<results.length;m++){
+    var rr=results[m], d1cl=rr.d1Pnl>30?'pos':rr.d1Pnl<-30?'neg':'', becl=rr.bestPnl>30?'pos':'neg';
+    dt.insertAdjacentHTML('beforeend','<div class="'+(m===bestIdx?'trow hl':'trow')+'"><span class="dc">'+rr.dte+'d</span><span>$'+fmt(rr.cost*100)+'</span><span class="'+d1cl+'">'+(rr.d1Pnl>=0?'+$':'-$')+fmt(Math.abs(rr.d1Pnl))+'</span><span class="pc '+becl+'">'+(rr.bestPnl>=0?'+$':'-$')+fmt(Math.abs(rr.bestPnl))+' D'+rr.bestDay+'</span></div>');
+  }
+  $('moveEcho').textContent=move.toFixed(1)+'%';
+}
+
+updateCalc();
+updateRec();
+</script>
+</body>
+</html>
