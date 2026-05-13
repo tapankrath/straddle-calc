@@ -26,21 +26,19 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appear
 .app{max-width:480px;margin:0 auto;padding:10px 10px 60px}
 
 /* TABS */
-.tabs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px;background:var(--p1);border:1px solid var(--border);border-radius:10px;padding:3px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.tabs{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:3px;background:var(--p1);border:1px solid var(--border);border-radius:10px;padding:3px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
 .tab{background:transparent;color:var(--dim);padding:10px 4px;border-radius:8px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;text-align:center}
 .tab.on{background:var(--text);color:#fff}
 .pane{display:none}.pane.on{display:block}
 
 /* PRICE BAR */
-.price-bar{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px}
+.price-bar{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px}
 .price-card{background:var(--p1);border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center;cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.05)}
 .price-card.spy{border-top:3px solid var(--purple)}
 .price-card.qqq{border-top:3px solid var(--amber)}
-.price-card.tqqq{border-top:3px solid var(--blue)}
 .pc-name{font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;margin-bottom:3px}
 .price-card.spy .pc-name{color:var(--purple)}
 .price-card.qqq .pc-name{color:var(--amber)}
-.price-card.tqqq .pc-name{color:var(--blue)}
 .pc-price{font-size:15px;font-weight:700;color:var(--text)}
 .pc-chg{font-size:9px;margin-top:2px}
 .ld{animation:blink 1s infinite;color:var(--dim)}
@@ -51,11 +49,10 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appear
 .card-title{font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:.18em;margin-bottom:10px;font-weight:700}
 
 /* TICKER PILLS */
-.tickers{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:12px}
+.tickers{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px}
 .tk{background:var(--p2);border:2px solid var(--border);color:var(--dim);padding:10px 4px;border-radius:8px;font-size:13px;font-weight:700;text-align:center}
 .tk.spy.on{background:var(--pbg);color:var(--purple);border-color:var(--purple)}
 .tk.qqq.on{background:var(--abg);color:var(--amber);border-color:var(--amber)}
-.tk.tqqq.on{background:var(--bbg);color:var(--blue);border-color:var(--blue)}
 
 /* INPUTS */
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
@@ -201,9 +198,10 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appear
 <div class="app">
 
 <div class="tabs">
-  <button class="tab on" id="tab1" onclick="showTab(1)">P&amp;L Calc</button>
-  <button class="tab" id="tab2" onclick="showTab(2)">Recommend</button>
+  <button class="tab on" id="tab1" onclick="showTab(1)">Signal</button>
+  <button class="tab" id="tab2" onclick="showTab(2)">Size Up</button>
   <button class="tab" id="tab3" onclick="showTab(3)">Spike/Crash</button>
+  <button class="tab" id="tab4" onclick="showTab(4)">P&amp;L Calc</button>
 </div>
 
 <!-- LIVE PRICES -->
@@ -218,21 +216,15 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appear
     <div class="pc-price" id="px-qqq"><span class="ld">...</span></div>
     <div class="pc-chg" id="pc-qqq"></div>
   </div>
-  <div class="price-card tqqq" onclick="setT1('tqqq')">
-    <div class="pc-name">TQQQ</div>
-    <div class="pc-price" id="px-tqqq"><span class="ld">...</span></div>
-    <div class="pc-chg" id="pc-tqqq"></div>
-  </div>
 </div>
 
 <!-- TAB 1: P&L CALC -->
-<div class="pane on" id="pane1">
+<div class="pane" id="pane1">
   <div class="card">
     <div class="card-title">Position</div>
     <div class="tickers">
       <button class="tk spy" id="t1-spy" onclick="setT1('spy')">SPY</button>
       <button class="tk qqq on" id="t1-qqq" onclick="setT1('qqq')">QQQ</button>
-      <button class="tk tqqq" id="t1-tqqq" onclick="setT1('tqqq')">TQQQ</button>
     </div>
     <div class="grid2">
       <div class="field fa"><label class="flbl">Price $</label><input type="number" id="c1" value="706" step="1" inputmode="decimal" oninput="go1()"/></div>
@@ -289,7 +281,6 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appear
     <div class="tickers">
       <button class="tk spy" id="t2-spy" onclick="setT2('spy')">SPY</button>
       <button class="tk qqq on" id="t2-qqq" onclick="setT2('qqq')">QQQ</button>
-      <button class="tk tqqq" id="t2-tqqq" onclick="setT2('tqqq')">TQQQ</button>
     </div>
     <div class="grid2">
       <div class="field fa"><label class="flbl">Price $</label><input type="number" id="r1" value="706" step="1" inputmode="decimal" oninput="go2()"/></div>
@@ -347,7 +338,6 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appear
     <div class="tickers">
       <button class="tk spy" id="t3-spy" onclick="setT3('spy')">SPY</button>
       <button class="tk qqq on" id="t3-qqq" onclick="setT3('qqq')">QQQ</button>
-      <button class="tk tqqq" id="t3-tqqq" onclick="setT3('tqqq')">TQQQ</button>
     </div>
     <div class="dir-btns">
       <div class="dbtn up on" id="sd-up" onclick="setSdir('up')"><div class="dico">🚀</div><div class="dname">Spike Up</div><div class="dsub">OTM Call</div></div>
@@ -382,12 +372,69 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appear
   <div class="note">OTM options · Black-Scholes · ~25% IV crush Day 1 · Total loss possible if move doesn't happen</div>
 </div>
 
+<!-- TAB 4: SIGNAL -->
+<div class="pane on" id="pane4">
+  <div class="card">
+    <div class="card-title">Market Signal</div>
+    <div class="tickers" style="grid-template-columns:1fr 1fr">
+      <button class="tk spy" id="t4-spy" onclick="setT4('spy')">SPY</button>
+      <button class="tk qqq on" id="t4-qqq" onclick="setT4('qqq')">QQQ</button>
+    </div>
+    <div class="grid2">
+      <div class="field fg"><label class="flbl">Capital $</label><input type="number" id="g1" value="2000" step="100" inputmode="decimal" oninput="go4()"/></div>
+      <div class="field fg"><label class="flbl">Profit Target $</label><input type="number" id="g2" value="500" step="50" inputmode="decimal" oninput="go4()"/></div>
+      <div class="field fo"><label class="flbl">Stop Loss % of premium</label><input type="number" id="g3" value="50" step="10" min="10" max="100" inputmode="decimal" oninput="go4()"/></div>
+    </div>
+  </div>
+
+  <!-- Loading state -->
+  <div id="g-loading" style="text-align:center;padding:30px;color:var(--dim);font-size:13px">
+    <div class="ld" style="font-size:16px;display:block;margin-bottom:8px">Fetching market data...</div>
+    <div style="font-size:11px">Calculating trend signals</div>
+  </div>
+
+  <!-- Signal card -->
+  <div id="g-signal" style="display:none">
+    <!-- Main signal -->
+    <div id="g-main-card" style="border-radius:14px;padding:16px;margin-bottom:10px;border:3px solid">
+      <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.18em;margin-bottom:8px" id="g-sig-lbl">Signal</div>
+      <div style="font-size:32px;font-weight:700;margin-bottom:4px;line-height:1" id="g-sig-action">-</div>
+      <div style="font-size:12px;margin-bottom:14px" id="g-sig-sub">-</div>
+      <!-- Setup recommendation -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px" id="g-setup-grid"></div>
+      <!-- Reasoning -->
+      <div style="background:rgba(0,0,0,.04);border-radius:8px;padding:10px 12px" id="g-reason"></div>
+    </div>
+
+    <!-- Technical indicators -->
+    <div class="card">
+      <div class="card-title">Technical Indicators</div>
+      <div id="g-indicators"></div>
+    </div>
+
+    <!-- P&L table for the recommended trade -->
+    <div style="font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:.18em;margin-bottom:8px;font-weight:700">Recommended Trade P&L by Day</div>
+    <div class="stbl">
+      <div class="stbl-hd">
+        <div class="shd">Hold</div>
+        <div class="shd dr">DRIFT<span class="rng">0.2–0.5%</span></div>
+        <div class="shd mo">MOMENTUM<span class="rng">0.5–1.0%</span></div>
+        <div class="shd ex">EXPLOSIVE<span class="rng">1.0%+</span></div>
+      </div>
+      <div id="g-rows"></div>
+    </div>
+    <div class="note">Based on 30-day price history · RSI-14 · 20-day MA · Signals are indicative only</div>
+  </div>
+
+  <div id="g-error" style="display:none;background:var(--rbg);border:1px solid var(--rbd);border-radius:10px;padding:14px;color:var(--red);font-size:12px;line-height:1.6"></div>
+</div>
+
 </div><!-- end app -->
 <script>
 var FK='d81r01pr01qrojfcs5cgd81r01pr01qrojfcs5d0';
-var LIVE={spy:0,qqq:0,tqqq:0};
-var T1='qqq',T2='qqq',T3='qqq',SDIR='up',OTM=2,SEL=0;
-var DEFS={spy:{spot:555,cost:7,iv:18},qqq:{spot:706,cost:17,iv:21},tqqq:{spot:75,cost:5,iv:63}};
+var LIVE={spy:0,qqq:0};
+var T1='qqq',T2='qqq',T3='qqq',T4='qqq',SDIR='up',OTM=2,SEL=0;
+var DEFS={spy:{spot:555,cost:7,iv:18},qqq:{spot:706,cost:17,iv:21}};
 var DTES=[2,5,8,10,14,21,30];
 var SCENS=[{k:'drift',lo:.2,mid:.35,hi:.5},{k:'momentum',lo:.5,mid:.75,hi:1},{k:'explosive',lo:1,mid:1.5,hi:2}];
 
@@ -396,7 +443,16 @@ function fv(i){return parseFloat($(i).value)||0;}
 function iv(i){return parseInt($(i).value)||0;}
 function fmt(n){return Math.abs(n).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,',');}
 function fp(v){return (v>=0?'+':'-')+'$'+fmt(Math.abs(v));}
-function showTab(n){for(var i=1;i<=3;i++){$('tab'+i).className='tab'+(i===n?' on':'');$('pane'+i).className='pane'+(i===n?' on':'');}}
+function showTab(n){
+  // New order: 1=Signal(pane4), 2=Size Up(pane2), 3=Spike/Crash(pane3), 4=P&L(pane1)
+  var paneMap={1:4,2:2,3:3,4:1};
+  var p=paneMap[n];
+  for(var i=1;i<=4;i++){
+    $('tab'+i).className='tab'+(i===n?' on':'');
+    $('pane'+paneMap[i]).className='pane'+(i===n?' on':'');
+  }
+  if(n===1)go4();
+}
 
 /* ── MATH ── */
 function erf(x){var a1=0.254829592,a2=-0.284496736,a3=1.421413741,a4=-1.453152027,a5=1.061405429,p=0.3275911,s=x<0?-1:1;x=Math.abs(x);var t=1/(1+p*x);return s*(1-(((((a5*t+a4)*t)+a3)*t+a2)*t+a1)*t*Math.exp(-x*x));}
@@ -486,12 +542,12 @@ function fetchP(sym){
       go1();go2();go3();
     }).catch(function(){});
 }
-function fetchAll(){fetchP('SPY');fetchP('QQQ');fetchP('TQQQ');}
+function fetchAll(){fetchP('SPY');fetchP('QQQ');}
 
 /* ── TAB 1 ── */
 function setT1(t){
   T1=t;SEL=0;
-  ['spy','qqq','tqqq'].forEach(function(x){$('t1-'+x).className='tk '+x+(t===x?' on':'');});
+  ['spy','qqq'].forEach(function(x){$('t1-'+x).className='tk '+x+(t===x?' on':'');});
   var d=DEFS[t];$('c1').value=(LIVE[t]>0?LIVE[t]:d.spot).toFixed(2);$('c2').value=d.cost;$('c3').value=d.iv;
   go1();
 }
@@ -501,7 +557,7 @@ function go1(){
   var capital=fv('c5'),target=fv('c6'),stopPct=fv('c7');
   if(spot<=0)return;
   var costPer=costIn*100,contracts=capital>0&&costPer>0?Math.max(1,Math.floor(capital/costPer)):1;
-  $('c-info').innerHTML='<b>'+T1.toUpperCase()+'</b> · $'+costIn.toFixed(2)+'/share · <b>$'+costPer.toFixed(0)+'/contract</b>'+(T1==='tqqq'?' · ~3x QQQ IV':'');
+  $('c-info').innerHTML='<b>'+T1.toUpperCase()+'</b> · $'+costIn.toFixed(2)+'/share · <b>$'+costPer.toFixed(0)+'/contract</b>';
   $('c-nc').textContent=contracts+(contracts===1?' contract':' contracts');
   $('c-dep').textContent='$'+fmt(costPer*contracts);
   // At target using explosive mid D1
@@ -532,7 +588,7 @@ function go1(){
 /* ── TAB 2 ── */
 function setT2(t){
   T2=t;
-  ['spy','qqq','tqqq'].forEach(function(x){$('t2-'+x).className='tk '+x+(t===x?' on':'');});
+  ['spy','qqq'].forEach(function(x){$('t2-'+x).className='tk '+x+(t===x?' on':'');});
   var d=DEFS[t];$('r1').value=(LIVE[t]>0?LIVE[t]:d.spot).toFixed(2);$('r2').value=d.iv;
   go2();
 }
@@ -558,11 +614,17 @@ function go2(){
     var noMove=atmExit(spot,iv3,dte,0,1).dol*contracts;
     var stopThresh=stopPct>0?-(cp*contracts*stopPct/100):-Infinity;
     var stopHit=noMove<=stopThresh;
-    // Score: avg P&L hits target + capital efficiency + stop safety
+    // Score: reward hitting target, penalize over-leverage and stop risk
+    // hitBonus: does this DTE reliably hit target?
     var hitBonus=avgPnl>=target?40:Math.max(0,avgPnl/target)*25;
-    var capEff=capital>0?avgPnl/capital*50:0;
+    // capEff: capital efficiency, but cap contracts to avoid short-DTE over-leverage
+    var adjContracts=Math.min(contracts,Math.floor(capital/(cp*2)||1)); // don't count over-leverage as a bonus
+    var adjPnl=atmExit(spot,iv3,dte,move,bestDay).dol*adjContracts;
+    var capEff=capital>0?Math.min(adjPnl/capital*50,30):0; // cap contribution at 30
+    // DTE quality: prefer 5-14 DTE sweet spot, penalize extremes
+    var dtePenalty=dte<=2?-20:dte===5?0:dte<=14?5:0;
     var stopPenalty=stopHit?-25:0;
-    var score=hitBonus+capEff+stopPenalty;
+    var score=hitBonus+capEff+dtePenalty+stopPenalty;
     results.push({dte:dte,cp:cp,contracts:contracts,capUsed:capUsed,
       pnl:avgPnl,d1:d1,bestDay:bestDay,ret:cp>0?bestPnl/cp*100:0,
       score:score,stopHit:stopHit,bestPnl:bestPnl});
@@ -583,7 +645,7 @@ function go2(){
   $('r-iv').innerHTML='<span class="ivbadge '+ivCls+'">'+ivLbl+'</span>';
   $('r-be').textContent='+/- '+be.toFixed(2)+'%';
   $('r-be').className='rv '+(be<1?'g':be<2.5?'a':'r');
-  $('r-be2').textContent=T2==='tqqq'?'(~'+(be/3).toFixed(2)+'% QQQ) · at expiry':'Move this % either way by expiry to break even';
+  $('r-be2').textContent='Move this % either way by expiry to break even';
   // Stop analysis
   var stopInfo={};
   SCENS.forEach(function(sc){
@@ -610,7 +672,7 @@ function go2(){
 /* ── TAB 3 ── */
 function setT3(t){
   T3=t;
-  ['spy','qqq','tqqq'].forEach(function(x){$('t3-'+x).className='tk '+x+(t===x?' on':'');});
+  ['spy','qqq'].forEach(function(x){$('t3-'+x).className='tk '+x+(t===x?' on':'');});
   var d=DEFS[t];$('s1').value=(LIVE[t]>0?LIVE[t]:d.spot).toFixed(2);$('s2').value=d.iv;
   go3();
 }
@@ -710,17 +772,244 @@ function go3(){
   $('s-rows').innerHTML=sh;
 }
 
-/* INIT */
+/* ── TAB 4: SIGNAL ── */
+var T4='qqq',G_LOADED={};
+
+function setT4(t){
+  T4=t;
+  ['spy','qqq'].forEach(function(x){$('t4-'+x).className='tk '+x+(t===x?' on':'');});
+  go4();
+}
+
+function go4(){
+  var capital=fv('g1'),target=fv('g2'),stopPct=fv('g3');
+  var sym=T4.toUpperCase();
+  $('g-loading').style.display='block';
+  $('g-signal').style.display='none';
+  $('g-error').style.display='none';
+
+  // Yahoo Finance v8 via CORS proxies
+  var yahooPath='/v8/finance/chart/'+sym+'?interval=1d&range=60d';
+  var endpoints=[
+    'https://corsproxy.io/?url=https://query1.finance.yahoo.com'+yahooPath,
+    'https://api.allorigins.win/raw?url='+encodeURIComponent('https://query1.finance.yahoo.com'+yahooPath),
+    'https://corsproxy.io/?url=https://query2.finance.yahoo.com'+yahooPath
+  ];
+  var url=endpoints[0];
+
+  function parseYahoo(data){
+    var res=data.chart&&data.chart.result&&data.chart.result[0];
+    if(!res)throw new Error('No data returned from Yahoo Finance');
+    var closes=res.indicators.quote[0].close;
+    var highs=res.indicators.quote[0].high;
+    var lows=res.indicators.quote[0].low;
+    var vols=res.indicators.quote[0].volume;
+    var valid=[];
+    for(var i=0;i<closes.length;i++){
+      if(closes[i]&&highs[i]&&lows[i])valid.push({c:closes[i],h:highs[i],l:lows[i],v:vols[i]||0});
+    }
+    if(valid.length<20)throw new Error('Not enough data (got '+valid.length+' days, need 20+)');
+    return valid;
+  }
+
+  function tryFetch(idx){
+    if(idx>=endpoints.length){
+      $('g-loading').style.display='none';
+      $('g-error').style.display='block';
+      $('g-error').innerHTML='<b>Could not load market data.</b><br><br>This feature requires an internet connection. If you see this repeatedly, try refreshing or opening in a different browser.<br><br>Tried '+endpoints.length+' sources — all blocked or unavailable.';
+      return;
+    }
+    fetch(endpoints[idx])
+      .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
+      .then(function(data){
+        var valid=parseYahoo(data);
+        processSignal(valid,capital,target,stopPct,sym);
+      })
+      .catch(function(){tryFetch(idx+1);});
+  }
+  tryFetch(0);
+}
+
+function processSignal(valid,capital,target,stopPct,sym){
+  var closes=valid.map(function(v){return v.c;});
+  var highs=valid.map(function(v){return v.h;});
+  var lows=valid.map(function(v){return v.l;});
+  var vols=valid.map(function(v){return v.v;});
+      var n=closes.length;
+      var spot=closes[n-1];
+
+      // 20-day MA
+      var ma20=closes.slice(-20).reduce(function(a,b){return a+b;})/20;
+      var ma5=closes.slice(-5).reduce(function(a,b){return a+b;})/5;
+      var aboveMA20=spot>ma20;
+      var ma20Pct=((spot-ma20)/ma20*100);
+
+      // RSI-14
+      var gains=0,losses=0;
+      for(var i=n-14;i<n;i++){
+        var diff=closes[i]-closes[i-1];
+        if(diff>0)gains+=diff;else losses+=Math.abs(diff);
+      }
+      var rs=(gains/14)/(losses/14||0.001);
+      var rsi=100-100/(1+rs);
+
+      // 3-day momentum
+      var mom3=(closes[n-1]-closes[n-4])/closes[n-4]*100;
+      // 10-day momentum
+      var mom10=(closes[n-1]-closes[n-11])/closes[n-11]*100;
+
+      // ATR-14 (volatility)
+      var atrs=[];
+      for(var j=n-14;j<n;j++){
+        atrs.push(Math.max(highs[j]-lows[j],Math.abs(highs[j]-closes[j-1]),Math.abs(lows[j]-closes[j-1])));
+      }
+      var atr=atrs.reduce(function(a,b){return a+b;})/14;
+      var atrPct=atr/spot*100;
+
+      // Volume trend (avg last 5 vs avg last 20)
+      var vol5=vols.slice(-5).reduce(function(a,b){return a+b;})/5;
+      var vol20=vols.slice(-20).reduce(function(a,b){return a+b;})/20;
+      var volRatio=vol5/vol20;
+
+      // IV from live quote (use current IV stored in DEFS)
+      var iv3=(T4==='spy'?18:21)/100;
+
+      // ── SIGNAL LOGIC ──
+      var bullPoints=0,bearPoints=0,reasons=[],signals=[];
+
+      // 1. Price vs MA20
+      if(aboveMA20){
+        bullPoints+=2;
+        signals.push({lbl:'Price vs 20MA',val:'+'+ma20Pct.toFixed(1)+'%',note:'Above MA — bullish trend',bull:true});
+      } else {
+        bearPoints+=2;
+        signals.push({lbl:'Price vs 20MA',val:ma20Pct.toFixed(1)+'%',note:'Below MA — bearish trend',bull:false});
+      }
+
+      // 2. RSI
+      if(rsi>65){bearPoints+=2;signals.push({lbl:'RSI-14',val:rsi.toFixed(0),note:'Overbought — pullback risk',bull:false});}
+      else if(rsi>55){bullPoints+=1;signals.push({lbl:'RSI-14',val:rsi.toFixed(0),note:'Bullish momentum',bull:true});}
+      else if(rsi<35){bullPoints+=2;signals.push({lbl:'RSI-14',val:rsi.toFixed(0),note:'Oversold — bounce potential',bull:true});}
+      else if(rsi<45){bearPoints+=1;signals.push({lbl:'RSI-14',val:rsi.toFixed(0),note:'Bearish momentum',bull:false});}
+      else{signals.push({lbl:'RSI-14',val:rsi.toFixed(0),note:'Neutral zone',bull:null});}
+
+      // 3. 3-day momentum
+      if(mom3>1.5){bullPoints+=2;signals.push({lbl:'3-day Move',val:'+'+mom3.toFixed(2)+'%',note:'Strong upward momentum',bull:true});}
+      else if(mom3>0.5){bullPoints+=1;signals.push({lbl:'3-day Move',val:'+'+mom3.toFixed(2)+'%',note:'Mild upward momentum',bull:true});}
+      else if(mom3<-1.5){bearPoints+=2;signals.push({lbl:'3-day Move',val:mom3.toFixed(2)+'%',note:'Strong downward momentum',bull:false});}
+      else if(mom3<-0.5){bearPoints+=1;signals.push({lbl:'3-day Move',val:mom3.toFixed(2)+'%',note:'Mild downward momentum',bull:false});}
+      else{signals.push({lbl:'3-day Move',val:(mom3>=0?'+':'')+mom3.toFixed(2)+'%',note:'Flat — no clear direction',bull:null});}
+
+      // 4. Volume
+      if(volRatio>1.3){
+        var volNote=aboveMA20?'High vol on uptrend — bullish':'High vol on downtrend — bearish';
+        if(aboveMA20){bullPoints+=1;}else{bearPoints+=1;}
+        signals.push({lbl:'Volume (5d vs 20d)',val:(volRatio*100).toFixed(0)+'%',note:volNote,bull:aboveMA20});
+      } else if(volRatio<0.7){
+        signals.push({lbl:'Volume (5d vs 20d)',val:(volRatio*100).toFixed(0)+'%',note:'Low volume — weak conviction',bull:null});
+      } else {
+        signals.push({lbl:'Volume (5d vs 20d)',val:(volRatio*100).toFixed(0)+'%',note:'Normal volume',bull:null});
+      }
+
+      // 5. ATR (expected move)
+      var expMove=atrPct.toFixed(2);
+      signals.push({lbl:'ATR-14 (daily)',val:'+/-'+expMove+'%',note:'Expected daily range',bull:null});
+
+      // ── DETERMINE ACTION ──
+      var total=bullPoints+bearPoints;
+      var action,color,bgColor,borderColor,confidence,optionType,dte,callPut;
+
+      var bullStrength=total>0?bullPoints/total:0.5;
+
+      if(bullPoints>=5&&bullPoints>bearPoints*1.5){
+        action='BUY CALL';callPut='call';color='#14532d';bgColor='#f0fdf4';borderColor='#16a34a';
+        confidence=bullPoints>=7?'High':'Medium';
+        reasons.push('Strong bullish signals: price above 20MA, positive momentum');
+      } else if(bearPoints>=5&&bearPoints>bullPoints*1.5){
+        action='BUY PUT';callPut='put';color='#7f1d1d';bgColor='#fef2f2';borderColor='#dc2626';
+        confidence=bearPoints>=7?'High':'Medium';
+        reasons.push('Strong bearish signals: price below 20MA, negative momentum');
+      } else if(bullPoints>bearPoints){
+        action='WEAK CALL';callPut='call';color='#166534';bgColor='#f0fdf4';borderColor='#86efac';
+        confidence='Low';
+        reasons.push('Mildly bullish but mixed signals — reduce size');
+      } else if(bearPoints>bullPoints){
+        action='WEAK PUT';callPut='put';color='#991b1b';bgColor='#fef2f2';borderColor='#fca5a5';
+        confidence='Low';
+        reasons.push('Mildly bearish but mixed signals — reduce size');
+      } else {
+        action='NO TRADE';callPut=null;color='#334155';bgColor='#f8fafc';borderColor='#e2e8f0';
+        confidence='—';
+        reasons.push('Mixed signals — wait for clearer direction');
+      }
+
+      // DTE based on ATR and confidence
+      if(callPut){
+        if(confidence==='High'){dte=atrPct>1?5:8;}
+        else{dte=atrPct>1?8:14;}
+      }
+
+      // Style the main card
+      var mc=$('g-main-card');
+      mc.style.background=bgColor;mc.style.borderColor=borderColor;
+      $('g-sig-lbl').style.color=color;$('g-sig-lbl').textContent=sym+' Signal · '+confidence+' Confidence';
+      $('g-sig-action').style.color=color;$('g-sig-action').textContent=action;
+      $('g-sig-sub').style.color=color;
+      $('g-sig-sub').textContent=callPut?(callPut==='call'?'↑ Bullish trend — buy upside':'↓ Bearish trend — buy downside'):'Wait for clearer trend';
+
+      // Setup grid
+      var sg=$('g-setup-grid');
+      if(callPut&&dte){
+        var cp=prem(spot,dte,iv3)*100;
+        var maxC=capital>0?Math.max(1,Math.floor(capital/cp)):1;
+        // Find best pnl
+        var bp=-Infinity,bd=1;
+        for(var dd=1;dd<=dte;dd++){
+          var rr=atmExit(spot,iv3,dte,SCENS[2].mid,dd);
+          if(rr.dol>bp){bp=rr.dol;bd=dd;}
+        }
+        var contracts=bp>0?Math.max(1,Math.min(Math.ceil(target/bp),maxC)):1;
+        sg.innerHTML='<div style="background:rgba(0,0,0,.05);padding:10px;border-radius:8px"><div style="font-size:8px;color:'+color+';text-transform:uppercase;font-weight:700;letter-spacing:.1em;margin-bottom:3px">Setup</div><div style="font-size:15px;font-weight:700;color:'+color+'">'+dte+' DTE ATM '+callPut.toUpperCase()+'</div></div>'
+          +'<div style="background:rgba(0,0,0,.05);padding:10px;border-radius:8px"><div style="font-size:8px;color:'+color+';text-transform:uppercase;font-weight:700;letter-spacing:.1em;margin-bottom:3px">Contracts</div><div style="font-size:15px;font-weight:700;color:'+color+'">'+contracts+' ($'+fmt(cp*contracts)+')</div></div>'
+          +'<div style="background:rgba(0,0,0,.05);padding:10px;border-radius:8px"><div style="font-size:8px;color:'+color+';text-transform:uppercase;font-weight:700;letter-spacing:.1em;margin-bottom:3px">Best Exit</div><div style="font-size:15px;font-weight:700;color:'+color+'">Day '+bd+' after move</div></div>'
+          +'<div style="background:rgba(0,0,0,.05);padding:10px;border-radius:8px"><div style="font-size:8px;color:'+color+';text-transform:uppercase;font-weight:700;letter-spacing:.1em;margin-bottom:3px">Expected Move</div><div style="font-size:15px;font-weight:700;color:'+color+'">+/-'+expMove+'%/day</div></div>';
+
+        // P&L table
+        buildRows(spot,iv3,dte,contracts,cp,stopPct,bd,0,8,'g-rows');
+      } else {
+        sg.innerHTML='<div style="grid-column:1/-1;padding:10px;font-size:12px;color:#475569">No trade recommended — wait for stronger signal</div>';
+        $('g-rows').innerHTML='';
+      }
+
+      // Reasoning
+      $('g-reason').innerHTML='<div style="font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:.12em;font-weight:700;margin-bottom:6px">Why</div>'
+        +'<div style="font-size:11px;color:#334155;line-height:1.6">'+reasons.join(' · ')+'<br>ATR suggests +/-'+expMove+'% daily move. RSI at '+rsi.toFixed(0)+'.</div>';
+
+      // Indicators
+      var ih='';
+      signals.forEach(function(s){
+        var sc=s.bull===true?'#14532d':s.bull===false?'#991b1b':'#475569';
+        var bg=s.bull===true?'#f0fdf4':s.bull===false?'#fef2f2':'#f8fafc';
+        var dot=s.bull===true?'▲':s.bull===false?'▼':'—';
+        ih+='<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #f1f5f9">';
+        ih+='<span style="font-size:11px;color:#334155;font-weight:600">'+s.lbl+'</span>';
+        ih+='<div style="text-align:right"><span style="font-size:12px;font-weight:700;color:'+sc+'">'+dot+' '+s.val+'</span>';
+        ih+='<div style="font-size:9px;color:#64748b;margin-top:1px">'+s.note+'</div></div>';
+        ih+='</div>';
+      });
+      $('g-indicators').innerHTML=ih;
+      $('g-loading').style.display='none';
+      $('g-signal').style.display='block';
+      G_LOADED[T4]=true;
+}
+
+/* ── INIT ── */
 go1();go2();go3();
+// Default to Signal tab (tab1 = pane4)
+$('pane1').className='pane';
+$('pane4').className='pane on';
+go4();
 fetchAll();setInterval(fetchAll,60000);
 </script>
 </body>
 </html>
-
-go1();go2();go3();
-fetchAll();setInterval(fetchAll,60000);
-</script>
-</body>
-</html>
-
-
