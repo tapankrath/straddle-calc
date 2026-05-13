@@ -374,8 +374,8 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appear
 
   <!-- Return table -->
   <div class="rtbl">
-    <div class="rtbl-hd">
-      <span>Move</span><span>Day 1</span><span>Day 2</span><span>Day 3</span><span>Expiry</span>
+    <div class="rtbl-hd" id="s-hd-row">
+      <span>Move</span><span>D1</span><span>D2</span><span>D3</span><span>Exp</span>
     </div>
     <div id="s-rows"></div>
   </div>
@@ -657,22 +657,66 @@ function go3(){
   }
   th+='</div><div class="tkt-footer"><div class="tkt-fi"><div class="tkt-fi-lbl">Contracts</div><div class="tkt-fi-val" style="color:var(--pink)">'+contracts+'</div></div><div class="tkt-fi"><div class="tkt-fi-lbl">Total Cost</div><div class="tkt-fi-val">$'+fmt(totalRisk)+'</div></div><div class="tkt-fi"><div class="tkt-fi-lbl">Max Loss</div><div class="tkt-fi-val" style="color:var(--red)">-$'+fmt(totalRisk)+'</div></div><div class="tkt-fi"><div class="tkt-fi-lbl">500%+ needs</div><div class="tkt-fi-val" style="color:var(--green)">'+(need500?'+'+need500+'%':'—')+'</div></div></div>';
   $('s-ticket').innerHTML=th;
-  // Return table — moves from 2% to 30%
+  // Day slabs based on DTE
+  var holdDays;
+  if(dte<=7)       holdDays=[1,2,3,dte];
+  else if(dte<=14) holdDays=[1,3,5,7,dte];
+  else if(dte<=21) holdDays=[1,3,7,14,dte];
+  else             holdDays=[1,5,10,15,dte];
+  // Remove duplicates and sort
+  holdDays=holdDays.filter(function(d,i,a){return d<=dte&&a.indexOf(d)===i;}).sort(function(a,b){return a-b;});
+
+  // Grid column width
+  var colW='1.1fr '+holdDays.map(function(){return '1fr';}).join(' ');
+
+  // Update header
+  var hdHtml='<span style="text-align:left">Move</span>';
+  holdDays.forEach(function(d){hdHtml+='<span>'+(d===dte?'Exp':'D'+d)+'</span>';});
+  $('s-hd-row').innerHTML=hdHtml;
+  $('s-hd-row').style.gridTemplateColumns=colW;
+
+  // Find min move to break even at each hold day (for min gain row)
+  var minMoves=holdDays.map(function(d){
+    for(var mv=1;mv<=50;mv++){
+      var r=isBoth?otmBoth(spot,OTM,dte,iv3,mv,d):otmExit(spot,OTM,dte,iv3,isCall?mv:-mv,d,isCall);
+      if(r.ret>=0)return mv;
+    }
+    return null;
+  });
+
+  // Build rows
   var MOVES=[2,3,5,7,10,15,20,25,30];
   var sh='';
+
+  // Min gain row at top
+  sh+='<div class="rrow" style="grid-template-columns:'+colW+';background:#f8fafc;border-bottom:2px solid #e2e8f0">';
+  sh+='<span class="mlbl" style="font-size:10px;color:#64748b">B/E move</span>';
+  minMoves.forEach(function(mv){
+    sh+='<span style="font-size:11px;font-weight:700;color:#1d4ed8;text-align:center">'+(mv?'+'+mv+'%':'—')+'</span>';
+  });
+  sh+='</div>';
+
   MOVES.forEach(function(mv){
     var amv=SDIR==='dn'?-mv:mv;
     function get(h){return isBoth?otmBoth(spot,OTM,dte,iv3,mv,h):otmExit(spot,OTM,dte,iv3,amv,h,isCall);}
-    var d1=get(1),d2=get(Math.min(2,dte)),d3=get(Math.min(3,dte)),dE=get(dte);
-    var isMega=d1.ret>=500||d2.ret>=500;
+    var cells=holdDays.map(function(d){return get(d);});
+    var isMega=cells.some(function(c){return c.ret>=500;});
     var rc='rrow'+(isMega?' mega':'');
     function cell(r){return '<span class="'+retCls(r.ret)+'">'+(r.ret>=0?'+':'')+Math.round(r.ret)+'%</span>';}
-    sh+='<div class="'+rc+'"><span class="mlbl">'+(SDIR==='dn'?'-':'+')+mv+'%</span>'+cell(d1)+cell(d2)+cell(d3)+cell(dE)+'</div>';
+    sh+='<div class="'+rc+'" style="grid-template-columns:'+colW+'"><span class="mlbl">'+(SDIR==='dn'?'-':'+')+mv+'%</span>';
+    cells.forEach(function(c){sh+=cell(c);});
+    sh+='</div>';
   });
   $('s-rows').innerHTML=sh;
 }
 
 /* INIT */
+go1();go2();go3();
+fetchAll();setInterval(fetchAll,60000);
+</script>
+</body>
+</html>
+
 go1();go2();go3();
 fetchAll();setInterval(fetchAll,60000);
 </script>
