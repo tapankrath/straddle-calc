@@ -277,7 +277,7 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appear
 <!-- TAB 2: RECOMMEND -->
 <div class="pane" id="pane2">
   <div class="card">
-    <div class="card-title">Your Goals</div>
+    <div class="card-title">What do you want?</div>
     <div class="tickers">
       <button class="tk spy" id="t2-spy" onclick="setT2('spy')">SPY</button>
       <button class="tk qqq on" id="t2-qqq" onclick="setT2('qqq')">QQQ</button>
@@ -285,50 +285,40 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appear
     <div class="grid2">
       <div class="field fa"><label class="flbl">Price $</label><input type="number" id="r1" value="706" step="1" inputmode="decimal" oninput="go2()"/></div>
       <div class="field"><label class="flbl">IV %</label><input type="number" id="r2" value="21" step="1" inputmode="decimal" oninput="go2()"/></div>
-      <div class="field fg"><label class="flbl">Capital $</label><input type="number" id="r3" value="2000" step="100" inputmode="decimal" oninput="go2()"/></div>
       <div class="field fg"><label class="flbl">Profit Target $</label><input type="number" id="r4" value="500" step="50" inputmode="decimal" oninput="go2()"/></div>
-      <div class="field fa"><label class="flbl">Expected Move %</label><input type="number" id="r5" value="1.5" step="0.25" inputmode="decimal" oninput="go2()"/></div>
-      <div class="field fo"><label class="flbl">Stop Loss % of premium</label><input type="number" id="r6" value="50" step="10" min="10" max="100" inputmode="decimal" oninput="go2()"/></div>
+      <div class="field fo"><label class="flbl">Max Loss % of premium</label><input type="number" id="r6" value="50" step="10" min="10" max="100" inputmode="decimal" oninput="go2()"/></div>
+      <div class="field fa"><label class="flbl">Move % (low)</label><input type="number" id="r7" value="0.5" step="0.25" inputmode="decimal" oninput="go2()"/></div>
+      <div class="field fa"><label class="flbl">Move % (high)</label><input type="number" id="r8" value="3.0" step="0.25" inputmode="decimal" oninput="go2()"/></div>
     </div>
   </div>
 
-  <div class="rec" id="rec-card">
-    <div class="rec-badge">Recommended Setup</div>
-    <div class="rec-title" id="r-title">-</div>
-    <div class="rec-sub" id="r-sub">-</div>
-    <div class="rec-grid">
-      <div class="rstat"><div class="rl">Contracts</div><div class="rv a" id="r-c">-</div></div>
-      <div class="rstat"><div class="rl">Capital to Deploy</div><div class="rv" id="r-dep">-</div></div>
-      <div class="rstat"><div class="rl">Pay At Most / Contract</div><div class="rv b" id="r-max">-</div></div>
-      <div class="rstat"><div class="rl">Best Exit</div><div class="rv a" id="r-exit">-</div></div>
-      <div class="rstat"><div class="rl">IV Assessment</div><div id="r-iv">-</div></div>
-      <div class="rstat"><div class="rl">Expiry B/E move</div><div class="rv" id="r-be">-</div><div style="font-size:9px;color:var(--dim);margin-top:2px" id="r-be2"></div></div>
-      <div class="rstat" style="grid-column:1/-1;background:var(--rbg);border-color:var(--rbd)">
-        <div class="rl" style="color:var(--red)">Stop Loss Analysis</div>
-        <div class="rv sm" id="r-stop">-</div>
-        <div style="font-size:9px;color:var(--dim);margin-top:2px" id="r-stop2"></div>
-      </div>
+  <!-- Answer card -->
+  <div id="sz-answer" style="background:var(--p1);border:2px solid var(--abd);border-radius:14px;padding:16px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)">
+    <div style="font-size:9px;color:var(--green);font-weight:700;text-transform:uppercase;letter-spacing:.15em;margin-bottom:6px;display:flex;align-items:center;gap:5px">
+      <span style="width:5px;height:5px;background:var(--green);border-radius:50%;display:inline-block"></span>Sizing Answer
     </div>
+    <div style="font-size:22px;font-weight:700;color:var(--text);margin-bottom:2px" id="sz-title">-</div>
+    <div style="font-size:11px;color:var(--dim);margin-bottom:14px;line-height:1.5" id="sz-sub">-</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px" id="sz-grid"></div>
   </div>
 
-  <div class="legend">
-    <div class="lg"><div class="lgsq" style="background:#15803d"></div>Profit</div>
-    <div class="lg"><div class="lgsq" style="background:#b91c1c"></div>Loss</div>
-    <div class="lg"><div class="lgsq" style="background:#92400e"></div>Near B/E</div>
-    <div class="lg"><div class="lgsq" style="background:#b91c1c;opacity:.4"></div>Stop</div>
-    <div class="lg"><div class="lgbar" style="background:var(--amber)"></div>Best ★</div>
+  <!-- Move range table -->
+  <div style="font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:.15em;margin-bottom:8px;font-weight:700">P&L across move range</div>
+  <div style="background:var(--p1);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:8px;box-shadow:0 1px 3px rgba(0,0,0,.05)">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;background:#1e293b;padding:9px 10px" id="sz-tbl-hd">
+      <span style="font-size:9px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.08em">Move</span>
+      <span style="font-size:9px;font-weight:700;color:#c4b5fd;text-align:center;text-transform:uppercase">D1</span>
+      <span style="font-size:9px;font-weight:700;color:#93c5fd;text-align:center;text-transform:uppercase">D2</span>
+      <span style="font-size:9px;font-weight:700;color:#fdba74;text-align:center;text-transform:uppercase">D3</span>
+      <span style="font-size:9px;font-weight:700;color:#fff;text-align:center;text-transform:uppercase">Exp</span>
+    </div>
+    <div id="sz-rows"></div>
   </div>
 
-  <div class="stbl">
-    <div class="stbl-hd">
-      <div class="shd">Hold</div>
-      <div class="shd dr">DRIFT<span class="rng">0.2–0.5%</span></div>
-      <div class="shd mo">MOMENTUM<span class="rng">0.5–1.0%</span></div>
-      <div class="shd ex">EXPLOSIVE<span class="rng">1.0%+</span></div>
-    </div>
-    <div id="r-rows"></div>
-  </div>
-  <div class="note">Mid of each range · IV crush fades daily to 0 at expiry</div>
+  <!-- DTE comparison -->
+  <div style="font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:.15em;margin-bottom:8px;font-weight:700">Which DTE works best?</div>
+  <div id="sz-dte-rows"></div>
+  <div class="note">Capital shown is minimum needed to hit target · Stop = loss as % of premium paid · Mid of move range used for DTE comparison</div>
 </div>
 
 <!-- TAB 3: SPIKE/CRASH -->
@@ -557,7 +547,9 @@ function go1(){
   var capital=fv('c5'),target=fv('c6'),stopPct=fv('c7');
   if(spot<=0)return;
   var costPer=costIn*100,contracts=capital>0&&costPer>0?Math.max(1,Math.floor(capital/costPer)):1;
-  $('c-info').innerHTML='<b>'+T1.toUpperCase()+'</b> · $'+costIn.toFixed(2)+'/share · <b>$'+costPer.toFixed(0)+'/contract</b>';
+  var costPctOfSpot=costIn/spot*100;
+  var valAssess=straddleValue(dte,costPctOfSpot);
+  $('c-info').innerHTML='<b>'+T1.toUpperCase()+'</b> · $'+costIn.toFixed(2)+'/share · <b>$'+costPer.toFixed(0)+'/contract</b> · Cost is <b>'+costPctOfSpot.toFixed(2)+'% of spot</b> → <span style="color:'+valAssess.color+';font-weight:700">'+valAssess.label+'</span> ('+valAssess.note+')';
   $('c-nc').textContent=contracts+(contracts===1?' contract':' contracts');
   $('c-dep').textContent='$'+fmt(costPer*contracts);
   // At target using explosive mid D1
@@ -585,89 +577,204 @@ function go1(){
   else al.style.display='none';
 }
 
-/* ── TAB 2 ── */
+/* ── TAB 2: SIZE ── */
 function setT2(t){
   T2=t;
   ['spy','qqq'].forEach(function(x){$('t2-'+x).className='tk '+x+(t===x?' on':'');});
   var d=DEFS[t];$('r1').value=(LIVE[t]>0?LIVE[t]:d.spot).toFixed(2);$('r2').value=d.iv;
   go2();
 }
+// Straddle value benchmark (cost as % of spot)
+var BENCH=[
+  {dte:0, fair:[0.70,0.80], cheap:0.50},
+  {dte:2, fair:[1.20,1.60], cheap:1.10},
+  {dte:7, fair:[2.20,2.50], cheap:2.00},
+  {dte:30,fair:[2.80,3.00], cheap:2.50}
+];
+function straddleValue(dte,costPct){
+  // Find closest benchmark bracket
+  var b=BENCH[0];
+  for(var i=0;i<BENCH.length;i++){if(BENCH[i].dte<=dte)b=BENCH[i];}
+  if(costPct<b.cheap)return{label:'CHEAP ✓',color:'#14532d',bg:'#dcfce7',note:'Good entry — below fair value'};
+  if(costPct<=b.fair[1])return{label:'FAIR',color:'#92400e',bg:'#fef9c3',note:'Fair price — acceptable'};
+  return{label:'EXPENSIVE',color:'#991b1b',bg:'#fee2e2',note:'Overpaying — high IV'};
+}
+
 function go2(){
-  var spot=fv('r1'),iv3=fv('r2')/100,capital=fv('r3'),target=fv('r4'),move=fv('r5'),stopPct=fv('r6');
+  var spot=fv('r1'),iv3=fv('r2')/100,target=fv('r4'),stopPct=fv('r6');
+  var moveLo=fv('r7')||0.5,moveHi=fv('r8')||3.0;
+  var moveMid=(moveLo+moveHi)/2;
   if(spot<=0||iv3<=0)return;
-  var results=[];
+
+  // Find best DTE for the mid move — pick DTE that hits target with least capital
+  var DTES=[2,5,8,10,14,21,30];
+  var bestDTE=null,bestCP=0,bestContracts=0,bestCapital=0,bestPnl=0,bestDay=1;
+
+  var dteRows='';
+  var allDTEData=[];
   DTES.forEach(function(dte){
     var cp=prem(spot,dte,iv3)*100;if(cp<=0)return;
-    var maxC=capital>0?Math.max(1,Math.floor(capital/cp)):1;
-    // Best P&L per contract at expected move across all days
-    var bestPnl=-Infinity,bestDay=1;
-    for(var d=1;d<=dte;d++){var r=atmExit(spot,iv3,dte,move,d);if(r.dol>bestPnl){bestPnl=r.dol;bestDay=d;}}
-    // Contracts to hit target
-    var contracts=bestPnl>0?Math.max(1,Math.min(Math.ceil(target/bestPnl),maxC)):maxC;
-    var capUsed=cp*contracts;
-    // Average P&L across D1/D2/D3 timing scenarios (key: doesn't always happen D1)
-    var d1=atmExit(spot,iv3,dte,move,1).dol*contracts;
-    var d2=atmExit(spot,iv3,dte,move,Math.min(2,dte)).dol*contracts;
-    var d3=atmExit(spot,iv3,dte,move,Math.min(3,dte)).dol*contracts;
-    var avgPnl=(d1+d2+d3)/3;
-    // No-move D1 loss (theta decay with no move)
-    var noMove=atmExit(spot,iv3,dte,0,1).dol*contracts;
-    var stopThresh=stopPct>0?-(cp*contracts*stopPct/100):-Infinity;
-    var stopHit=noMove<=stopThresh;
-    // Score: reward hitting target, penalize over-leverage and stop risk
-    // hitBonus: does this DTE reliably hit target?
-    var hitBonus=avgPnl>=target?40:Math.max(0,avgPnl/target)*25;
-    // capEff: capital efficiency, but cap contracts to avoid short-DTE over-leverage
-    var adjContracts=Math.min(contracts,Math.floor(capital/(cp*2)||1)); // don't count over-leverage as a bonus
-    var adjPnl=atmExit(spot,iv3,dte,move,bestDay).dol*adjContracts;
-    var capEff=capital>0?Math.min(adjPnl/capital*50,30):0; // cap contribution at 30
-    // DTE quality: prefer 5-14 DTE sweet spot, penalize extremes
-    var dtePenalty=dte<=2?-20:dte===5?0:dte<=14?5:0;
-    var stopPenalty=stopHit?-25:0;
-    var score=hitBonus+capEff+dtePenalty+stopPenalty;
-    results.push({dte:dte,cp:cp,contracts:contracts,capUsed:capUsed,
-      pnl:avgPnl,d1:d1,bestDay:bestDay,ret:cp>0?bestPnl/cp*100:0,
-      score:score,stopHit:stopHit,bestPnl:bestPnl});
-  });
-  if(!results.length)return;
-  var best=results.reduce(function(a,b){return a.score>b.score?a:b;});
-  var ivp=iv3*100,ivCls=ivp<18?'cheap':ivp<28?'fair':'rich';
-  var ivLbl=ivp<18?'Cheap — Good to buy':ivp<28?'Fair — OK':ivp>=35?'Rich — Careful':'Elevated';
-  var be=best.cp/(spot*100)*100;
-  // Risk level based on DTE
-  var riskLbl=best.dte<=2?'High Risk · Move must happen quickly':best.dte<=5?'Medium Risk · 5 days to be right':'Lower Risk · More time for move';
-  $('r-title').textContent=best.dte+' DTE ATM Straddle';
-  $('r-sub').textContent=T2.toUpperCase()+' @ $'+spot.toFixed(0)+' · IV '+ivp.toFixed(0)+'% · '+move+'% move · '+riskLbl;
-  $('r-c').textContent=best.contracts+(best.contracts===1?' contract':' contracts');
-  $('r-dep').textContent='$'+fmt(best.capUsed)+' of $'+fmt(capital);
-  $('r-max').textContent='$'+(prem(spot,best.dte,iv3)*100*1.05).toFixed(2);
-  $('r-exit').textContent='Day '+best.bestDay+' after move';
-  $('r-iv').innerHTML='<span class="ivbadge '+ivCls+'">'+ivLbl+'</span>';
-  $('r-be').textContent='+/- '+be.toFixed(2)+'%';
-  $('r-be').className='rv '+(be<1?'g':be<2.5?'a':'r');
-  $('r-be2').textContent='Move this % either way by expiry to break even';
-  // Stop analysis
-  var stopInfo={};
-  SCENS.forEach(function(sc){
-    var st=stopPct>0?-(best.cp*best.contracts*stopPct/100):-Infinity;
-    for(var d=1;d<=best.dte;d++){
-      var r=atmExit(spot,iv3,best.dte,sc.mid,d);
-      if(r.dol*best.contracts<=st){if(!stopInfo[sc.k])stopInfo[sc.k]=d;break;}
+    var bp=-Infinity,bd=1;
+    for(var d=1;d<=dte;d++){
+      var r=atmExit(spot,iv3,dte,moveMid,d);
+      if(r.dol>bp){bp=r.dol;bd=d;}
     }
+    var contracts=bp>0?Math.ceil(target/bp):null;
+    var capNeeded=contracts?cp*contracts:null;
+    var totalPnl=contracts?bp*contracts:null;
+    var hits=totalPnl>=target;
+    // D1 no-move loss as % of capital
+    var noMoveD1=contracts?atmExit(spot,iv3,dte,0,1).dol*contracts:0;
+    var stopDol=capNeeded?capNeeded*stopPct/100:0;
+    var riskRatio=capNeeded?Math.abs(noMoveD1)/capNeeded*100:0;
+    // Risk label
+    var risk=dte<=2?'Very High':dte<=5?'High':dte<=10?'Medium':'Lower';
+    var riskClr=dte<=2?'#991b1b':dte<=5?'#c2410c':dte<=10?'#92400e':'#166534';
+    if(hits&&(!bestDTE||capNeeded<bestCapital)){
+      bestDTE=dte;bestCP=cp;bestContracts=contracts;bestCapital=capNeeded;bestPnl=totalPnl;bestDay=bd;
+    }
+    allDTEData.push({dte:dte,cp:cp,contracts:contracts,capNeeded:capNeeded,pnl:totalPnl,
+      hits:hits,risk:risk,riskClr:riskClr,riskRatio:riskRatio,stopDol:stopDol,bd:bd,noMoveD1:noMoveD1,bp:bp});
   });
-  var sk2=Object.keys(stopInfo);
-  if(stopPct>0&&sk2.length>0){
-    var early=Math.min.apply(null,sk2.map(function(k){return stopInfo[k];}));
-    $('r-stop').textContent='-'+stopPct+'% · Earliest hit: Day '+early;
-    $('r-stop2').textContent=sk2.map(function(k){return k[0].toUpperCase()+k.slice(1)+': D'+stopInfo[k];}).join(' · ');
-  } else if(stopPct>0){
-    $('r-stop').textContent='-'+stopPct+'% · Not triggered in any scenario';
-    $('r-stop2').textContent='Stop is wider than projected losses — good';
+
+  // Render DTE cards
+  allDTEData.forEach(function(d){
+    var isBest=d.dte===bestDTE;
+    var bg=isBest?'var(--abg)':'var(--p1)';
+    var border=isBest?'2px solid var(--amber)':'1px solid var(--border)';
+    var badge=isBest?'<span style="background:var(--amber);color:#000;font-size:8px;font-weight:700;padding:2px 7px;border-radius:10px;letter-spacing:.08em;text-transform:uppercase;margin-left:6px">Min Capital</span>':'';
+    var costPct=d.cp/spot*100;
+    var val=straddleValue(d.dte,costPct);
+    var valBadge='<span style="background:'+val.bg+';color:'+val.color+';font-size:9px;font-weight:700;padding:3px 8px;border-radius:6px;margin-left:6px">'+val.label+'</span>';
+    if(!d.hits){
+      dteRows+='<div style="background:#fafafa;border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:6px;opacity:.6">';
+      dteRows+='<div style="display:flex;align-items:center;justify-content:space-between">';
+      dteRows+='<span style="font-size:14px;font-weight:700;color:var(--dim)">'+d.dte+' DTE</span>';
+      dteRows+='<span style="font-size:11px;color:var(--red)">Cannot hit target</span>';
+      dteRows+='</div></div>';
+      return;
+    }
+    dteRows+='<div style="background:'+bg+';border:'+border+';border-radius:10px;padding:12px;margin-bottom:8px">';
+    // Header row
+    dteRows+='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">';
+    dteRows+='<div style="display:flex;align-items:center">';
+    dteRows+='<span style="font-size:16px;font-weight:700;color:var(--text)">'+d.dte+' DTE</span>'+badge+valBadge;
+    dteRows+='</div>';
+    dteRows+='<div style="text-align:right">';
+    dteRows+='<span style="font-size:10px;font-weight:700;padding:3px 9px;border-radius:6px;background:'+d.riskClr+'22;color:'+d.riskClr+'">'+d.risk+' Risk</span>';
+    dteRows+='<div style="font-size:9px;color:var(--dim);margin-top:3px">Cost: '+costPct.toFixed(2)+'% of spot · '+val.note+'</div>';
+    dteRows+='</div>';
+    dteRows+='</div>';
+    // Stats grid
+    dteRows+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px">';
+    dteRows+=dstat('Capital','$'+fmt(d.capNeeded),'var(--amber)');
+    dteRows+=dstat('Contracts',d.contracts+'c','var(--blue)');
+    dteRows+=dstat('Best P&L',fp(d.pnl),'#15803d');
+    dteRows+=dstat('Cost/Contract','$'+d.cp.toFixed(0),'var(--text)');
+    dteRows+=dstat('Stop Loss','$'+fmt(d.stopDol),'var(--red)');
+    dteRows+=dstat('Best Exit Day','Day '+d.bd,'var(--text)');
+    dteRows+='</div>';
+    // Trade-off bar
+    dteRows+='<div style="font-size:9px;color:var(--dim);margin-bottom:4px;font-weight:700;text-transform:uppercase;letter-spacing:.1em">Trade-off</div>';
+    dteRows+='<div style="font-size:10px;color:#334155;line-height:1.5;background:rgba(0,0,0,.04);border-radius:6px;padding:7px 9px">';
+    if(d.dte<=2)dteRows+='⚡ Cheapest option · Move <b>must happen within 2 days</b> · Total loss if delayed';
+    else if(d.dte<=5)dteRows+='🔥 Low cost · Need move <b>within 5 days</b> · Limited time buffer';
+    else if(d.dte<=10)dteRows+='⚖️ Balanced · <b>'+d.dte+' days</b> for move to develop · Moderate theta decay';
+    else dteRows+='🛡️ More time buffer · Move can happen over <b>'+d.dte+' days</b> · Higher cost, lower risk of expiry';
+    dteRows+='</div>';
+
+    // P&L timeline: if move happens on D1, D3, midpoint, expiry
+    var timelineDays=[1];
+    if(d.dte>=3)timelineDays.push(3);
+    if(d.dte>=7)timelineDays.push(Math.round(d.dte/2));
+    timelineDays.push(d.dte);
+    timelineDays=timelineDays.filter(function(x,i,a){return a.indexOf(x)===i&&x<=d.dte;});
+
+    dteRows+='<div style="font-size:9px;color:var(--dim);font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin:10px 0 6px">If '+moveMid.toFixed(1)+'% move happens on...</div>';
+    dteRows+='<div style="display:grid;grid-template-columns:repeat('+timelineDays.length+',1fr);gap:5px">';
+    timelineDays.forEach(function(day){
+      var pnlHere=atmExit(spot,iv3,d.dte,moveMid,day).dol*d.contracts;
+      var hitsTgt=pnlHere>=target;
+      var lbl=day>=d.dte?'Expiry':'Day '+day;
+      var clr=hitsTgt?'#14532d':pnlHere>0?'#15803d':'#b91c1c';
+      var bg=hitsTgt?'#dcfce7':pnlHere>0?'#f0fdf4':'#fef2f2';
+      var brd=hitsTgt?'#86efac':pnlHere>0?'#bbf7d0':'#fca5a5';
+      dteRows+='<div style="background:'+bg+';border:1px solid '+brd+';border-radius:7px;padding:7px 4px;text-align:center">';
+      dteRows+='<div style="font-size:9px;color:var(--dim);font-weight:700;margin-bottom:3px">'+lbl+'</div>';
+      dteRows+='<div style="font-size:12px;font-weight:700;color:'+clr+'">'+fp(pnlHere)+'</div>';
+      if(hitsTgt)dteRows+='<div style="font-size:8px;color:#14532d;font-weight:700;margin-top:2px">✓ Target</div>';
+      dteRows+='</div>';
+    });
+    dteRows+='</div>';
+    // No-move D1 loss
+    var noMv=atmExit(spot,iv3,d.dte,0,1).dol*d.contracts;
+    dteRows+='<div style="margin-top:7px;font-size:10px;color:#b91c1c;font-weight:600;padding:5px 8px;background:#fef2f2;border-radius:6px">No move D1: '+fp(noMv)+' ('+Math.abs(noMv/d.capNeeded*100).toFixed(0)+'% of capital at risk)</div>';
+
+    dteRows+='</div>'; // close card
+  });
+  $('sz-dte-rows').innerHTML=dteRows;
+
+  // Answer card
+  if(bestDTE){
+    var be=bestCP/(spot*100)*100;
+    var stopDollar=bestCP*bestContracts*stopPct/100;
+    var bestCostPct=bestCP/spot*100;
+    var bestVal=straddleValue(bestDTE,bestCostPct);
+    $('sz-title').textContent=bestDTE+' DTE ATM Straddle';
+    $('sz-sub').textContent=T2.toUpperCase()+' @ $'+spot.toFixed(0)+' · Expecting '+moveLo+'%–'+moveHi+'% move · Exit Day '+bestDay+' · Cost '+bestCostPct.toFixed(2)+'% of spot → '+bestVal.label;
+    $('sz-grid').innerHTML=
+      sbox('Capital Needed','$'+fmt(bestCapital),'amber')+
+      sbox('Contracts',bestContracts+(bestContracts===1?' contract':' contracts'),'blue')+
+      sbox('Cost / Contract','$'+bestCP.toFixed(2)+' ('+bestCostPct.toFixed(2)+'%)','text')+
+      sbox('Straddle Value',bestVal.label,bestVal.label==='CHEAP ✓'?'green':bestVal.label==='FAIR'?'amber':'red')+
+      sbox('Max P&L',fp(bestPnl),'green')+
+      sbox('Max Loss (stop)','$'+fmt(stopDollar)+' ('+stopPct+'%)','red');
+
+    // Move range table
+    var moves=[];
+    var step=(moveHi-moveLo)/5;
+    for(var m=moveLo;m<=moveHi+0.01;m+=step)moves.push(parseFloat(m.toFixed(2)));
+    if(moves[moves.length-1]<moveHi)moves.push(moveHi);
+    // Add a few beyond high for reference
+    moves.push(parseFloat((moveHi+1).toFixed(1)));
+    moves.push(parseFloat((moveHi+2).toFixed(1)));
+
+    var sh='';
+    moves.forEach(function(mv){
+      var d1=atmExit(spot,iv3,bestDTE,mv,1).dol*bestContracts;
+      var d2=atmExit(spot,iv3,bestDTE,mv,Math.min(2,bestDTE)).dol*bestContracts;
+      var d3=atmExit(spot,iv3,bestDTE,mv,Math.min(3,bestDTE)).dol*bestContracts;
+      var dE=atmExit(spot,iv3,bestDTE,mv,bestDTE).dol*bestContracts;
+      var stopThresh=-(bestCP*bestContracts*stopPct/100);
+      function pclr(v){return v>=target?'#14532d':v>0?'#15803d':v>stopThresh?'#b91c1c':'#7f1d1d';}
+      function pbg(v){return v>=target?'#f0fdf4':v>0?'#f0fdf4':v>stopThresh?'#fef2f2':'#fef2f2';}
+      var inRange=mv>=moveLo&&mv<=moveHi;
+      var rowBg=inRange?'#fffbeb':'#fafafa';
+      var mvClr=inRange?'#b45309':'#64748b';
+      sh+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;padding:9px 10px;border-top:1px solid var(--border);background:'+rowBg+'">';
+      sh+='<span style="font-size:12px;font-weight:700;color:'+mvClr+'">'+(inRange?'▶ ':'')+mv+'%</span>';
+      [d1,d2,d3,dE].forEach(function(v){
+        sh+='<span style="text-align:center;font-size:11px;font-weight:700;color:'+pclr(v)+'">'+fp(v)+'</span>';
+      });
+      sh+='</div>';
+    });
+    $('sz-rows').innerHTML=sh;
   } else {
-    $('r-stop').textContent='No stop set';$('r-stop2').textContent='';
+    $('sz-title').textContent='No profitable setup found';
+    $('sz-sub').textContent='Try a higher move range or different ticker';
+    $('sz-grid').innerHTML='';
+    $('sz-rows').innerHTML='<div style="padding:14px;text-align:center;color:var(--dim);font-size:12px">Move range too small for current IV — straddle can\'t profit at '+moveLo+'%–'+moveHi+'% with any DTE</div>';
   }
-  buildRows(spot,iv3,best.dte,best.contracts,best.cp,stopPct,best.bestDay,0,8,'r-rows');
 }
+
+function sbox(lbl,val,clr){
+  var c={'amber':'var(--amber)','blue':'var(--blue)','green':'#15803d','red':'#b91c1c','text':'var(--text)'}[clr]||clr;
+  return '<div style="background:var(--p2);padding:10px;border-radius:8px;border:1px solid var(--border)"><div style="font-size:8px;color:var(--dim);text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin-bottom:3px">'+lbl+'</div><div style="font-size:14px;font-weight:700;color:'+c+'">'+val+'</div></div>';
+}
+function dstat(lbl,val,clr){
+  return '<div style="background:rgba(0,0,0,.03);padding:8px;border-radius:7px"><div style="font-size:8px;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:2px">'+lbl+'</div><div style="font-size:13px;font-weight:700;color:'+clr+'">'+val+'</div></div>';
+}
+
 
 /* ── TAB 3 ── */
 function setT3(t){
@@ -968,9 +1075,18 @@ function processSignal(valid,capital,target,stopPct,sym){
   var expMove=atrPct.toFixed(2);
   signals.push({lbl:'ATR-14 (daily)',val:'+/-'+expMove+'%',note:'Expected daily range',bull:null});
   signals.push({lbl:'Est. IV (realized vol)',val:(iv3*100).toFixed(0)+'%',note:iv3<0.20?'Low IV — cheap to buy':iv3<0.35?'Moderate IV':'High IV — premium is elevated',bull:iv3<0.25?true:iv3>0.40?false:null});
+  if(capital>0&&target>0){
+    var crPct=Math.round(capRatio*100);
+    signals.push({lbl:'Target vs Capital',val:'$'+fmt(target)+' / $'+fmt(capital),note:crPct+'% — '+(lowRiskTrade?'Low risk ratio: weak signals acceptable':aggressiveTrade?'High commitment: need strong signal':'Moderate — use judgment'),bull:lowRiskTrade?true:aggressiveTrade?false:null});
+  }
 
   // ── DETERMINE ACTION ──
   var action,color,bgColor,borderColor,confidence,dte,isCall;
+
+  // Capital/target context — small target vs large capital = can take weaker signals
+  var capRatio=capital>0?target/capital:0.25; // e.g. $500/$20000 = 2.5%
+  var lowRiskTrade=capRatio<0.05; // target < 5% of capital = low risk, can take weak signals
+  var aggressiveTrade=capRatio>0.25; // target > 25% of capital = need strong signal
 
   if(bullPoints>=5&&bullPoints>bearPoints*1.5){
     action='BUY CALL';isCall=true;color='#14532d';bgColor='#f0fdf4';borderColor='#16a34a';
@@ -981,17 +1097,54 @@ function processSignal(valid,capital,target,stopPct,sym){
     confidence=bearPoints>=7?'High':'Medium';
     reasons.push('Strong bearish signals — price below 20MA with negative momentum');
   } else if(bullPoints>bearPoints){
-    action='LEAN CALL';isCall=true;color='#166534';bgColor='#f0fdf4';borderColor='#86efac';
-    confidence='Low';
-    reasons.push('Mildly bullish — mixed signals, reduce size or wait');
+    if(aggressiveTrade){
+      // Need strong signal for high capital commitment — don't take weak signals
+      action='WAIT — LEAN CALL';isCall=true;color='#166534';bgColor='#f0fdf4';borderColor='#86efac';
+      confidence='Low';
+      reasons.push('Mildly bullish but signals mixed — with your capital:target ratio, wait for stronger confirmation');
+    } else {
+      action='LEAN CALL';isCall=true;color='#166534';bgColor='#f0fdf4';borderColor='#86efac';
+      confidence=lowRiskTrade?'Medium (small size)':'Low';
+      reasons.push('Mildly bullish'+(lowRiskTrade?' — low target vs capital, acceptable to take small position':'— mixed signals, reduce size or wait'));
+    }
   } else if(bearPoints>bullPoints){
-    action='LEAN PUT';isCall=false;color='#991b1b';bgColor='#fef2f2';borderColor='#fca5a5';
-    confidence='Low';
-    reasons.push('Mildly bearish — mixed signals, reduce size or wait');
+    // RSI overbought (≥65) + price above MA = mean reversion PUT setup
+    var meanReversionPut=rsi>=65&&aboveMA20;
+    if(meanReversionPut&&!aggressiveTrade){
+      action='BUY PUT';isCall=false;color='#7f1d1d';bgColor='#fef2f2';borderColor='#dc2626';
+      confidence='Medium';
+      reasons.push('RSI '+rsi.toFixed(0)+' overbought — mean reversion put play despite price above MA');
+    } else if(aggressiveTrade){
+      action='WAIT — LEAN PUT';isCall=false;color='#991b1b';bgColor='#fef2f2';borderColor='#fca5a5';
+      confidence='Low';
+      reasons.push('Mildly bearish — with your capital:target ratio ('+Math.round(capRatio*100)+'%), wait for stronger confirmation');
+    } else {
+      action='LEAN PUT';isCall=false;color='#991b1b';bgColor='#fef2f2';borderColor='#fca5a5';
+      confidence=lowRiskTrade?'Medium (small size)':'Low';
+      reasons.push('Mildly bearish'+(lowRiskTrade?' — low target vs capital, acceptable to take small position':'— mixed signals, reduce size or wait'));
+    }
   } else {
-    action='NO TRADE';isCall=null;color='#334155';bgColor='#f8fafc';borderColor='#e2e8f0';
-    confidence='—';
-    reasons.push('Mixed signals — wait for clearer direction');
+    // True tie — check if capital makes any trade worthwhile
+    if(lowRiskTrade&&rsi>65){
+      // Overbought + tiny target = take a put
+      action='LEAN PUT (small)';isCall=false;color='#991b1b';bgColor='#fef2f2';borderColor='#fca5a5';
+      confidence='Low';
+      reasons.push('Tied signals but RSI '+rsi.toFixed(0)+' overbought — tiny target ($'+fmt(target)+') vs capital ($'+fmt(capital)+') makes a small put reasonable');
+    } else if(lowRiskTrade&&rsi<35){
+      action='LEAN CALL (small)';isCall=true;color='#166534';bgColor='#f0fdf4';borderColor='#86efac';
+      confidence='Low';
+      reasons.push('Tied signals but RSI '+rsi.toFixed(0)+' oversold — tiny target ($'+fmt(target)+') vs capital ($'+fmt(capital)+') makes a small call reasonable');
+    } else {
+      action='NO TRADE';isCall=null;color='#334155';bgColor='#f8fafc';borderColor='#e2e8f0';
+      confidence='—';
+      reasons.push('Mixed signals — wait for clearer direction');
+      if(capital>0&&target>0)reasons.push('Target is '+Math.round(capRatio*100)+'% of capital ('+fp(target)+'/'+fp(capital)+') — '+(aggressiveTrade?'high commitment needs strong signal':'consider smaller target to enable weaker-signal trades'));
+    }
+  }
+
+  // Add capital context to reasoning always
+  if(capital>0&&target>0&&isCall!==null){
+    reasons.push('Target $'+fmt(target)+' = '+Math.round(capRatio*100)+'% of $'+fmt(capital)+' capital'+(lowRiskTrade?' — low risk, trade is justified even on weak signal':aggressiveTrade?' — high commitment, signal confidence matters':''));
   }
 
   // DTE based on confidence and volatility
