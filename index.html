@@ -5,31 +5,31 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-title" content="GammaEdge"/>
-<title>GammaEdge</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<title>GammaEdge</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
-  --bg:#f1f5f9;--p1:#ffffff;--p2:#f8fafc;--border:#d1d9e0;
+  --bg:#f1f5f9;--p1:#ffffff;--p2:#f8fafc;--border:#e2e8f0;
   --text:#0a0f1e;--dim:#374151;
-  --green:#166534;--gbg:#f0fdf4;--gbd:#6ee7b7;
-  --red:#9b1c1c;--rbg:#fef2f2;--rbd:#fca5a5;
-  --amber:#92400e;--abg:#fffbeb;--abd:#fcd34d;
-  --blue:#1e3a8a;--bbg:#eff6ff;--bbd:#93c5fd;
+  --green:#15803d;--gbg:#f0fdf4;--gbd:#86efac;
+  --red:#b91c1c;--rbg:#fef2f2;--rbd:#fca5a5;
+  --amber:#b45309;--abg:#fffbeb;--abd:#fcd34d;
+  --blue:#1d4ed8;--bbg:#eff6ff;--bbd:#93c5fd;
   --orange:#c2410c;--obg:#fff7ed;--obd:#fdba74;
-  --purple:#5b21b6;--pbg:#f5f3ff;--pbd:#c4b5fd;
-  --pink:#9d174d;--pikbg:#fdf2f8;--pikbd:#f9a8d4;
+  --purple:#6d28d9;--pbg:#f5f3ff;--pbd:#c4b5fd;
+  --pink:#be185d;--pikbg:#fdf2f8;--pikbd:#f9a8d4;
 }
-html,body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sans-serif;font-size:14px;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;min-height:100vh}
+html,body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sans-serif;font-size:14px;-webkit-font-smoothing:antialiased;min-height:100vh}
 button{font-family:inherit;touch-action:manipulation;cursor:pointer;-webkit-user-select:none;user-select:none;border:none;outline:none}
 input{outline:none;-webkit-appearance:none;appearance:none;-moz-appearance:textfield;font-family:inherit}
 input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 .app{max-width:480px;margin:0 auto;padding:10px 10px 60px}
 
 /* TABS */
-.tabs{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:3px;background:var(--p1);border:1px solid var(--border);border-radius:10px;padding:3px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;background:var(--p1);border:1px solid var(--border);border-radius:10px;padding:3px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
 .tab{background:transparent;color:#6b7280;padding:10px 4px;border-radius:8px;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;text-align:center}
 .tab.on{background:var(--text);color:#fff}
 .pane{display:none}.pane.on{display:block}
@@ -39,12 +39,12 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appear
 .price-card{background:var(--p1);border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center;cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.05)}
 .price-card.spy{border-top:3px solid var(--purple)}
 .price-card.qqq{border-top:3px solid var(--amber)}
-.pc-name{font-size:10px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;margin-bottom:3px}
+.pc-name{font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;margin-bottom:3px}
 .price-card.spy .pc-name{color:var(--purple)}
 .price-card.qqq .pc-name{color:var(--amber)}
-.pc-price{font-size:17px;font-weight:800;color:var(--text)}
-.pc-chg{font-size:11px;font-weight:700;margin-top:2px}
-.ld{animation:blink 1s infinite;color:var(--dim)}
+.pc-price{font-size:15px;font-weight:700;color:var(--text)}
+.pc-chg{font-size:9px;margin-top:2px}
+.ld{animation:blink 1s infinite;color:#475569}
 @keyframes blink{0%,100%{opacity:.3}50%{opacity:1}}
 
 /* CARD */
@@ -53,7 +53,7 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appear
 
 /* TICKER PILLS */
 .tickers{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px}
-.tk{background:var(--p2);border:2px solid var(--border);color:#4b5563;padding:10px 4px;border-radius:8px;font-size:14px;font-weight:800;text-align:center}
+.tk{background:var(--p2);border:2px solid var(--border);color:#334155;padding:10px 4px;border-radius:8px;font-size:13px;font-weight:700;text-align:center}
 .tk.spy.on{background:var(--pbg);color:var(--purple);border-color:var(--purple)}
 .tk.qqq.on{background:var(--abg);color:var(--amber);border-color:var(--amber)}
 
@@ -71,93 +71,93 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appear
 
 /* INFO STRIP */
 .info{background:var(--p2);border:1px solid var(--border);border-radius:7px;padding:7px 11px;font-size:12px;color:#374151;margin-top:8px;line-height:1.6;font-weight:500}
-.info b{color:var(--text);font-weight:800}
+.info b{color:var(--text)}
 
 /* SUMMARY BAR */
 .sumbar{background:var(--abg);border:1px solid var(--abd);border-radius:9px;padding:10px 12px;margin-bottom:10px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
 .si{display:flex;flex-direction:column;gap:2px}
-.si-lbl{font-size:9px;color:var(--amber);text-transform:uppercase;letter-spacing:.1em;font-weight:800}
-.si-val{font-size:15px;font-weight:800;color:var(--text)}
+.si-lbl{font-size:9px;color:var(--amber);text-transform:uppercase;letter-spacing:.1em;font-weight:700}
+.si-val{font-size:14px;font-weight:700;color:var(--text)}
 .si-val.pos{color:var(--green)}.si-val.neg{color:var(--red)}
 
 /* CONTEXT ROW */
 .ctx{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px}
 .ctx-box{background:var(--p1);border:1px solid var(--border);border-radius:9px;padding:9px;text-align:center}
-.ctx-lbl{font-size:9px;color:#4b5563;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;font-weight:800}
-.ctx-val{font-size:14px;font-weight:800}
+.ctx-lbl{font-size:8px;color:#1e293b;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;font-weight:700}
+.ctx-val{font-size:14px;font-weight:700}
 .ctx-box.cv{border-width:2px}
-.ctx-box.cv.ok{background:var(--gbg);border-color:var(--green)}.ctx-box.cv.ok .ctx-val{color:var(--green);font-size:12px}
-.ctx-box.cv.tight{background:var(--abg);border-color:var(--amber)}.ctx-box.cv.tight .ctx-val{color:var(--amber);font-size:12px}
-.ctx-box.cv.no{background:var(--rbg);border-color:var(--red)}.ctx-box.cv.no .ctx-val{color:var(--red);font-size:12px}
+.ctx-box.cv.ok{background:var(--gbg);border-color:var(--green)}.ctx-box.cv.ok .ctx-val{color:var(--green);font-size:11px}
+.ctx-box.cv.tight{background:var(--abg);border-color:var(--amber)}.ctx-box.cv.tight .ctx-val{color:var(--amber);font-size:11px}
+.ctx-box.cv.no{background:var(--rbg);border-color:var(--red)}.ctx-box.cv.no .ctx-val{color:var(--red);font-size:11px}
 
 /* SCENARIO TABLE */
 .stbl{background:var(--p1);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:8px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
 /* Header */
 .stbl-hd{display:grid;grid-template-columns:.55fr 1fr 1fr 1fr;background:#0f172a}
 .shd{padding:10px 4px;text-align:center;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#fff;line-height:1.4}
-.shd:first-child{color:#94a3b8;font-size:10px;display:flex;align-items:center;justify-content:center}
+.shd:first-child{color:#475569;font-size:9px;display:flex;align-items:center;justify-content:center}
 .shd.dr{color:#e9d5ff;border-left:2px solid rgba(233,213,255,.3)}
 .shd.mo{color:#bae6fd;border-left:2px solid rgba(186,230,253,.3)}
 .shd.ex{color:#fed7aa;border-left:2px solid rgba(254,215,170,.3)}
 .shd .rng{font-size:9px;font-weight:700;opacity:.9;display:block;margin-top:3px;color:#fff}
 /* Rows */
 .srow{display:grid;grid-template-columns:.55fr 1fr 1fr 1fr;border-top:1px solid var(--border)}
-.srow:nth-child(even){background:#f8fafc}
+.srow:nth-child(even){background:#fafafa}
 .srow.best{box-shadow:inset 4px 0 0 var(--amber);background:var(--abg)!important}
 .srow.cur{box-shadow:inset 4px 0 0 var(--blue);background:var(--bbg)!important}
 .srow.stop{box-shadow:inset 4px 0 0 var(--red);background:var(--rbg)!important}
 .srow.exp{background:#f8fafc!important}
 /* Day cell */
-.dcell{padding:10px 5px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.04);min-height:56px;gap:2px;overflow:hidden;min-width:0}
+.dcell{padding:10px 5px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.03);min-height:56px;gap:2px;overflow:hidden;min-width:0}
 .dname{font-size:13px;font-weight:800;color:var(--text)}
-.dnote{font-size:9px;color:#4b5563;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.dnote{font-size:9px;color:#475569;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .srow.best .dname{color:var(--amber)}.srow.best .dnote{color:var(--amber)}
 .srow.cur .dname{color:var(--blue)}.srow.cur .dnote{color:var(--blue)}
 .srow.stop .dname{color:var(--red)}.srow.stop .dnote{color:var(--red)}
 /* Value cells */
 .vcell{padding:9px 3px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-left:2px solid;min-height:56px;min-width:0;overflow:hidden}
-.vcell.dr{background:#f3f0ff;border-left-color:#6d28d9}
+.vcell.dr{background:#f3f0ff;border-left-color:#7c3aed}
 .vcell.mo{background:#e0f2fe;border-left-color:#0369a1}
 .vcell.ex{background:#fff3e0;border-left-color:#c2410c}
 .vamt{font-size:14px;font-weight:800}
 .vpct{font-size:11px;font-weight:700}
-/* P/L colors */
+/* P/L colors - dark on light bg = high contrast */
 .gp{color:#14532d}.rn{color:#7f1d1d}.yn{color:#713f12}.on{color:#7c2d12}
 .srow.stop .vamt,.srow.stop .vpct{color:#7f1d1d!important}
 
 /* LEGEND */
 .legend{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px}
-.lg{display:flex;align-items:center;gap:4px;font-size:11px;color:#374151;font-weight:600}
+.lg{display:flex;align-items:center;gap:4px;font-size:10px;color:#334155}
 .lgsq{width:9px;height:9px;border-radius:2px}
 .lgbar{width:4px;height:12px;border-radius:2px}
 
 /* REC CARD */
 .rec{background:var(--p1);border:2px solid var(--abd);border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:0 2px 6px rgba(0,0,0,.08)}
-.rec-badge{font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:.15em;margin-bottom:6px;font-weight:800;display:flex;align-items:center;gap:5px}
+.rec-badge{font-size:9px;color:var(--green);text-transform:uppercase;letter-spacing:.15em;margin-bottom:6px;font-weight:700;display:flex;align-items:center;gap:5px}
 .rec-badge::before{content:'';width:5px;height:5px;background:var(--green);border-radius:50%}
 .rec-title{font-size:24px;font-weight:800;color:var(--text);margin-bottom:2px}
 .rec-sub{font-size:12px;color:#1f2937;margin-bottom:12px;line-height:1.6;font-weight:600}
 .rec-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .rstat{background:var(--p2);padding:10px;border-radius:8px;border:1px solid var(--border)}
-.rl{font-size:10px;color:#374151;text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px;font-weight:800}
+.rl{font-size:9px;color:#1e293b;text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px;font-weight:700}
 .rv{font-size:16px;font-weight:800;color:var(--text)}
 .rv.a{color:var(--amber)}.rv.g{color:var(--green)}.rv.r{color:var(--red)}.rv.b{color:var(--blue)}
-.rv.sm{font-size:13px}
-.ivbadge{display:inline-block;padding:3px 8px;border-radius:5px;font-size:12px;font-weight:800}
+.rv.sm{font-size:12px}
+.ivbadge{display:inline-block;padding:3px 8px;border-radius:5px;font-size:11px;font-weight:700}
 .ivbadge.cheap{background:var(--gbg);color:var(--green);border:1px solid var(--gbd)}
 .ivbadge.fair{background:var(--abg);color:var(--amber);border:1px solid var(--abd)}
 .ivbadge.rich{background:var(--rbg);color:var(--red);border:1px solid var(--rbd)}
 
 /* STOP ALERT */
-.stopalert{background:var(--rbg);border:1px solid var(--rbd);border-radius:9px;padding:10px 12px;margin-bottom:10px;font-size:12px;color:var(--red);line-height:1.5;display:none;font-weight:600}
-.stopalert b{font-size:14px;display:block;margin-bottom:2px;font-weight:800}
+.stopalert{background:var(--rbg);border:1px solid var(--rbd);border-radius:9px;padding:10px 12px;margin-bottom:10px;font-size:11px;color:#7f1d1d;line-height:1.5;display:none}
+.stopalert b{font-size:13px;display:block;margin-bottom:2px}
 
 /* SPIKE TAB */
 .dir-btns{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px}
 .dbtn{border:2px solid var(--border);border-radius:9px;padding:12px 4px;text-align:center;background:var(--p2);cursor:pointer}
 .dbtn .dico{font-size:20px;margin-bottom:3px}
-.dbtn .dname{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#4b5563}
-.dbtn .dsub{font-size:10px;color:#4b5563;margin-top:2px;font-weight:600}
+.dbtn .dname{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#334155}
+.dbtn .dsub{font-size:9px;color:#334155;margin-top:2px}
 .dbtn.up.on{background:var(--gbg);border-color:var(--green)}.dbtn.up.on .dname{color:var(--green)}
 .dbtn.dn.on{background:var(--rbg);border-color:var(--red)}.dbtn.dn.on .dname{color:var(--red)}
 .dbtn.both.on{background:var(--abg);border-color:var(--amber)}.dbtn.both.on .dname{color:var(--amber)}
@@ -175,23 +175,23 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appear
 .tkt-strike{font-size:20px;font-weight:800;color:var(--text);margin:2px 0}
 .tkt-detail{font-size:11px;color:#374151;font-weight:600}
 .tkt-prem{font-size:18px;font-weight:800;color:var(--pink)}
-.tkt-prem-sub{font-size:10px;color:#374151;text-align:right;font-weight:600}
+.tkt-prem-sub{font-size:9px;color:#334155;text-align:right}
 .tkt-footer{display:flex;justify-content:space-between;padding-top:10px;border-top:1px solid var(--pikbd)}
 .tkt-fi{text-align:center}
-.tkt-fi-lbl{font-size:9px;color:#374151;text-transform:uppercase;letter-spacing:.1em;font-weight:800;margin-bottom:2px}
-.tkt-fi-val{font-size:14px;font-weight:800;color:var(--text)}
+.tkt-fi-lbl{font-size:8px;color:#1e293b;text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin-bottom:2px}
+.tkt-fi-val{font-size:13px;font-weight:700;color:var(--text)}
 /* Return table */
 .rtbl{background:var(--p1);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:8px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
-.rtbl-hd{display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;background:#0f172a;padding:9px 10px}
-.rtbl-hd span{text-align:center;font-size:10px;color:#fff;text-transform:uppercase;letter-spacing:.1em;font-weight:800}
+.rtbl-hd{display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;background:var(--text);padding:9px 10px}
+.rtbl-hd span{text-align:center;font-size:9px;color:#fff;text-transform:uppercase;letter-spacing:.1em;font-weight:700}
 .rtbl-hd span:first-child{text-align:left}
 .rrow{display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;padding:10px 10px;border-top:1px solid var(--border);align-items:center}
-.rrow:nth-child(even){background:#f8fafc}
+.rrow:nth-child(even){background:#fafafa}
 .rrow.mega{background:var(--pikbg)}
 .rrow .mlbl{font-size:13px;font-weight:800;color:var(--text)}
 .rrow.mega .mlbl{color:var(--pink)}
-.rrow span{text-align:center;font-size:13px;font-weight:700}
-.c0{color:#9b1c1c}.c1{color:#c2410c}.c2{color:#92400e}.c3{color:#166534}.c4{color:#15803d}.c5{color:#14532d}
+.rrow span{text-align:center;font-size:12px;font-weight:700}
+.c0{color:#b91c1c}.c1{color:#c2410c}.c2{color:#92400e}.c3{color:#166534}.c4{color:#15803d}.c5{color:#14532d}
 
 .note{color:#4b5563;font-size:10px;text-align:center;font-style:italic;margin-top:6px;line-height:1.5;font-weight:600}
 @supports(padding-bottom:env(safe-area-inset-bottom)){.app{padding-bottom:calc(60px + env(safe-area-inset-bottom))}}
@@ -200,16 +200,12 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appear
 <body>
 <div class="app">
 
-<div style="text-align:center;padding:14px 0 10px">
-  <div style="font-size:20px;font-weight:900;color:#0a0f1e;letter-spacing:-.02em">⚡ GammaEdge</div>
-  <div style="font-size:11px;font-weight:600;color:#374151;letter-spacing:.08em;text-transform:uppercase;margin-top:3px">Options Strategy Tool</div>
-</div>
-
 <div class="tabs">
   <button class="tab on" id="tab1" onclick="showTab(1)">Signal</button>
   <button class="tab" id="tab2" onclick="showTab(2)">Size</button>
-  <button class="tab" id="tab3" onclick="showTab(3)">Spike/Crash</button>
+  <button class="tab" id="tab3" onclick="showTab(3)">Spike</button>
   <button class="tab" id="tab4" onclick="showTab(4)">Calc</button>
+  <button class="tab" id="tab5" onclick="showTab(5)">Backtest</button>
 </div>
 
 <!-- LIVE PRICES -->
@@ -268,7 +264,7 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appear
     <div class="lg"><div class="lgbar" style="background:var(--amber)"></div>Best ★</div>
     <div class="lg"><div class="lgbar" style="background:var(--blue)"></div>Selected ◀</div>
   </div>
-  <div style="font-size:10px;color:var(--dim);text-align:right;margin-bottom:6px" id="c-selday">Tap a row to select</div>
+  <div style="font-size:10px;color:#334155;text-align:right;margin-bottom:6px" id="c-selday">Tap a row to select</div>
 
   <div class="stbl">
     <div class="stbl-hd">
@@ -306,25 +302,25 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appear
       <span style="width:5px;height:5px;background:var(--green);border-radius:50%;display:inline-block"></span>Sizing Answer
     </div>
     <div style="font-size:22px;font-weight:700;color:var(--text);margin-bottom:2px" id="sz-title">-</div>
-    <div style="font-size:11px;color:var(--dim);margin-bottom:14px;line-height:1.5" id="sz-sub">-</div>
+    <div style="font-size:11px;color:#334155;margin-bottom:14px;line-height:1.5" id="sz-sub">-</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px" id="sz-grid"></div>
   </div>
 
   <!-- Move range table -->
-  <div style="font-size:11px;color:#374151;text-transform:uppercase;letter-spacing:.15em;margin-bottom:8px;font-weight:800">P&L across move range</div>
+  <div style="font-size:9px;color:#1e293b;text-transform:uppercase;letter-spacing:.15em;margin-bottom:8px;font-weight:700">P&L across move range</div>
   <div style="background:var(--p1);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:8px;box-shadow:0 1px 3px rgba(0,0,0,.05)">
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;background:#0f172a;padding:9px 10px" id="sz-tbl-hd">
-      <span style="font-size:11px;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:.08em">Move</span>
-      <span style="font-size:11px;font-weight:800;color:#c4b5fd;text-align:center;text-transform:uppercase">D1</span>
-      <span style="font-size:11px;font-weight:800;color:#93c5fd;text-align:center;text-transform:uppercase">D2</span>
-      <span style="font-size:11px;font-weight:800;color:#fdba74;text-align:center;text-transform:uppercase">D3</span>
-      <span style="font-size:11px;font-weight:800;color:#fff;text-align:center;text-transform:uppercase">Exp</span>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;background:#1e293b;padding:9px 10px" id="sz-tbl-hd">
+      <span style="font-size:9px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.08em">Move</span>
+      <span style="font-size:9px;font-weight:700;color:#c4b5fd;text-align:center;text-transform:uppercase">D1</span>
+      <span style="font-size:9px;font-weight:700;color:#93c5fd;text-align:center;text-transform:uppercase">D2</span>
+      <span style="font-size:9px;font-weight:700;color:#fdba74;text-align:center;text-transform:uppercase">D3</span>
+      <span style="font-size:9px;font-weight:700;color:#fff;text-align:center;text-transform:uppercase">Exp</span>
     </div>
     <div id="sz-rows"></div>
   </div>
 
   <!-- DTE comparison -->
-  <div style="font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:.15em;margin-bottom:8px;font-weight:700">Which DTE works best?</div>
+  <div style="font-size:9px;color:#1e293b;text-transform:uppercase;letter-spacing:.15em;margin-bottom:8px;font-weight:700">Which DTE works best?</div>
   <div id="sz-dte-rows"></div>
   <div class="note">Capital shown is minimum needed to hit target · Stop = loss as % of premium paid · Mid of move range used for DTE comparison</div>
 </div>
@@ -342,7 +338,7 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appear
       <div class="dbtn dn" id="sd-dn" onclick="setSdir('dn')"><div class="dico">💥</div><div class="dname">Crash</div><div class="dsub">OTM Put</div></div>
       <div class="dbtn both" id="sd-both" onclick="setSdir('both')"><div class="dico">⚡</div><div class="dname">Either</div><div class="dsub">Strangle</div></div>
     </div>
-    <div style="font-size:9px;color:var(--dim);font-weight:700;text-transform:uppercase;letter-spacing:.15em;margin-bottom:8px">Strike Distance (OTM %)</div>
+    <div style="font-size:9px;color:#1e293b;font-weight:700;text-transform:uppercase;letter-spacing:.15em;margin-bottom:8px">Strike Distance (OTM %)</div>
     <div class="otm-row">
       <button class="otmbtn" onclick="setOtm(this,1)">+1%</button>
       <button class="otmbtn on" onclick="setOtm(this,2)">+2%</button>
@@ -386,7 +382,7 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appear
   </div>
 
   <!-- Loading state -->
-  <div id="g-loading" style="text-align:center;padding:30px;color:var(--dim);font-size:13px">
+  <div id="g-loading" style="text-align:center;padding:30px;color:#334155;font-size:13px">
     <div class="ld" style="font-size:16px;display:block;margin-bottom:8px">Fetching market data...</div>
     <div style="font-size:11px">Calculating trend signals</div>
   </div>
@@ -411,7 +407,7 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appear
     </div>
 
     <!-- P&L table for the recommended trade -->
-    <div style="font-size:11px;color:#374151;text-transform:uppercase;letter-spacing:.18em;margin-bottom:8px;font-weight:800" id="g-pnl-label">P&L by Day</div>
+    <div style="font-size:9px;color:#1e293b;text-transform:uppercase;letter-spacing:.18em;margin-bottom:8px;font-weight:700" id="g-pnl-label">P&L by Day</div>
     <div class="stbl">
       <div class="stbl-hd" id="g-stbl-hd">
         <div class="shd">Move</div>
@@ -425,6 +421,68 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appear
   </div>
 
   <div id="g-error" style="display:none;background:var(--rbg);border:1px solid var(--rbd);border-radius:10px;padding:14px;color:var(--red);font-size:12px;line-height:1.6"></div>
+</div>
+
+<!-- PANE 5: BACKTEST -->
+<div class="pane" id="pane5">
+  <div class="card">
+    <div class="card-title">If I bought ATM straddle at open each day...</div>
+    <div class="tickers" style="grid-template-columns:1fr 1fr">
+      <button class="tk spy" id="t5-spy" onclick="setT5('spy')">SPY</button>
+      <button class="tk qqq on" id="t5-qqq" onclick="setT5('qqq')">QQQ</button>
+    </div>
+    <div class="grid2">
+      <div class="field fg"><label class="flbl">Capital $</label><input type="number" id="b-capital" value="2000" step="100" inputmode="decimal" oninput="go5()"/></div>
+      <div class="field"><label class="flbl">IV % (est)</label><input type="number" id="b-iv" value="21" step="1" inputmode="decimal" oninput="go5()"/></div>
+    </div>
+    <!-- DTE selector -->
+    <div style="font-size:9px;font-weight:700;color:#1e293b;text-transform:uppercase;letter-spacing:.15em;margin-bottom:8px;margin-top:4px">Straddle DTE at open</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:5px;margin-bottom:8px" id="b-dte-btns">
+      <button class="otmbtn on" onclick="setBtDTE(this,0)">0-DTE</button>
+      <button class="otmbtn" onclick="setBtDTE(this,1)">1-DTE</button>
+      <button class="otmbtn" onclick="setBtDTE(this,5)">5-DTE</button>
+      <button class="otmbtn" onclick="setBtDTE(this,8)">8-DTE</button>
+    </div>
+    <div id="b-dte-note" style="font-size:10px;color:#334155;background:#f8fafc;border:1px solid var(--border);border-radius:7px;padding:7px 10px;line-height:1.5;margin-bottom:4px"></div>
+  </div>
+
+  <!-- Day input rows - collapsed, auto-filled -->
+  <div class="card" id="b-ohlc-card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+      <div class="card-title" style="margin-bottom:0">Daily OHLC</div>
+      <button onclick="toggleOHLC()" id="b-ohlc-toggle" style="font-size:10px;color:var(--blue);background:var(--bbg);border:1px solid var(--bbd);border-radius:6px;padding:4px 10px;font-weight:700">Edit ▾</button>
+    </div>
+    <div id="b-fetch-status" style="font-size:11px;font-weight:600;color:var(--blue);margin-bottom:6px;padding:7px 10px;background:var(--bbg);border-radius:7px;border:1px solid var(--bbd)">Fetching data...</div>
+    <div id="b-ohlc-inputs" style="display:none">
+      <div style="display:grid;grid-template-columns:.8fr 1fr 1fr 1fr 1fr;gap:4px;margin-bottom:6px;padding:0 2px">
+        <span style="font-size:9px;font-weight:700;color:#1e293b;text-transform:uppercase">Day</span>
+        <span style="font-size:9px;font-weight:700;color:#1e293b;text-align:center;text-transform:uppercase">Open</span>
+        <span style="font-size:9px;font-weight:700;color:#15803d;text-align:center;text-transform:uppercase">High</span>
+        <span style="font-size:9px;font-weight:700;color:#b91c1c;text-align:center;text-transform:uppercase">Low</span>
+        <span style="font-size:9px;font-weight:700;color:#1e293b;text-align:center;text-transform:uppercase">Close</span>
+      </div>
+      <div id="b-day-rows"></div>
+      <button onclick="addDay()" style="width:100%;margin-top:8px;padding:8px;background:var(--bbg);border:1px dashed var(--bbd);border-radius:8px;color:var(--blue);font-size:12px;font-weight:700;text-align:center">+ Add Day</button>
+    </div>
+  </div>
+
+  <!-- Summary -->
+  <div id="b-summary" style="display:none">
+    <!-- Week overview cards -->
+    <div style="font-size:9px;font-weight:700;color:#1e293b;text-transform:uppercase;letter-spacing:.15em;margin-bottom:8px">Week Summary</div>
+    <div id="b-week-cards" style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px"></div>
+
+    <!-- Best day callout -->
+    <div id="b-best-day" style="border-radius:12px;padding:14px;margin-bottom:10px;border:2px solid"></div>
+
+    <!-- Aggregate stats -->
+    <div class="card">
+      <div class="card-title">If you traded every day this week</div>
+      <div id="b-agg-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:8px"></div>
+    </div>
+
+    <div class="note">Open price = ATM strike · Best P&L = exit at intraday extreme · EOD = hold to close · ~25% IV crush intraday</div>
+  </div>
 </div>
 
 </div><!-- end app -->
@@ -442,14 +500,13 @@ function iv(i){return parseInt($(i).value)||0;}
 function fmt(n){return Math.abs(n).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,',');}
 function fp(v){return (v>=0?'+':'-')+'$'+fmt(Math.abs(v));}
 function showTab(n){
-  // New order: 1=Signal(pane4), 2=Size Up(pane2), 3=Spike/Crash(pane3), 4=P&L(pane1)
-  var paneMap={1:4,2:2,3:3,4:1};
-  var p=paneMap[n];
-  for(var i=1;i<=4;i++){
+  var paneMap={1:4,2:2,3:3,4:1,5:5};
+  for(var i=1;i<=5;i++){
     $('tab'+i).className='tab'+(i===n?' on':'');
     $('pane'+paneMap[i]).className='pane'+(i===n?' on':'');
   }
   if(n===1)go4();
+  if(n===5)go5();
 }
 
 /* ── MATH ── */
@@ -665,7 +722,7 @@ function go2(){
     if(!d.hits){
       dteRows+='<div style="background:#fafafa;border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:6px;opacity:.6">';
       dteRows+='<div style="display:flex;align-items:center;justify-content:space-between">';
-      dteRows+='<span style="font-size:14px;font-weight:700;color:var(--dim)">'+d.dte+' DTE</span>';
+      dteRows+='<span style="font-size:14px;font-weight:700;color:#334155">'+d.dte+' DTE</span>';
       dteRows+='<span style="font-size:11px;color:var(--red)">Cannot hit target</span>';
       dteRows+='</div></div>';
       return;
@@ -678,7 +735,7 @@ function go2(){
     dteRows+='</div>';
     dteRows+='<div style="text-align:right">';
     dteRows+='<span style="font-size:10px;font-weight:700;padding:3px 9px;border-radius:6px;background:'+d.riskClr+'22;color:'+d.riskClr+'">'+d.risk+' Risk</span>';
-    dteRows+='<div style="font-size:9px;color:var(--dim);margin-top:3px">Cost: '+costPct.toFixed(2)+'% of spot · '+val.note+'</div>';
+    dteRows+='<div style="font-size:9px;color:#334155;margin-top:3px">Cost: '+costPct.toFixed(2)+'% of spot · '+val.note+'</div>';
     dteRows+='</div>';
     dteRows+='</div>';
     // Stats grid
@@ -691,8 +748,8 @@ function go2(){
     dteRows+=dstat('Best Exit Day','Day '+d.bd,'var(--text)');
     dteRows+='</div>';
     // Trade-off bar
-    dteRows+='<div style="font-size:9px;color:var(--dim);margin-bottom:4px;font-weight:700;text-transform:uppercase;letter-spacing:.1em">Trade-off</div>';
-    dteRows+='<div style="font-size:11px;color:#1f2937;line-height:1.5;background:rgba(0,0,0,.04);border-radius:6px;padding:7px 9px;font-weight:600">';
+    dteRows+='<div style="font-size:9px;color:#334155;margin-bottom:4px;font-weight:700;text-transform:uppercase;letter-spacing:.1em">Trade-off</div>';
+    dteRows+='<div style="font-size:10px;color:#1e293b;line-height:1.5;background:rgba(0,0,0,.04);border-radius:6px;padding:7px 9px">';
     if(d.dte<=2)dteRows+='⚡ Cheapest option · Move <b>must happen within 2 days</b> · Total loss if delayed';
     else if(d.dte<=5)dteRows+='🔥 Low cost · Need move <b>within 5 days</b> · Limited time buffer';
     else if(d.dte<=10)dteRows+='⚖️ Balanced · <b>'+d.dte+' days</b> for move to develop · Moderate theta decay';
@@ -706,7 +763,7 @@ function go2(){
     timelineDays.push(d.dte);
     timelineDays=timelineDays.filter(function(x,i,a){return a.indexOf(x)===i&&x<=d.dte;});
 
-    dteRows+='<div style="font-size:9px;color:var(--dim);font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin:10px 0 6px">If '+moveMid.toFixed(1)+'% move happens on...</div>';
+    dteRows+='<div style="font-size:9px;color:#1e293b;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin:10px 0 6px">If '+moveMid.toFixed(1)+'% move happens on...</div>';
     dteRows+='<div style="display:grid;grid-template-columns:repeat('+timelineDays.length+',1fr);gap:5px">';
     timelineDays.forEach(function(day){
       var pnlHere=atmExit(spot,iv3,d.dte,moveMid,day).dol*d.contracts;
@@ -716,9 +773,9 @@ function go2(){
       var tlBg=hitsTgt?'#dcfce7':pnlHere>0?'#f0fdf4':'#fef2f2';
       var tlBrd=hitsTgt?'#86efac':pnlHere>0?'#bbf7d0':'#fca5a5';
       dteRows+='<div style="background:'+tlBg+';border:1px solid '+tlBrd+';border-radius:7px;padding:7px 4px;text-align:center">';
-      dteRows+='<div style="font-size:9px;color:var(--dim);font-weight:700;margin-bottom:3px">'+lbl+'</div>';
+      dteRows+='<div style="font-size:9px;color:#334155;font-weight:700;margin-bottom:3px">'+lbl+'</div>';
       dteRows+='<div style="font-size:12px;font-weight:700;color:'+tlClr+'">'+fp(pnlHere)+'</div>';
-      if(hitsTgt)dteRows+='<div style="font-size:10px;color:#14532d;font-weight:800;margin-top:2px">✓ Target</div>';
+      if(hitsTgt)dteRows+='<div style="font-size:8px;color:#14532d;font-weight:700;margin-top:2px">✓ Target</div>';
       dteRows+='</div>';
     });
     dteRows+='</div>';
@@ -766,7 +823,7 @@ function go2(){
       function pbg(v){return v>=target?'#f0fdf4':v>0?'#f0fdf4':v>stopThresh?'#fef2f2':'#fef2f2';}
       var inRange=mv>=moveLo&&mv<=moveHi;
       var rowBg=inRange?'#fffbeb':'#fafafa';
-      var mvClr=inRange?'#b45309':'#64748b';
+      var mvClr=inRange?'#b45309':'#334155';
       sh+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;padding:9px 10px;border-top:1px solid var(--border);background:'+rowBg+'">';
       sh+='<span style="font-size:12px;font-weight:700;color:'+mvClr+'">'+(inRange?'▶ ':'')+mv+'%</span>';
       [d1,d2,d3,dE].forEach(function(v){
@@ -779,16 +836,16 @@ function go2(){
     $('sz-title').textContent='No profitable setup found';
     $('sz-sub').textContent='Try a higher move range or different ticker';
     $('sz-grid').innerHTML='';
-    $('sz-rows').innerHTML='<div style="padding:14px;text-align:center;color:var(--dim);font-size:12px">Move range too small for current IV — straddle can\'t profit at '+moveLo+'%–'+moveHi+'% with any DTE</div>';
+    $('sz-rows').innerHTML='<div style="padding:14px;text-align:center;color:#334155;font-size:12px">Move range too small for current IV — straddle can\'t profit at '+moveLo+'%–'+moveHi+'% with any DTE</div>';
   }
 }
 
 function sbox(lbl,val,clr){
   var c={'amber':'var(--amber)','blue':'var(--blue)','green':'#15803d','red':'#b91c1c','text':'var(--text)'}[clr]||clr;
-  return '<div style="background:var(--p2);padding:10px;border-radius:8px;border:1px solid var(--border)"><div style="font-size:8px;color:var(--dim);text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin-bottom:3px">'+lbl+'</div><div style="font-size:14px;font-weight:700;color:'+c+'">'+val+'</div></div>';
+  return '<div style="background:var(--p2);padding:10px;border-radius:8px;border:1px solid var(--border)"><div style="font-size:8px;color:#1e293b;text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin-bottom:3px">'+lbl+'</div><div style="font-size:14px;font-weight:700;color:'+c+'">'+val+'</div></div>';
 }
 function dstat(lbl,val,clr){
-  return '<div style="background:rgba(0,0,0,.03);padding:8px;border-radius:7px"><div style="font-size:8px;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:2px">'+lbl+'</div><div style="font-size:13px;font-weight:700;color:'+clr+'">'+val+'</div></div>';
+  return '<div style="background:rgba(0,0,0,.03);padding:8px;border-radius:7px"><div style="font-size:8px;color:#1e293b;text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:2px">'+lbl+'</div><div style="font-size:13px;font-weight:700;color:'+clr+'">'+val+'</div></div>';
 }
 
 
@@ -835,10 +892,10 @@ function go3(){
   // Build ticket
   var th='<div class="tkt-lbl">Order Ticket · '+T3.toUpperCase()+' · '+dte+' DTE · '+OTM+'% OTM</div><div class="tkt-legs">';
   if(SDIR==='up'||SDIR==='both'){
-    th+='<div class="tkt-leg"><div><span class="tkt-action call">BUY CALL</span><div class="tkt-strike">$'+Kc+' Strike</div><div class="tkt-detail">'+OTM+'% above $'+spot.toFixed(0)+'</div></div><div style="text-align:right"><div style="font-size:8px;color:var(--dim);font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:2px">Ask ~</div><div class="tkt-prem">$'+cPrem+'/share</div><div class="tkt-prem-sub">$'+(parseFloat(cPrem)*100).toFixed(0)+'/contract</div></div></div>';
+    th+='<div class="tkt-leg"><div><span class="tkt-action call">BUY CALL</span><div class="tkt-strike">$'+Kc+' Strike</div><div class="tkt-detail">'+OTM+'% above $'+spot.toFixed(0)+'</div></div><div style="text-align:right"><div style="font-size:8px;color:#1e293b;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:2px">Ask ~</div><div class="tkt-prem">$'+cPrem+'/share</div><div class="tkt-prem-sub">$'+(parseFloat(cPrem)*100).toFixed(0)+'/contract</div></div></div>';
   }
   if(SDIR==='dn'||SDIR==='both'){
-    th+='<div class="tkt-leg"><div><span class="tkt-action put">BUY PUT</span><div class="tkt-strike">$'+Kp+' Strike</div><div class="tkt-detail">'+OTM+'% below $'+spot.toFixed(0)+'</div></div><div style="text-align:right"><div style="font-size:8px;color:var(--dim);font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:2px">Ask ~</div><div class="tkt-prem">$'+pPrem+'/share</div><div class="tkt-prem-sub">$'+(parseFloat(pPrem)*100).toFixed(0)+'/contract</div></div></div>';
+    th+='<div class="tkt-leg"><div><span class="tkt-action put">BUY PUT</span><div class="tkt-strike">$'+Kp+' Strike</div><div class="tkt-detail">'+OTM+'% below $'+spot.toFixed(0)+'</div></div><div style="text-align:right"><div style="font-size:8px;color:#1e293b;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:2px">Ask ~</div><div class="tkt-prem">$'+pPrem+'/share</div><div class="tkt-prem-sub">$'+(parseFloat(pPrem)*100).toFixed(0)+'/contract</div></div></div>';
   }
   th+='</div><div class="tkt-footer"><div class="tkt-fi"><div class="tkt-fi-lbl">Contracts</div><div class="tkt-fi-val" style="color:var(--pink)">'+contracts+'</div></div><div class="tkt-fi"><div class="tkt-fi-lbl">Total Cost</div><div class="tkt-fi-val">$'+fmt(totalRisk)+'</div></div><div class="tkt-fi"><div class="tkt-fi-lbl">Max Loss</div><div class="tkt-fi-val" style="color:var(--red)">-$'+fmt(totalRisk)+'</div></div><div class="tkt-fi"><div class="tkt-fi-lbl">500%+ needs</div><div class="tkt-fi-val" style="color:var(--green)">'+(need500?'+'+need500+'%':'—')+'</div></div></div>';
   $('s-ticket').innerHTML=th;
@@ -875,7 +932,7 @@ function go3(){
 
   // Min gain row at top
   sh+='<div class="rrow" style="grid-template-columns:'+colW+';background:#f8fafc;border-bottom:2px solid #e2e8f0">';
-  sh+='<span class="mlbl" style="font-size:11px;color:#374151;font-weight:700">B/E move</span>';
+  sh+='<span class="mlbl" style="font-size:10px;color:#334155">B/E move</span>';
   minMoves.forEach(function(mv){
     sh+='<span style="font-size:11px;font-weight:700;color:#1d4ed8;text-align:center">'+(mv?'+'+mv+'%':'—')+'</span>';
   });
@@ -1151,7 +1208,7 @@ function processSignal(valid,capital,target,stopPct,sym){
       confidence='Low';
       reasons.push('Tied signals but RSI '+rsi.toFixed(0)+' oversold — tiny target ($'+fmt(target)+') vs capital ($'+fmt(capital)+') makes a small call reasonable');
     } else {
-      action='NO TRADE';isCall=null;color='#334155';bgColor='#f8fafc';borderColor='#e2e8f0';
+      action='NO TRADE';isCall=null;color='#1e293b';bgColor='#f8fafc';borderColor='#e2e8f0';
       confidence='—';
       reasons.push('Mixed signals — wait for clearer direction');
       if(capital>0&&target>0)reasons.push('Target is '+Math.round(capRatio*100)+'% of capital ('+fp(target)+'/'+fp(capital)+') — '+(aggressiveTrade?'high commitment needs strong signal':'consider smaller target to enable weaker-signal trades'));
@@ -1203,10 +1260,10 @@ function processSignal(valid,capital,target,stopPct,sym){
     var beMove=((premPerShare/spot)*100).toFixed(2);
 
     sg.innerHTML=
-      '<div style="background:rgba(0,0,0,.06);padding:10px;border-radius:8px"><div style="font-size:10px;color:#374151;text-transform:uppercase;font-weight:800;letter-spacing:.1em;margin-bottom:4px">Setup</div><div style="font-size:15px;font-weight:800;color:'+color+'">'+dte+' DTE $'+K+' ATM '+(isCall?'CALL':'PUT')+'</div></div>'
-      +'<div style="background:rgba(0,0,0,.06);padding:10px;border-radius:8px"><div style="font-size:10px;color:#374151;text-transform:uppercase;font-weight:800;letter-spacing:.1em;margin-bottom:4px">Premium</div><div style="font-size:15px;font-weight:800;color:'+color+'">$'+premPerShare.toFixed(2)+'/sh · $'+fmt(costPer)+'/ct</div></div>'
-      +'<div style="background:rgba(0,0,0,.06);padding:10px;border-radius:8px"><div style="font-size:10px;color:#374151;text-transform:uppercase;font-weight:800;letter-spacing:.1em;margin-bottom:4px">Contracts</div><div style="font-size:15px;font-weight:800;color:'+color+'">'+contracts+' · risk $'+fmt(costPer*contracts)+'</div></div>'
-      +'<div style="background:rgba(0,0,0,.06);padding:10px;border-radius:8px"><div style="font-size:10px;color:#374151;text-transform:uppercase;font-weight:800;letter-spacing:.1em;margin-bottom:4px">B/E at Expiry</div><div style="font-size:15px;font-weight:800;color:'+color+'">'+(isCall?'+':'-')+beMove+'% · $'+(isCall?(K+premPerShare).toFixed(2):(K-premPerShare).toFixed(2))+'</div></div>';
+      '<div style="background:rgba(0,0,0,.06);padding:10px;border-radius:8px"><div style="font-size:9px;color:#1e293b;text-transform:uppercase;font-weight:700;letter-spacing:.1em;margin-bottom:4px">Setup</div><div style="font-size:15px;font-weight:800;color:'+color+'">'+dte+' DTE $'+K+' ATM '+(isCall?'CALL':'PUT')+'</div></div>'
+      +'<div style="background:rgba(0,0,0,.06);padding:10px;border-radius:8px"><div style="font-size:9px;color:#1e293b;text-transform:uppercase;font-weight:700;letter-spacing:.1em;margin-bottom:4px">Premium</div><div style="font-size:15px;font-weight:800;color:'+color+'">$'+premPerShare.toFixed(2)+'/sh · $'+fmt(costPer)+'/ct</div></div>'
+      +'<div style="background:rgba(0,0,0,.06);padding:10px;border-radius:8px"><div style="font-size:9px;color:#1e293b;text-transform:uppercase;font-weight:700;letter-spacing:.1em;margin-bottom:4px">Contracts</div><div style="font-size:15px;font-weight:800;color:'+color+'">'+contracts+' · risk $'+fmt(costPer*contracts)+'</div></div>'
+      +'<div style="background:rgba(0,0,0,.06);padding:10px;border-radius:8px"><div style="font-size:9px;color:#1e293b;text-transform:uppercase;font-weight:700;letter-spacing:.1em;margin-bottom:4px">B/E at Expiry</div><div style="font-size:15px;font-weight:800;color:'+color+'">'+(isCall?'+':'-')+beMove+'% · $'+(isCall?(K+premPerShare).toFixed(2):(K-premPerShare).toFixed(2))+'</div></div>';
 
     // Build directional P&L table
     buildDirectionalRows(spot,K,iv3,dte,contracts,costPer,stopPct,bd,isCall,'g-rows');
@@ -1215,24 +1272,24 @@ function processSignal(valid,capital,target,stopPct,sym){
     $('g-pnl-label').textContent=(isCall?'Call':'Put')+' P&L by Day — '+dte+' DTE $'+K+' Strike';
 
   } else {
-    sg.innerHTML='<div style="grid-column:1/-1;padding:10px;font-size:12px;color:#475569;font-weight:600">No trade recommended — wait for stronger signal</div>';
+    sg.innerHTML='<div style="grid-column:1/-1;padding:10px;font-size:12px;color:#1e293b;font-weight:600">No trade recommended — wait for stronger signal</div>';
     $('g-rows').innerHTML='';
     $('g-pnl-label').textContent='P&L by Day';
   }
 
   // Reasoning
-  $('g-reason').innerHTML='<div style="font-size:10px;color:#374151;text-transform:uppercase;letter-spacing:.12em;font-weight:800;margin-bottom:6px">Why</div>'
+  $('g-reason').innerHTML='<div style="font-size:9px;color:#1e293b;text-transform:uppercase;letter-spacing:.12em;font-weight:700;margin-bottom:6px">Why</div>'
     +'<div style="font-size:12px;color:#0f172a;line-height:1.7;font-weight:500">'+reasons.join(' · ')+'<br>ATR suggests +/-'+expMove+'% daily move. RSI '+rsi.toFixed(0)+'. Est IV '+(iv3*100).toFixed(0)+'%.</div>';
 
   // Indicators
   var ih='';
   signals.forEach(function(s){
-    var sc=s.bull===true?'#14532d':s.bull===false?'#991b1b':'#334155';
+    var sc=s.bull===true?'#14532d':s.bull===false?'#991b1b':'#1e293b';
     var dot=s.bull===true?'▲':s.bull===false?'▼':'—';
     ih+='<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #e2e8f0">';
     ih+='<span style="font-size:12px;color:#0f172a;font-weight:700">'+s.lbl+'</span>';
     ih+='<div style="text-align:right"><span style="font-size:13px;font-weight:800;color:'+sc+'">'+dot+' '+s.val+'</span>';
-    ih+='<div style="font-size:11px;color:#374151;margin-top:2px;font-weight:600">'+s.note+'</div></div>';
+    ih+='<div style="font-size:10px;color:#1e293b;margin-top:2px;font-weight:600">'+s.note+'</div></div>';
     ih+='</div>';
   });
   $('g-indicators').innerHTML=ih;
@@ -1241,13 +1298,285 @@ function processSignal(valid,capital,target,stopPct,sym){
   G_LOADED[T4]=true;
 }
 
+/* ── TAB 5: BACKTEST ── */
+var AV_KEY='SBJ9BETAMVAZQM9D';
+var T5='qqq',BT_DTE=0;
+var BT_DAYS=[
+  {label:'Mon',o:'',h:'',l:'',c:''},
+  {label:'Tue',o:'',h:'',l:'',c:''},
+  {label:'Wed',o:'',h:'',l:'',c:''},
+  {label:'Thu',o:'',h:'',l:'',c:''},
+  {label:'Fri',o:'',h:'',l:'',c:''}
+];
+
+var BT_DTE_NOTES={
+  0:'0-DTE: Straddle expires today. Cheapest (~0.7% of spot). Gamma is explosive — small moves = big % gains. Total loss if market flat. Pure day-trade.',
+  1:'1-DTE: Expires tomorrow. Slightly more expensive. You can hold overnight if today\'s move is small. Exit at EOD or next morning.',
+  5:'5-DTE: 5 days left when you buy at open. Much more time value. EOD exit captures only part of the move. Lower % return but more forgiving.',
+  8:'8-DTE: 8 days remaining. Expensive (~1.8% of spot). EOD exit gives you a small slice of the move — theta decay is modest for one day.'
+};
+
+function setBtDTE(btn,v){
+  BT_DTE=v;
+  document.querySelectorAll('#b-dte-btns .otmbtn').forEach(function(b){b.className='otmbtn';});
+  btn.className='otmbtn on';
+  $('b-dte-note').textContent=BT_DTE_NOTES[v]||'';
+  go5();
+}
+
+function toggleOHLC(){
+  var inp=$('b-ohlc-inputs');
+  var btn=$('b-ohlc-toggle');
+  var hidden=inp.style.display==='none';
+  inp.style.display=hidden?'block':'none';
+  btn.textContent=hidden?'Hide ▴':'Edit ▾';
+  if(hidden)renderDayInputs();
+}
+
+function setT5(t){
+  T5=t;
+  ['spy','qqq'].forEach(function(x){$('t5-'+x).className='tk '+x+(t===x?' on':'');});
+  $('b-iv').value=DEFS[t].iv;
+  fetchOHLC(t);
+}
+
+function fetchOHLC(ticker){
+  var sym=ticker.toUpperCase();
+  $('b-fetch-status').textContent='Fetching '+sym+' data...';
+  $('b-fetch-status').style.color='var(--blue)';
+  var url='https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol='+sym+'&outputsize=compact&apikey='+AV_KEY;
+  fetch(url)
+    .then(function(r){return r.json();})
+    .then(function(data){
+      var ts=data['Time Series (Daily)'];
+      if(!ts){
+        $('b-fetch-status').textContent='Auto-fetch failed — enter manually below';
+        $('b-fetch-status').style.color='var(--red)';
+        return;
+      }
+      // Get last 5 trading days sorted ascending
+      var dates=Object.keys(ts).sort().slice(-7);
+      // Filter to weekdays only, take last 5
+      var tradingDays=dates.slice(-5);
+      var dayLabels=['Mon','Tue','Wed','Thu','Fri'];
+      // Reset BT_DAYS
+      BT_DAYS=[];
+      tradingDays.forEach(function(dt,i){
+        var r=ts[dt];
+        var dow=new Date(dt+'T12:00:00').toLocaleDateString('en-US',{weekday:'short'});
+        BT_DAYS.push({
+          label:dow+' '+dt.slice(5), // e.g. "Tue 05/13"
+          o:parseFloat(r['1. open']).toFixed(2),
+          h:parseFloat(r['2. high']).toFixed(2),
+          l:parseFloat(r['3. low']).toFixed(2),
+          c:parseFloat(r['4. close']).toFixed(2)
+        });
+      });
+      $('b-fetch-status').textContent='✓ Auto-filled last 5 trading days for '+sym;
+      $('b-fetch-status').style.color='var(--green)';
+      renderDayInputs();
+      go5();
+    })
+    .catch(function(e){
+      $('b-fetch-status').textContent='Network error — enter manually below';
+      $('b-fetch-status').style.color='var(--red)';
+    });
+}
+
+function renderDayInputs(){
+  var sh='';
+  BT_DAYS.forEach(function(d,i){
+    sh+='<div style="display:grid;grid-template-columns:.8fr 1fr 1fr 1fr 1fr;gap:4px;margin-bottom:5px;align-items:center">';
+    sh+='<span style="font-size:11px;font-weight:700;color:#1e293b">'+d.label+'</span>';
+    ['o','h','l','c'].forEach(function(f,fi){
+      var col=fi===0?'#1e293b':fi===1?'#15803d':fi===2?'#b91c1c':'#1e293b';
+      sh+='<input type="number" step="0.01" inputmode="decimal" value="'+d[f]+'" '
+         +'style="background:var(--p2);border:1.5px solid var(--border);border-radius:7px;padding:7px 4px;font-size:13px;font-weight:700;color:'+col+';text-align:center;width:100%;font-family:inherit" '
+         +'oninput="setDay('+i+',\''+f+'\',this.value)" placeholder="0"/>';
+    });
+    sh+='</div>';
+  });
+  $('b-day-rows').innerHTML=sh;
+}
+
+function addDay(){
+  var labels=['Mon','Tue','Wed','Thu','Fri','Sat','Day '+(BT_DAYS.length+1)];
+  BT_DAYS.push({label:labels[BT_DAYS.length]||'D'+(BT_DAYS.length+1),o:'',h:'',l:'',c:''});
+  renderDayInputs();
+}
+
+function setDay(i,f,v){
+  BT_DAYS[i][f]=v;
+  go5();
+}
+
+function btSim(openPx,high,low,close,iv3,capital){
+  var dte=BT_DTE;
+  // Cost at open: use actual DTE
+  // For 0-DTE use a tiny fraction to avoid math issues (0.1 days)
+  var dteForCost=Math.max(dte,0.1);
+  var cost=prem(openPx,dteForCost,iv3)*100;
+  var contracts=capital>0&&cost>0?Math.max(1,Math.floor(capital/cost)):1;
+  var totalCost=cost*contracts;
+
+  // Intraday moves from open
+  var upMove=(high-openPx)/openPx*100;
+  var dnMove=(openPx-low)/openPx*100;
+  var eodMove=(close-openPx)/openPx*100;
+  var eodAbs=Math.abs(eodMove);
+  var bestMove=Math.max(upMove,dnMove);
+  var bestDir=upMove>=dnMove?'UP':'DOWN';
+
+  // P&L at intraday extreme:
+  // For 0-DTE: ~0.1 days remaining when you exit intraday, heavy gamma
+  // For 1-DTE: ~0.5 days remaining at midday exit
+  // For 5/8-DTE: DTE - 0.4 remaining (sold same day, ~0.4 day elapsed)
+  var remAtBest=dte===0?0.05:dte===1?0.4:dte-0.4;
+  var remAtEOD=dte===0?0:dte-1; // at EOD: 0 days left for 0-DTE, DTE-1 for others
+
+  // IV crush intraday: bigger for 0-DTE
+  var ivCrushIntra=dte===0?0.35:dte===1?0.20:0.10;
+  var ivCrushEOD=dte===0?1.0:dte===1?0.25:0.15; // 0-DTE = fully crushed at EOD
+
+  function pnlAt(movePct, remDays, ivCrush){
+    var np=openPx*(1+movePct/100);
+    var eiv=iv3*(1-ivCrush);
+    var rem=Math.max(remDays,0); // pass as days - callput divides by 365 internally
+    var val;
+    if(rem<0.01){
+      val=(Math.max(np-openPx,0)+Math.max(openPx-np,0))*100;
+    } else {
+      val=(callput(np,openPx,rem,eiv,true)+callput(np,openPx,rem,eiv,false))*100;
+    }
+    return (val-cost)*contracts;
+  }
+
+  var pnlBest=pnlAt(bestDir==='UP'?bestMove:-dnMove, remAtBest, ivCrushIntra);
+  var pnlEOD=pnlAt(eodMove, remAtEOD, ivCrushEOD);
+  var bePct=(cost/100)/openPx*100;
+  var beClears=bestMove>=bePct;
+  var eodClears=eodAbs>=bePct;
+
+  return{
+    cost:cost,contracts:contracts,totalCost:totalCost,dte:dte,
+    upMove:upMove,dnMove:dnMove,eodMove:eodMove,eodAbs:eodAbs,
+    bestMove:bestMove,bestDir:bestDir,
+    pnlBest:pnlBest,pnlEOD:pnlEOD,
+    bePct:bePct,beClears:beClears,eodClears:eodClears
+  };
+}
+
+function go5(){
+  var capital=fv('b-capital'),iv3=fv('b-iv')/100;
+  if(iv3<=0)return;
+
+  // Collect valid days
+  var validDays=[];
+  BT_DAYS.forEach(function(d){
+    var o=parseFloat(d.o),h=parseFloat(d.h),l=parseFloat(d.l),c=parseFloat(d.c);
+    if(o>0&&h>0&&l>0&&c>0&&h>=o&&l<=o){
+      validDays.push({label:d.label,o:o,h:h,l:l,c:c});
+    }
+  });
+
+  if(validDays.length===0){
+    $('b-summary').style.display='none';
+    return;
+  }
+  $('b-summary').style.display='block';
+
+  var results=validDays.map(function(d){
+    return Object.assign({label:d.label},btSim(d.o,d.h,d.l,d.c,iv3,capital));
+  });
+
+  // Day cards
+  var cards='';
+  results.forEach(function(r){
+    var bestClr=r.pnlBest>0?'#14532d':'#b91c1c';
+    var eodClr=r.pnlEOD>0?'#14532d':'#b91c1c';
+    var beTag=r.beClears?
+      '<span style="background:#dcfce7;color:#14532d;font-size:8px;font-weight:700;padding:2px 6px;border-radius:4px;margin-left:5px">B/E ✓</span>':
+      '<span style="background:#fef2f2;color:#b91c1c;font-size:8px;font-weight:700;padding:2px 6px;border-radius:4px;margin-left:5px">B/E ✗</span>';
+
+    var dayData=validDays.find(function(d){return d.label===r.label;});
+
+    cards+='<div style="background:var(--p1);border:1px solid var(--border);border-radius:12px;padding:12px">';
+    // Header
+    cards+='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">';
+    cards+='<div style="display:flex;align-items:center"><span style="font-size:16px;font-weight:700;color:#0f172a">'+r.label+'</span>'+beTag+'</div>';
+    cards+='<span style="font-size:11px;color:#334155">Open $'+dayData.o.toFixed(2)+' · '+BT_DTE+'-DTE · $'+r.cost.toFixed(0)+'/c · '+r.contracts+'c</span>';
+    cards+='</div>';
+    // Move bar
+    cards+='<div style="margin-bottom:10px">';
+    cards+='<div style="font-size:9px;font-weight:700;color:#334155;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Intraday Range vs B/E (+/-'+r.bePct.toFixed(2)+'%)</div>';
+    var maxPct=Math.max(r.bestMove*1.5,r.bePct*2,2);
+    var upW=Math.min(r.upMove/maxPct*100,100);
+    var dnW=Math.min(r.dnMove/maxPct*100,100);
+    var beW=Math.min(r.bePct/maxPct*100,100);
+    // Colors: only green/red BEYOND the B/E line, gray below
+    var upColor=r.upMove>=r.bePct?'rgba(21,128,61,.3)':'rgba(100,116,139,.2)';
+    var dnColor=r.dnMove>=r.bePct?'rgba(185,28,28,.25)':'rgba(100,116,139,.2)';
+    cards+='<div style="position:relative;height:28px;background:#f8fafc;border-radius:6px;overflow:hidden;border:1px solid var(--border)">';
+    cards+='<div style="position:absolute;left:50%;top:0;bottom:0;width:1px;background:#94a3b8"></div>';
+    cards+='<div style="position:absolute;left:50%;top:4px;bottom:4px;width:'+upW/2+'%;background:'+upColor+';border-radius:0 4px 4px 0"></div>';
+    cards+='<div style="position:absolute;right:50%;top:4px;bottom:4px;width:'+dnW/2+'%;background:'+dnColor+';border-radius:4px 0 0 4px"></div>';
+    cards+='<div style="position:absolute;left:calc(50% + '+beW/2+'%);top:0;bottom:0;width:2px;background:#f59e0b;opacity:.8"></div>';
+    cards+='<div style="position:absolute;right:calc(50% + '+beW/2+'%);top:0;bottom:0;width:2px;background:#f59e0b;opacity:.8"></div>';
+    cards+='<div style="position:absolute;left:50%;transform:translateX(-50%) translateY(-50%);top:50%;font-size:8px;font-weight:700;color:#475569;white-space:nowrap">↑'+r.upMove.toFixed(1)+'% ↓'+r.dnMove.toFixed(1)+'%</div>';
+    cards+='</div>';
+    cards+='<div style="display:flex;justify-content:space-between;margin-top:3px"><span style="font-size:8px;color:#b91c1c">▼'+r.dnMove.toFixed(2)+'%</span><span style="font-size:8px;color:#f59e0b">B/E: ±'+r.bePct.toFixed(2)+'%</span><span style="font-size:8px;color:#15803d">▲'+r.upMove.toFixed(2)+'%</span></div>';
+    cards+='</div>';
+    // P&L boxes — fix: best exit shows P&L context, not just direction
+    var bestExitTxt=r.pnlBest>0?
+      r.bestDir+' '+r.bestMove.toFixed(1)+'% → profit':
+      r.bestDir+' '+r.bestMove.toFixed(1)+'% → still loss (B/E needs '+r.bePct.toFixed(2)+'%)';
+    var bestExitClr=r.pnlBest>0?'#14532d':'#b91c1c';
+    cards+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px">';
+    cards+=dstat('Best (intraday)',fp(r.pnlBest),bestClr);
+    cards+=dstat('EOD (held to close)',fp(r.pnlEOD),eodClr);
+    cards+='</div>';
+    cards+='<div style="padding:7px 9px;background:'+(r.pnlBest>0?'#f0fdf4':'#fef2f2')+';border-radius:7px;font-size:10px;color:'+bestExitClr+';margin-bottom:6px"><b>Best intraday exit:</b> '+bestExitTxt+'</div>';
+    cards+='<div style="padding:7px 9px;background:'+(r.eodClears?'#f0fdf4':'#fef2f2')+';border-radius:7px;font-size:10px;color:'+(r.eodClears?'#14532d':'#b91c1c')+'"><b>EOD:</b> '+r.eodAbs.toFixed(2)+'% '+(r.eodMove>=0?'UP':'DOWN')+' — '+(r.eodClears?'cleared B/E ✓ profit':'below B/E ✗ loss')+'</div>';
+    cards+='</div>';
+  });
+  $('b-week-cards').innerHTML=cards;
+
+  // Best day — highest pnlBest
+  var bestDay=results.reduce(function(a,b){return b.pnlBest>a.pnlBest?b:a;});
+  var bd=$('b-best-day');
+  var bdPos=bestDay.pnlBest>0;
+  bd.style.background=bdPos?'#f0fdf4':'#fef2f2';
+  bd.style.borderColor=bdPos?'#16a34a':'#dc2626';
+  var bdTitleClr=bdPos?'#14532d':'#b91c1c';
+  bd.innerHTML='<div style="font-size:9px;font-weight:700;color:'+bdTitleClr+';text-transform:uppercase;letter-spacing:.15em;margin-bottom:5px">'+(bdPos?'★ Best Day This Week':'★ Least Bad Day This Week')+'</div>'
+    +'<div style="font-size:22px;font-weight:700;color:'+bdTitleClr+'">'+bestDay.label+' — '+fp(bestDay.pnlBest)+'</div>'
+    +'<div style="font-size:11px;color:'+bdTitleClr+';margin-top:3px;opacity:.8">'+bestDay.bestDir+' move of '+bestDay.bestMove.toFixed(2)+'% · B/E needed '+bestDay.bePct.toFixed(2)+'% · '+(bdPos?'Profitable exit possible':'No profitable exit — market didn\'t move enough')+'</div>';
+
+  // Aggregate
+  var totalBest=results.reduce(function(a,b){return a+b.pnlBest;},0);
+  var totalEOD=results.reduce(function(a,b){return a+b.pnlEOD;},0);
+  var totalCost=results.reduce(function(a,b){return a+b.totalCost;},0);
+  var winDaysBest=results.filter(function(r){return r.pnlBest>0;}).length;
+  var winDaysEOD=results.filter(function(r){return r.pnlEOD>0;}).length;
+  $('b-agg-grid').innerHTML=
+    sbox('Best exits total',fp(totalBest),totalBest>=0?'green':'red')+
+    sbox('EOD total',fp(totalEOD),totalEOD>=0?'green':'red')+
+    sbox('Win days (best)',''+winDaysBest+'/'+results.length,'blue')+
+    sbox('Win days (EOD)',''+winDaysEOD+'/'+results.length,'blue')+
+    sbox('Total premium paid','$'+fmt(totalCost),'amber')+
+    sbox('Best day return',fp(bestDay.pnlBest),'green');
+}
+
 /* ── INIT ── */
 go1();go2();go3();
-// Default to Signal tab (tab1 = pane4)
+renderDayInputs();
 $('pane1').className='pane';
 $('pane4').className='pane on';
 go4();
 fetchAll();setInterval(fetchAll,60000);
+fetchOHLC('qqq');
+// Init DTE note
+if($('b-dte-note'))$('b-dte-note').textContent=BT_DTE_NOTES[0];
 </script>
 </body>
 </html>
