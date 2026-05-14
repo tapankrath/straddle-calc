@@ -516,8 +516,16 @@ function buildRows(spot,iv3,dte,contracts,costPer,stopPct,bestDay,selDay,maxDays
 }
 
 /* ── LIVE PRICES ── */
+// Replace PROXY_URL with your Cloudflare Worker URL after setup
+// e.g. 'https://straddle-proxy.your-name.workers.dev'
+// Until then, direct Finnhub call is used as fallback
+var PROXY_URL=''; // set this after Cloudflare Worker setup
+
 function fetchP(sym){
-  fetch('https://finnhub.io/api/v1/quote?symbol='+sym+'&token='+FK)
+  var url=PROXY_URL
+    ?PROXY_URL+'?symbol='+sym
+    :'https://finnhub.io/api/v1/quote?symbol='+sym+'&token='+FK;
+  fetch(url)
     .then(function(r){return r.json();})
     .then(function(d){
       var p=d.c,ch=p-d.pc,pct=ch/d.pc*100,k=sym.toLowerCase();
@@ -640,8 +648,8 @@ function go2(){
   // Render DTE cards
   allDTEData.forEach(function(d){
     var isBest=d.dte===bestDTE;
-    var bg=isBest?'var(--abg)':'var(--p1)';
-    var border=isBest?'2px solid var(--amber)':'1px solid var(--border)';
+    var cardBg=isBest?'var(--abg)':'var(--p1)';
+    var cardBorder=isBest?'2px solid var(--amber)':'1px solid var(--border)';
     var badge=isBest?'<span style="background:var(--amber);color:#000;font-size:8px;font-weight:700;padding:2px 7px;border-radius:10px;letter-spacing:.08em;text-transform:uppercase;margin-left:6px">Min Capital</span>':'';
     var costPct=d.cp/spot*100;
     var val=straddleValue(d.dte,costPct);
@@ -654,7 +662,7 @@ function go2(){
       dteRows+='</div></div>';
       return;
     }
-    dteRows+='<div style="background:'+bg+';border:'+border+';border-radius:10px;padding:12px;margin-bottom:8px">';
+    dteRows+='<div style="background:'+cardBg+';border:'+cardBorder+';border-radius:10px;padding:12px;margin-bottom:8px">';
     // Header row
     dteRows+='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">';
     dteRows+='<div style="display:flex;align-items:center">';
@@ -696,12 +704,12 @@ function go2(){
       var pnlHere=atmExit(spot,iv3,d.dte,moveMid,day).dol*d.contracts;
       var hitsTgt=pnlHere>=target;
       var lbl=day>=d.dte?'Expiry':'Day '+day;
-      var clr=hitsTgt?'#14532d':pnlHere>0?'#15803d':'#b91c1c';
-      var bg=hitsTgt?'#dcfce7':pnlHere>0?'#f0fdf4':'#fef2f2';
-      var brd=hitsTgt?'#86efac':pnlHere>0?'#bbf7d0':'#fca5a5';
-      dteRows+='<div style="background:'+bg+';border:1px solid '+brd+';border-radius:7px;padding:7px 4px;text-align:center">';
+      var tlClr=hitsTgt?'#14532d':pnlHere>0?'#15803d':'#b91c1c';
+      var tlBg=hitsTgt?'#dcfce7':pnlHere>0?'#f0fdf4':'#fef2f2';
+      var tlBrd=hitsTgt?'#86efac':pnlHere>0?'#bbf7d0':'#fca5a5';
+      dteRows+='<div style="background:'+tlBg+';border:1px solid '+tlBrd+';border-radius:7px;padding:7px 4px;text-align:center">';
       dteRows+='<div style="font-size:9px;color:var(--dim);font-weight:700;margin-bottom:3px">'+lbl+'</div>';
-      dteRows+='<div style="font-size:12px;font-weight:700;color:'+clr+'">'+fp(pnlHere)+'</div>';
+      dteRows+='<div style="font-size:12px;font-weight:700;color:'+tlClr+'">'+fp(pnlHere)+'</div>';
       if(hitsTgt)dteRows+='<div style="font-size:8px;color:#14532d;font-weight:700;margin-top:2px">✓ Target</div>';
       dteRows+='</div>';
     });
