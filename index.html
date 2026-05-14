@@ -468,8 +468,20 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appear
 
   <!-- Summary -->
   <div id="b-summary" style="display:none">
+
+    <!-- Tweet summary - moved to top -->
+    <div id="b-tweet-wrap" style="display:none;margin-bottom:12px">
+      <div style="background:#0f172a;border-radius:14px;padding:16px;position:relative;overflow:hidden">
+        <div style="font-size:10px;font-weight:800;color:#38bdf8;text-transform:uppercase;letter-spacing:.18em;margin-bottom:10px;display:flex;align-items:center;gap:7px">
+          <span style="font-size:16px;line-height:1">𝕏</span> Weekly Backtest Summary
+        </div>
+        <div id="b-tweet" style="font-size:15px;font-weight:600;color:#f1f5f9;line-height:1.7;word-break:break-word;hyphens:auto"></div>
+        <div style="margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,.12);font-size:10px;color:#64748b;font-weight:600">Indicative only · Based on daily OHLC · Not financial advice</div>
+      </div>
+    </div>
+
     <!-- Week overview cards -->
-    <div style="font-size:9px;font-weight:700;color:#1e293b;text-transform:uppercase;letter-spacing:.15em;margin-bottom:8px">Week Summary</div>
+    <div style="font-size:9px;font-weight:700;color:#1e293b;text-transform:uppercase;letter-spacing:.15em;margin-bottom:8px">Day by Day</div>
     <div id="b-week-cards" style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px"></div>
 
     <!-- Best day callout -->
@@ -1565,6 +1577,41 @@ function go5(){
     sbox('Win days (EOD)',''+winDaysEOD+'/'+results.length,'blue')+
     sbox('Total premium paid','$'+fmt(totalCost),'amber')+
     sbox('Best day return',fp(bestDay.pnlBest),'green');
+
+  // ── TWEET SUMMARY ──
+  // Find the move range that was profitable (intraday)
+  var profitableDays=results.filter(function(r){return r.pnlBest>0;});
+  var profitableDaysEOD=results.filter(function(r){return r.pnlEOD>0;});
+  var allMoves=results.map(function(r){return r.bestMove;}).sort(function(a,b){return a-b;});
+  var minProfitMove=profitableDays.length>0?Math.min.apply(null,profitableDays.map(function(r){return r.bestMove;})):null;
+  var maxProfitMove=profitableDays.length>0?Math.max.apply(null,profitableDays.map(function(r){return r.bestMove;})):null;
+  var avgBePct=results.reduce(function(a,b){return a+b.bePct;},0)/results.length;
+
+  var tweet='';
+  var sym=T5.toUpperCase();
+  var dteLabel=BT_DTE===0?'0-DTE':BT_DTE+'-DTE';
+
+  if(profitableDays.length===0){
+    tweet=sym+' '+dteLabel+' straddle at open — no profitable intraday exit this week. '
+      +'Market didn\'t move enough to clear the avg '+avgBePct.toFixed(2)+'% B/E. '
+      +'Biggest move was '+allMoves[allMoves.length-1].toFixed(2)+'% — still short.';
+  } else if(profitableDays.length===results.length){
+    tweet=sym+' '+dteLabel+' straddle at open — profitable every day this week '
+      +'('+winDaysBest+'/'+results.length+'). '
+      +'Intraday move of '+minProfitMove.toFixed(2)+'%–'+maxProfitMove.toFixed(2)+'% was enough to close green. '
+      +'Pull the trigger above '+minProfitMove.toFixed(2)+'% move. '
+      +(winDaysEOD===results.length?'Holding to EOD worked too.':'Intraday exits beat EOD '+winDaysBest+'–'+winDaysEOD+' this week.');
+  } else {
+    var lostDays=results.filter(function(r){return r.pnlBest<=0;});
+    var avgLostMove=lostDays.reduce(function(a,b){return a+b.bestMove;},0)/lostDays.length;
+    tweet=sym+' '+dteLabel+' straddle at open — won '+winDaysBest+'/'+results.length+' days intraday this week. '
+      +'Profitable when move ≥ '+minProfitMove.toFixed(2)+'%. '
+      +'Lost on flat days (avg move '+avgLostMove.toFixed(2)+'%, B/E needs '+avgBePct.toFixed(2)+'%). '
+      +'Exit rule: close above '+minProfitMove.toFixed(2)+'% move.';
+  }
+
+  $('b-tweet').textContent=tweet;
+  $('b-tweet-wrap').style.display='block';
 }
 
 /* ── INIT ── */
