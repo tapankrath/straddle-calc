@@ -2,7 +2,7 @@
   "name": "GammaEdge",
   "short_name": "GammaEdge",
   "description": "Options trade planner for SPY & QQQ",
-  "start_url": "/straddle-calc/",
+  "start_url": "/GammaEdge/",
   "display": "standalone",
   "background_color": "#0a0f1e",
   "theme_color": "#0a0f1e",
