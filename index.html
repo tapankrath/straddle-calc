@@ -237,9 +237,15 @@ input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;bac
 <body>
 <div class="app">
 
-<div style="padding:14px 4px 8px;display:flex;align-items:baseline;gap:8px">
-  <span style="font-size:22px;font-weight:900;color:#0a0f1e;letter-spacing:-.03em;font-family:'Inter',-apple-system,sans-serif">GammaEdge</span>
-  <span style="font-size:11px;font-weight:700;color:#64748b;letter-spacing:.08em;text-transform:uppercase">Options Intelligence</span>
+<div style="padding:14px 4px 6px;display:flex;align-items:center;justify-content:space-between">
+  <div style="display:flex;align-items:baseline;gap:8px">
+    <span style="font-size:22px;font-weight:900;color:#0a0f1e;letter-spacing:-.03em;font-family:'Inter',-apple-system,sans-serif">GammaEdge</span>
+    <span style="font-size:11px;font-weight:700;color:#64748b;letter-spacing:.08em;text-transform:uppercase">Options Intelligence</span>
+  </div>
+  <div id="mkt-trend" style="display:flex;align-items:center;gap:6px;padding:5px 11px;border-radius:20px;background:#f1f5f9;border:1.5px solid #e2e8f0;transition:all .4s">
+    <span id="mkt-dot" style="width:8px;height:8px;border-radius:50%;background:#94a3b8;display:inline-block"></span>
+    <span id="mkt-label" style="font-size:11px;font-weight:800;color:#64748b;letter-spacing:.06em;text-transform:uppercase">Market</span>
+  </div>
 </div>
 
 <div class="tabs" style="grid-template-columns:repeat(5,1fr)">
@@ -794,6 +800,7 @@ function fetchP(sym){
       if(T1===k)$('c1').value=p.toFixed(2);
       if(T2===k)$('r1').value=p.toFixed(2);
       if(T3===k)$('s1').value=p.toFixed(2);
+      updateMktTrend();
       go1();go2();go3();
     }).catch(function(){});
 }
@@ -2395,6 +2402,25 @@ function setTSt(t){
   [$('r1'),$('c1')].forEach(function(el){if(el)el.value=p.toFixed(2);});
   [$('r2'),$('c3')].forEach(function(el){if(el)el.value=d.iv;});
   if(ST_MODE==='size')go2();else go1();
+}
+
+function updateMktTrend(){
+  var spyChg=LIVE_CHG['spy']||0;
+  var qqqChg=LIVE_CHG['qqq']||0;
+  if(!LIVE['spy']||!LIVE['qqq'])return; // not loaded yet
+  var avg=(spyChg+qqqChg)/2;
+  var dot=$('mkt-dot'),lbl=$('mkt-label'),wrap=$('mkt-trend');
+  if(!dot||!lbl||!wrap)return;
+  if(avg>0.3){
+    dot.style.background='#16a34a';lbl.style.color='#15803d';lbl.textContent='Bullish';
+    wrap.style.background='#f0fdf4';wrap.style.borderColor='#86efac';
+  } else if(avg<-0.3){
+    dot.style.background='#dc2626';lbl.style.color='#9b1c1c';lbl.textContent='Bearish';
+    wrap.style.background='#fef2f2';wrap.style.borderColor='#fca5a5';
+  } else {
+    dot.style.background='#f59e0b';lbl.style.color='#92400e';lbl.textContent='Flat';
+    wrap.style.background='#fffbeb';wrap.style.borderColor='#fcd34d';
+  }
 }
 
 /* ── INIT ── */
