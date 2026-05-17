@@ -242,6 +242,20 @@ input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;bac
 
 /* ── LAYOUT ── */
 .wrap{max-width:680px;margin:0 auto;padding:16px}
+#pane7 .wrap{max-width:100%;padding:0;margin:0}
+#pane7 .page-header{display:none}
+#pane7 .badge{display:none}
+#pane7 h1{display:none}
+#pane7 .upload-section{display:block}
+#pane7 .upload-section>div:last-child{display:none}
+#pane7 .drop-zone{width:100%;box-sizing:border-box}
+#pane7 .positions-grid{width:100%;box-sizing:border-box}
+#pane7 .intent-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+#pane7 .results-section{width:100%;box-sizing:border-box}
+#pane7 #posGrid .pos-row{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+#pane7 [style*="grid-template-columns:100px"]{grid-template-columns:1fr 1fr !important}
+#pane7 #previewCol{width:100% !important}
+#pane7 .manual-section{overflow:hidden}
 .page-header{margin-bottom:28px}
 .page-header h1{font-size:1.8rem;font-weight:900;letter-spacing:-.04em;color:var(--txt);margin-bottom:6px;font-family:var(--sans)}
 .page-header p{color:#374151;font-size:.9rem;line-height:1.65;max-width:560px;font-weight:500}
@@ -838,20 +852,12 @@ input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;bac
     <div style="font-size:16px;font-weight:900;color:#0a0f1e;letter-spacing:-.02em">Portfolio Analyzer</div>
     <button onclick="showApiKeyModal()" id="api-status-btn" style="background:#0f172a;border:none;border-radius:6px;padding:6px 12px;font-size:10px;font-weight:700;color:#94a3b8;cursor:pointer;font-family:var(--sans)">⚙ API Key</button>
   </div>
-<div class="wrap">
-  <div class="page-header">
-    <div class="badge">📊 Adjust Portfolio</div>
-    <h1>What's your move?</h1>
-    <p>Upload your positions · AI reads the data · you pick the goal · get a specific options plan.</p>
-  </div>
 
-  <!-- Collapsed bar after plan built -->
-  <div id="inputCollapsed" style="display:none;background:var(--s1);border:1px solid var(--b1);border-radius:8px;padding:10px 16px;margin-bottom:16px;font-family:var(--sans);font-size:.76rem;align-items:center;gap:8px;color:var(--txt)"></div>
 
-  <!-- STEP 1: UPLOAD -->
+<!-- STEP 1: UPLOAD -->
   <div id="uploadWrap">
     <div style="font-size:.6rem;font-family:var(--sans);color:var(--mut);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;font-weight:700;display:flex;align-items:center;gap:8px"><span style="background:var(--acc);color:#fff;border-radius:50%;width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;font-size:.65rem;flex-shrink:0;font-weight:900">1</span>Upload your positions screenshot</div>
-    <div style="display:flex;gap:20px;align-items:flex-start;margin-bottom:16px">
+    <div style="margin-bottom:16px">
       <div style="flex:1">
         <div class="drop-zone" id="dropZone" ondragover="onDrag(event,true)" ondragleave="onDrag(event,false)" ondrop="onDrop(event)">
           <input type="file" id="fileInput" accept="image/*" onchange="onFile(event)">
@@ -867,10 +873,9 @@ input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;bac
     </div>
     <div class="manual-section" id="manualSection">
       <div class="manual-title"><span>📋</span><span>Or enter manually</span><span style="color:var(--b2);font-weight:400"> — instead of screenshot</span></div>
-      <div style="display:grid;grid-template-columns:100px 80px 90px 110px 110px 1fr;gap:8px;margin-bottom:6px">
-        <div class="field-label">Ticker</div><div class="field-label">Type</div>
-        <div class="field-label">Size</div><div class="field-label">Last / Avg Cost</div>
-        <div class="field-label">P&amp;L ($)</div><div class="field-label">Notes</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px">
+        <div class="field-label">Ticker / Type</div>
+        <div class="field-label">Size / Cost / P&amp;L</div>
       </div>
       <div class="positions-grid" id="posGrid"></div>
       <button class="add-row-btn" onclick="addRow()">+ Add Position</button>
