@@ -854,8 +854,8 @@ function updateMktNow(bull,bear){
     cls='wait';txt='—';
   } else {
     var avg=((spy||0)+(qqq||0))/((spy!==undefined?1:0)+(qqq!==undefined?1:0)||1);
-    if(avg>=0.5){cls='bull';txt='🟢 BULLISH';}
-    else if(avg<=-0.5){cls='bear';txt='🔴 BEARISH';}
+    if(avg>=0.3){cls='bull';txt='🟢 BULLISH';}
+    else if(avg<=-0.3){cls='bear';txt='🔴 BEARISH';}
     else{cls='flat';txt='🟡 FLAT';}
   }
   el.className='mkt-pill '+cls;
@@ -2633,7 +2633,6 @@ $('pane4').className='pane on';
 fetchAll();setInterval(fetchAll,60000);
 setTimeout(function(){go4();},800);
 if($('b-dte-note'))$('b-dte-note').textContent=BT_DTE_NOTES[0];
-proInit();
 </script>
 </body>
 </html>
