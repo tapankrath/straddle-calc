@@ -566,8 +566,13 @@ input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;bac
 
 <!-- PANE 5: BACKTEST -->
 <div class="pane" id="pane5">
+  <!-- Mode toggle -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--p1);border:1px solid var(--border);border-radius:10px;padding:3px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.08)">
+    <button id="bt-mode-open" onclick="setBtMode('open')" class="tab on" style="font-size:11px;padding:9px">Open → EOD</button>
+    <button id="bt-mode-overnight" onclick="setBtMode('overnight')" class="tab" style="font-size:11px;padding:9px">PrevClose → EOD</button>
+  </div>
   <div class="card">
-    <div class="card-title">If I bought ATM straddle at open each day...</div>
+    <div id="bt-mode-title" class="card-title">If I bought ATM straddle at open each day...</div>
     <div class="tickers" style="grid-template-columns:1fr 1fr">
       <button class="tk spy" id="t5-spy" onclick="setT5('spy')">SPY</button>
       <button class="tk qqq on" id="t5-qqq" onclick="setT5('qqq')">QQQ</button>
@@ -1678,7 +1683,16 @@ function processSignal(valid,capital,target,stopPct,sym){
 
 /* ── TAB 5: BACKTEST ── */
 var AV_KEY='SBJ9BETAMVAZQM9D';
-var T5='qqq',BT_DTE=0;
+var T5='qqq',BT_DTE=0,BT_MODE='open';
+function setBtMode(m){
+  BT_MODE=m;
+  $('bt-mode-open').className='tab'+(m==='open'?' on':'');
+  $('bt-mode-overnight').className='tab'+(m==='overnight'?' on':'');
+  $('bt-mode-title').textContent=m==='open'
+    ?'If I bought ATM straddle at open each day...'
+    :'If I bought ATM straddle ~3:55pm prior day, closed next EOD...';
+  go5();
+}
 var BT_DAYS=[
   {label:'Mon',o:'',h:'',l:'',c:''},
   {label:'Tue',o:'',h:'',l:'',c:''},
@@ -1852,6 +1866,63 @@ function btSim(openPx,high,low,close,iv3,capital){
   };
 }
 
+/* Overnight: buy ~3:55pm day N at strike=round(closeN), close at day N+1 EOD.
+   1 full day elapsed. Strike is fixed at day-N close.
+   bestMove = day N+1 intraday extreme distance from strike (overnight gap captured).
+   eodMove  = day N+1 close distance from strike (the trade actually closed here). */
+function btSimOvernight(entryClose,nextOpen,nextHigh,nextLow,nextClose,iv3,capital){
+  var dte=BT_DTE;
+  // strike rounded to nearest $1 — realistic strike grid
+  var K=Math.round(entryClose);
+  // entry cost computed at day-N close (DTE days to expiry)
+  var dteForCost=Math.max(dte,0.1);
+  var cost=prem(entryClose,dteForCost,iv3)*100;
+  var contracts=capital>0&&cost>0?Math.max(1,Math.floor(capital/cost)):1;
+  var totalCost=cost*contracts;
+  // moves relative to strike K (not entry close — strike is the pivot)
+  var upMove=(nextHigh-K)/K*100;
+  var dnMove=(K-nextLow)/K*100;
+  var eodMove=(nextClose-K)/K*100;
+  var openMove=(nextOpen-K)/K*100;
+  var eodAbs=Math.abs(eodMove);
+  var bestMove=Math.max(upMove,dnMove);
+  var bestDir=upMove>=dnMove?'UP':'DOWN';
+  // 1 full day has elapsed at next-EOD exit
+  // For 0-DTE entered at prior close → expired at next morning, fully crushed
+  // For 1-DTE entered at prior close → expires at next EOD (intrinsic only)
+  // For 5/8-DTE → DTE - 1 remaining at next close
+  var remAtBest=dte===0?0:dte===1?0.05:dte-0.6; // intraday next day, ~midday
+  var remAtEOD=dte===0?0:dte===1?0:dte-1;
+  var ivCrushBest=dte===0?1.0:dte===1?0.6:0.20;
+  var ivCrushEOD=dte===0?1.0:dte===1?1.0:0.30;
+  function pnlAt(spotAtExit, remDays, ivCrush){
+    var eiv=iv3*(1-ivCrush);
+    var rem=Math.max(remDays,0);
+    var val;
+    if(rem<0.01){
+      val=(Math.max(spotAtExit-K,0)+Math.max(K-spotAtExit,0))*100;
+    } else {
+      val=(callput(spotAtExit,K,rem,eiv,true)+callput(spotAtExit,K,rem,eiv,false))*100;
+    }
+    return (val-cost)*contracts;
+  }
+  // Best intraday: take whichever extreme is further from K
+  var bestSpot=bestDir==='UP'?nextHigh:nextLow;
+  var pnlBest=pnlAt(bestSpot, remAtBest, ivCrushBest);
+  var pnlEOD=pnlAt(nextClose, remAtEOD, ivCrushEOD);
+  var bePct=(cost/100)/K*100;
+  var beClears=bestMove>=bePct;
+  var eodClears=eodAbs>=bePct;
+  return{
+    cost:cost,contracts:contracts,totalCost:totalCost,dte:dte,
+    strike:K,entryClose:entryClose,openMove:openMove,
+    upMove:upMove,dnMove:dnMove,eodMove:eodMove,eodAbs:eodAbs,
+    bestMove:bestMove,bestDir:bestDir,
+    pnlBest:pnlBest,pnlEOD:pnlEOD,
+    bePct:bePct,beClears:beClears,eodClears:eodClears
+  };
+}
+
 function go5(){
   var capital=fv('b-capital'),iv3=fv('b-iv')/100;
   if(iv3<=0)return;
@@ -1871,9 +1942,30 @@ function go5(){
   }
   $('b-summary').style.display='block';
 
-  var results=validDays.map(function(d){
-    return Object.assign({label:d.label},btSim(d.o,d.h,d.l,d.c,iv3,capital));
-  });
+  var results;
+  if(BT_MODE==='overnight'){
+    // Build N-1 overnight trades from consecutive day pairs
+    // Need at least 2 days
+    if(validDays.length<2){
+      $('b-summary').style.display='none';
+      return;
+    }
+    $('b-summary').style.display='block';
+    results=[];
+    for(var i=0;i<validDays.length-1;i++){
+      var entryDay=validDays[i],exitDay=validDays[i+1];
+      var sim=btSimOvernight(entryDay.c,exitDay.o,exitDay.h,exitDay.l,exitDay.c,iv3,capital);
+      results.push(Object.assign({
+        label:entryDay.label+' → '+exitDay.label,
+        _entryLabel:entryDay.label,_exitLabel:exitDay.label,
+        _entryDay:entryDay,_exitDay:exitDay
+      },sim));
+    }
+  } else {
+    results=validDays.map(function(d){
+      return Object.assign({label:d.label},btSim(d.o,d.h,d.l,d.c,iv3,capital));
+    });
+  }
 
   // Day cards
   var cards='';
@@ -1884,17 +1976,26 @@ function go5(){
       '<span style="background:#dcfce7;color:#14532d;font-size:8px;font-weight:700;padding:2px 6px;border-radius:4px;margin-left:5px">B/E ✓</span>':
       '<span style="background:#fef2f2;color:#b91c1c;font-size:8px;font-weight:700;padding:2px 6px;border-radius:4px;margin-left:5px">B/E ✗</span>';
 
-    var dayData=validDays.find(function(d){return d.label===r.label;});
+    var dayData;
+    var headerMeta;
+    if(BT_MODE==='overnight'){
+      dayData=r._exitDay; // for any downstream references
+      headerMeta='Strike $'+r.strike+' · Entry $'+r.entryClose.toFixed(2)+' · '+BT_DTE+'-DTE · $'+r.cost.toFixed(0)+'/c · '+r.contracts+'c';
+    } else {
+      dayData=validDays.find(function(d){return d.label===r.label;});
+      headerMeta='Open $'+dayData.o.toFixed(2)+' · '+BT_DTE+'-DTE · $'+r.cost.toFixed(0)+'/c · '+r.contracts+'c';
+    }
 
     cards+='<div style="background:var(--p1);border:1px solid var(--border);border-radius:12px;padding:12px">';
     // Header
     cards+='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">';
     cards+='<div style="display:flex;align-items:center"><span style="font-size:16px;font-weight:700;color:#0f172a">'+r.label+'</span>'+beTag+'</div>';
-    cards+='<span style="font-size:11px;color:#334155">Open $'+dayData.o.toFixed(2)+' · '+BT_DTE+'-DTE · $'+r.cost.toFixed(0)+'/c · '+r.contracts+'c</span>';
+    cards+='<span style="font-size:11px;color:#334155">'+headerMeta+'</span>';
     cards+='</div>';
     // Move bar
     cards+='<div style="margin-bottom:10px">';
-    cards+='<div style="font-size:9px;font-weight:700;color:#334155;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Intraday Range vs B/E (+/-'+r.bePct.toFixed(2)+'%)</div>';
+    var rangeLbl=BT_MODE==='overnight'?'Next-Day Range vs Strike B/E':'Intraday Range vs B/E';
+    cards+='<div style="font-size:9px;font-weight:700;color:#334155;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">'+rangeLbl+' (+/-'+r.bePct.toFixed(2)+'%)</div>';
     var maxPct=Math.max(r.bestMove*1.5,r.bePct*2,2);
     var upW=Math.min(r.upMove/maxPct*100,100);
     var dnW=Math.min(r.dnMove/maxPct*100,100);
@@ -1917,12 +2018,14 @@ function go5(){
       r.bestDir+' '+r.bestMove.toFixed(1)+'% → profit':
       r.bestDir+' '+r.bestMove.toFixed(1)+'% → still loss (B/E needs '+r.bePct.toFixed(2)+'%)';
     var bestExitClr=r.pnlBest>0?'#14532d':'#b91c1c';
+    var bestLbl=BT_MODE==='overnight'?'Best (next-day intraday)':'Best (intraday)';
+    var eodLbl=BT_MODE==='overnight'?'Next-Day EOD':'EOD (held to close)';
     cards+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px">';
-    cards+=dstat('Best (intraday)',fp(r.pnlBest),bestClr);
-    cards+=dstat('EOD (held to close)',fp(r.pnlEOD),eodClr);
+    cards+=dstat(bestLbl,fp(r.pnlBest),bestClr);
+    cards+=dstat(eodLbl,fp(r.pnlEOD),eodClr);
     cards+='</div>';
-    cards+='<div style="padding:7px 9px;background:'+(r.pnlBest>0?'#f0fdf4':'#fef2f2')+';border-radius:7px;font-size:10px;color:'+bestExitClr+';margin-bottom:6px"><b>Best intraday exit:</b> '+bestExitTxt+'</div>';
-    cards+='<div style="padding:7px 9px;background:'+(r.eodClears?'#f0fdf4':'#fef2f2')+';border-radius:7px;font-size:10px;color:'+(r.eodClears?'#14532d':'#b91c1c')+'"><b>EOD:</b> '+r.eodAbs.toFixed(2)+'% '+(r.eodMove>=0?'UP':'DOWN')+' — '+(r.eodClears?'cleared B/E ✓ profit':'below B/E ✗ loss')+'</div>';
+    cards+='<div style="padding:7px 9px;background:'+(r.pnlBest>0?'#f0fdf4':'#fef2f2')+';border-radius:7px;font-size:10px;color:'+bestExitClr+';margin-bottom:6px"><b>'+(BT_MODE==='overnight'?'Best next-day exit:':'Best intraday exit:')+'</b> '+bestExitTxt+'</div>';
+    cards+='<div style="padding:7px 9px;background:'+(r.eodClears?'#f0fdf4':'#fef2f2')+';border-radius:7px;font-size:10px;color:'+(r.eodClears?'#14532d':'#b91c1c')+'"><b>'+(BT_MODE==='overnight'?'Next EOD:':'EOD:')+'</b> '+r.eodAbs.toFixed(2)+'% '+(r.eodMove>=0?'UP':'DOWN')+(BT_MODE==='overnight'?' from strike':'')+' — '+(r.eodClears?'cleared B/E ✓ profit':'below B/E ✗ loss')+'</div>';
     cards+='</div>';
   });
   $('b-week-cards').innerHTML=cards;
@@ -1964,23 +2067,26 @@ function go5(){
   var tweet='';
   var sym=T5.toUpperCase();
   var dteLabel=BT_DTE===0?'0-DTE':BT_DTE+'-DTE';
+  var entryPhrase=BT_MODE==='overnight'?'straddle bought prior-day close, exit next EOD':'straddle at open';
+  var nDays=results.length;
+  var unitLbl=BT_MODE==='overnight'?'overnights':'days';
 
   if(profitableDays.length===0){
-    tweet=sym+' '+dteLabel+' straddle at open — no profitable intraday exit this week. '
+    tweet=sym+' '+dteLabel+' '+entryPhrase+' — no profitable exit across '+nDays+' '+unitLbl+'. '
       +'Market didn\'t move enough to clear the avg '+avgBePct.toFixed(2)+'% B/E. '
       +'Biggest move was '+allMoves[allMoves.length-1].toFixed(2)+'% — still short.';
   } else if(profitableDays.length===results.length){
-    tweet=sym+' '+dteLabel+' straddle at open — profitable every day this week '
+    tweet=sym+' '+dteLabel+' '+entryPhrase+' — profitable every '+(BT_MODE==='overnight'?'overnight':'day')+' '
       +'('+winDaysBest+'/'+results.length+'). '
-      +'Intraday move of '+minProfitMove.toFixed(2)+'%–'+maxProfitMove.toFixed(2)+'% was enough to close green. '
+      +'Move of '+minProfitMove.toFixed(2)+'%–'+maxProfitMove.toFixed(2)+'% was enough to close green. '
       +'Pull the trigger above '+minProfitMove.toFixed(2)+'% move. '
-      +(winDaysEOD===results.length?'Holding to EOD worked too.':'Intraday exits beat EOD '+winDaysBest+'–'+winDaysEOD+' this week.');
+      +(winDaysEOD===results.length?'Holding to EOD worked too.':'Best exits beat EOD '+winDaysBest+'–'+winDaysEOD+'.');
   } else {
     var lostDays=results.filter(function(r){return r.pnlBest<=0;});
     var avgLostMove=lostDays.reduce(function(a,b){return a+b.bestMove;},0)/lostDays.length;
-    tweet=sym+' '+dteLabel+' straddle at open — won '+winDaysBest+'/'+results.length+' days intraday this week. '
+    tweet=sym+' '+dteLabel+' '+entryPhrase+' — won '+winDaysBest+'/'+results.length+' '+unitLbl+'. '
       +'Profitable when move ≥ '+minProfitMove.toFixed(2)+'%. '
-      +'Lost on flat days (avg move '+avgLostMove.toFixed(2)+'%, B/E needs '+avgBePct.toFixed(2)+'%). '
+      +'Lost on flat moves (avg '+avgLostMove.toFixed(2)+'%, B/E needs '+avgBePct.toFixed(2)+'%). '
       +'Exit rule: close above '+minProfitMove.toFixed(2)+'% move.';
   }
 
