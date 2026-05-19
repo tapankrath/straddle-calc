@@ -844,17 +844,18 @@ function fetchP(sym){
 }
 function fmtTs(){var n=new Date(),d=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],m=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],h=n.getHours(),mi=n.getMinutes(),ap=h>=12?'PM':'AM';h=h%12||12;return d[n.getDay()]+' '+m[n.getMonth()]+' '+n.getDate()+' '+h+':'+(mi<10?'0':'')+mi+' '+ap;}
 function updateMktNow(bull,bear){
+  // Always reflect today's actual price action (avg of SPY+QQQ % change).
+  // Signal-based bull/bear args are ignored — they describe the trend setup,
+  // not today's move, which caused the pill to disagree with reality.
   var el=$('mktPill');if(!el)return;
   var cls,txt;
-  if(bull!==undefined&&bear!==undefined){
-    var diff=bull-bear;
-    if(diff>=3){cls='bull';txt='🟢 BULLISH';}
-    else if(diff<=-3){cls='bear';txt='🔴 BEARISH';}
-    else{cls='flat';txt='🟡 FLAT';}
+  var spy=LIVE_CHG['spy'],qqq=LIVE_CHG['qqq'];
+  if(spy===undefined&&qqq===undefined){
+    cls='wait';txt='—';
   } else {
-    var avg=((LIVE_CHG['spy']||0)+(LIVE_CHG['qqq']||0))/2;
-    if(avg>0.3){cls='bull';txt='🟢 BULLISH';}
-    else if(avg<-0.3){cls='bear';txt='🔴 BEARISH';}
+    var avg=((spy||0)+(qqq||0))/((spy!==undefined?1:0)+(qqq!==undefined?1:0)||1);
+    if(avg>=0.5){cls='bull';txt='🟢 BULLISH';}
+    else if(avg<=-0.5){cls='bear';txt='🔴 BEARISH';}
     else{cls='flat';txt='🟡 FLAT';}
   }
   el.className='mkt-pill '+cls;
