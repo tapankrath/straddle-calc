@@ -63,7 +63,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 .manual-section{background:var(--p1);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
 .manual-title{font-size:10px;font-family:var(--sans);font-weight:800;letter-spacing:.15em;color:#374151;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px}
 .positions-grid{display:flex;flex-direction:column;gap:8px}
-.pos-row{display:grid;grid-template-columns:100px 80px 90px 110px 1fr auto;gap:8px;align-items:center}
+.pos-row{display:grid;grid-template-columns:90px 80px 80px 95px 90px 1fr auto;gap:8px;align-items:center}
 .pos-row input,.pos-row select{background:var(--p2);border:1.5px solid var(--border);border-radius:8px;color:var(--text);padding:9px 12px;font-family:var(--sans);font-size:15px;font-weight:700;width:100%;transition:border-color .15s}
 .pos-row input:focus,.pos-row select:focus{outline:none;border-color:var(--green);background:#fff;box-shadow:0 0 0 3px rgba(22,101,52,.1)}
 .pos-row input::placeholder{color:var(--mut)}
@@ -218,7 +218,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
     </div>
     <div class="manual-section" id="manualSection">
       <div class="manual-title"><span>📋</span><span>Or enter manually</span><span style="color:var(--b2);font-weight:400"> — instead of screenshot</span></div>
-      <div style="display:grid;grid-template-columns:100px 80px 90px 110px 110px 1fr;gap:8px;margin-bottom:6px">
+      <div style="display:grid;grid-template-columns:90px 80px 80px 95px 90px 1fr;gap:8px;margin-bottom:6px">
         <div class="field-label">Ticker</div><div class="field-label">Type</div>
         <div class="field-label">Size</div><div class="field-label">Last / Avg Cost</div>
         <div class="field-label">P&amp;L ($)</div><div class="field-label">Notes</div>
@@ -333,7 +333,9 @@ async function extractPositions(){
     } else {
       _extractedPositions = positions;
     }
-    if(!positions.length || !positions[0].sym) throw new Error('No positions found. Add at least one position.');
+    if(!positions.length){
+      throw new Error('No positions found. Enter a ticker symbol (e.g. AAPL) in at least one row.');
+    }
     hideStatus();
     // Show intent tiles with ranked suggestions
     document.getElementById('intentWrap').style.display = 'block';
@@ -579,7 +581,7 @@ function addRow(data){
   div.className = 'pos-row';
   div.id = 'row'+id;
   div.innerHTML =
-    '<input type="text" placeholder="AAPL" value="'+(data.sym||'')+'" data-field="sym" style="text-transform:uppercase">'
+    '<input type="text" placeholder="Ticker…" value="'+(data.sym||'')+'" data-field="sym" style="text-transform:uppercase">'
     +'<select data-field="type">'
     +'<option value="stock"'+(data.type==='stock'?' selected':'')+'>Stock</option>'
     +'<option value="call"'+(data.type==='call'?' selected':'')+'>Call</option>'
@@ -1019,10 +1021,11 @@ document.addEventListener('focusin',function(e){
   }
 });
 
-// Auto-show API key modal if no key set
+// Update API status indicator on load. Do NOT auto-pop the modal —
+// it blocks the manual-entry flow. The modal opens automatically only
+// when an action actually needs the Anthropic key (image extract / plan build).
 window.addEventListener('load',function(){
   updateApiStatus();
-  if(!getApiKey()) showApiKeyModal();
 });
 </script>
 
