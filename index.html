@@ -256,7 +256,7 @@ input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;bac
 
 <div class="tabs" style="grid-template-columns:repeat(5,1fr)">
   <button class="tab on" id="tab1" onclick="showTab(1)">Signal</button>
-  <button class="tab" id="tab2" onclick="showTab(2)">Straddle</button>
+  <button class="tab" id="tab2" onclick="showTab(2)">Strdl/Strngl</button>
   <button class="tab" id="tab3" onclick="showTab(3)">Plan</button>
   <button class="tab" id="tab4" onclick="showTab(4)">Bktest</button>
   <button class="tab" id="tab5" onclick="showTab(5)">Lottery</button>
@@ -337,10 +337,11 @@ input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;bac
 <!-- TAB 2: RECOMMEND -->
 <div class="pane" id="pane2">
 
-  <!-- Mode toggle -->
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--p1);border:1px solid var(--border);border-radius:10px;padding:3px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.08)">
-    <button id="st-mode-size" onclick="setStraddleMode('size')" class="tab on" style="font-size:12px;padding:9px">📐 Size It</button>
-    <button id="st-mode-track" onclick="setStraddleMode('track')" class="tab" style="font-size:12px;padding:9px">📊 Track It</button>
+  <!-- Delta selector -->
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;background:var(--p1);border:1px solid var(--border);border-radius:10px;padding:3px;margin-bottom:8px;box-shadow:0 1px 3px rgba(0,0,0,.08)">
+    <button id="st-delta-40" onclick="setStdlDelta(40)" class="tab" style="font-size:11px;padding:8px">Strangle 40Δ</button>
+    <button id="st-delta-45" onclick="setStdlDelta(45)" class="tab" style="font-size:11px;padding:8px">Strangle 45Δ</button>
+    <button id="st-delta-50" onclick="setStdlDelta(50)" class="tab on" style="font-size:11px;padding:8px">Straddle 50Δ</button>
   </div>
 
   <!-- Shared ticker -->
@@ -356,27 +357,12 @@ input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;bac
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:6px">
         <div class="field fa"><label class="flbl">Price $</label><input type="number" id="r1" value="706" step="1" inputmode="decimal" oninput="go2()"/></div>
         <div class="field"><label class="flbl">IV %</label><input type="number" id="r2" value="21" step="1" inputmode="decimal" oninput="go2()"/></div>
-        <div class="field fg"><label class="flbl">Target $</label><input type="number" id="r4" value="500" step="50" inputmode="decimal" oninput="go2()"/></div>
+        <div class="field fg"><label class="flbl">Profit Target $</label><input type="number" id="r4" value="500" step="50" inputmode="decimal" oninput="go2()"/></div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
         <div class="field fo"><label class="flbl">Stop % prem</label><input type="number" id="r6" value="50" step="10" min="10" max="100" inputmode="decimal" oninput="go2()"/></div>
         <div class="field fa"><label class="flbl">Move % lo</label><input type="number" id="r7" value="0.5" step="0.25" inputmode="decimal" oninput="go2()"/></div>
         <div class="field fa"><label class="flbl">Move % hi</label><input type="number" id="r8" value="3.0" step="0.25" inputmode="decimal" oninput="go2()"/></div>
-      </div>
-    </div>
-
-    <!-- TRACK IT inputs -->
-    <div id="st-track-inputs" style="display:none">
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:6px">
-        <div class="field fa"><label class="flbl">Price $</label><input type="number" id="c1" value="706" step="1" inputmode="decimal" oninput="go1()"/></div>
-        <div class="field fa"><label class="flbl">Cost $</label><input type="number" id="c2" value="17" step="0.25" inputmode="decimal" oninput="go1()"/></div>
-        <div class="field"><label class="flbl">IV %</label><input type="number" id="c3" value="21" step="1" inputmode="decimal" oninput="go1()"/></div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px">
-        <div class="field"><label class="flbl">DTE</label><input type="number" id="c4" value="10" step="1" min="1" inputmode="decimal" oninput="go1()"/></div>
-        <div class="field fg"><label class="flbl">Cap $</label><input type="number" id="c5" value="2000" step="100" inputmode="decimal" oninput="go1()"/></div>
-        <div class="field fg"><label class="flbl">Target $</label><input type="number" id="c6" value="500" step="50" inputmode="decimal" oninput="go1()"/></div>
-        <div class="field fo"><label class="flbl">Stop %</label><input type="number" id="c7" value="50" step="10" min="10" max="100" inputmode="decimal" oninput="go1()"/></div>
       </div>
     </div>
   </div>
@@ -410,31 +396,6 @@ input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;bac
     <div style="font-size:9px;color:var(--dim);text-transform:uppercase;letter-spacing:.15em;margin-bottom:8px;font-weight:700">Which DTE works best?</div>
     <div id="sz-dte-rows"></div>
     <div class="note">Capital shown is minimum needed · Stop = loss as % of premium · Mid of move range used for DTE comparison</div>
-  </div>
-
-  <!-- TRACK IT results -->
-  <div id="st-track-results" style="display:none">
-    <div class="info" id="c-info"></div>
-    <div class="ctx-row" id="ctx-row"></div>
-    <div id="stop-alert"></div>
-    <div class="legend">
-      <div class="lg"><div class="lgsq" style="background:#15803d"></div>Profit</div>
-      <div class="lg"><div class="lgsq" style="background:#b91c1c"></div>Loss</div>
-      <div class="lg"><div class="lgsq" style="background:#92400e"></div>Near B/E</div>
-      <div class="lg"><div class="lgsq" style="background:#b91c1c;opacity:.4"></div>Stop</div>
-      <div class="lg"><div class="lgbar" style="background:var(--amber)"></div>Best ★</div>
-    </div>
-    <div class="stbl">
-      <div class="stbl-hd">
-        <div class="shd">Hold</div>
-        <div class="shd dr">DRIFT<span class="rng">0.2–0.5%</span></div>
-        <div class="shd mo">MOMENTUM<span class="rng">0.5–1.0%</span></div>
-        <div class="shd ex">EXPLOSIVE<span class="rng">1.0%+</span></div>
-      </div>
-      <div id="st-selday" style="font-size:10px;color:var(--blue);font-weight:700;padding:4px 8px;text-align:right"></div>
-      <div id="t-rows"></div>
-    </div>
-    <div class="note">Mid of each range · IV crush fades daily · tap row to highlight</div>
   </div>
 
 </div>
@@ -531,6 +492,8 @@ input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;bac
       <div style="font-size:13px;font-weight:600;margin-bottom:14px" id="g-sig-sub">-</div>
       <!-- Setup recommendation -->
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px" id="g-setup-grid"></div>
+      <!-- Equivalent strangle/straddle context strip -->
+      <div id="g-stdl-context" style="margin-bottom:12px"></div>
       <!-- Reasoning -->
       <div style="background:rgba(0,0,0,.04);border-radius:8px;padding:10px 12px" id="g-reason"></div>
     </div>
@@ -566,6 +529,12 @@ input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;bac
 
 <!-- PANE 5: BACKTEST -->
 <div class="pane" id="pane5">
+  <!-- Delta selector -->
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;background:var(--p1);border:1px solid var(--border);border-radius:10px;padding:3px;margin-bottom:8px;box-shadow:0 1px 3px rgba(0,0,0,.08)">
+    <button id="bt-delta-40" onclick="setBtDelta(40)" class="tab" style="font-size:11px;padding:8px">Strangle 40Δ</button>
+    <button id="bt-delta-45" onclick="setBtDelta(45)" class="tab" style="font-size:11px;padding:8px">Strangle 45Δ</button>
+    <button id="bt-delta-50" onclick="setBtDelta(50)" class="tab on" style="font-size:11px;padding:8px">Straddle 50Δ</button>
+  </div>
   <!-- Mode toggle -->
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--p1);border:1px solid var(--border);border-radius:10px;padding:3px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.08)">
     <button id="bt-mode-open" onclick="setBtMode('open')" class="tab on" style="font-size:11px;padding:9px">Open → EOD</button>
@@ -739,7 +708,7 @@ function showTab(n){
     $('pane'+paneMap[i])&&($('pane'+paneMap[i]).className='pane'+(i===n?' on':''));
   }
   if(n===1)go4();
-  if(n===2){if(ST_MODE==='size')go2();else go1();}
+  if(n===2){go2();}
   if(n===3)renderPortfolio();
   if(n===4){go5();if(!BT_DAYS[0].o)fetchOHLC(T5);}
 }
@@ -777,6 +746,61 @@ function otmBoth(s,otmPct,d,v,mv,h){
   return{dol:val-cp,ret:cp>0?(val-cp)/cp*100:0,costPer:cp};
 }
 
+/* ── DELTA-BASED STRANGLE HELPERS ──
+   Given target call delta (e.g. 0.40, 0.45, 0.50), find symmetric OTM% such that
+   the call delta ≈ target. Then mirror that %OTM for the put strike.
+   For delta=0.50 → otmPct=0, strangle collapses to ATM straddle. */
+function deltaCall(S,K,T,v){
+  if(T<=0||v<=0)return S>K?1:S<K?0:0.5;
+  var d1=(Math.log(S/K)+0.5*v*v*T)/(v*Math.sqrt(T));
+  return Ncdf(d1);
+}
+/* Find OTM% for given target call delta. Binary search on otmPct.
+   Larger OTM → lower call delta. Range 0..15%. */
+function otmPctFromDelta(S,T,v,targetDelta){
+  if(targetDelta>=0.499)return 0; // ATM
+  var lo=0,hi=15,mid;
+  for(var i=0;i<25;i++){
+    mid=(lo+hi)/2;
+    var K=S*(1+mid/100);
+    var d=deltaCall(S,K,T,v);
+    if(d>targetDelta)lo=mid;else hi=mid;
+  }
+  return mid;
+}
+/* Symmetric strangle from target delta. Returns {Kc, Kp, otmPct, cost (per share, both legs)}. */
+function strangleAtDelta(S,T,v,targetDelta){
+  var otmPct=otmPctFromDelta(S,T,v,targetDelta);
+  var Kc=S*(1+otmPct/100),Kp=S*(1-otmPct/100);
+  var cost=bsC(S,Kc,T,v)+bsP(S,Kp,T,v);
+  return{Kc:Kc,Kp:Kp,otmPct:otmPct,cost:cost};
+}
+/* Exit P&L for symmetric strangle at given delta. Mirrors atmExit() signature.
+   When targetDelta=0.50 (otmPct=0), this is exactly atmExit's math.
+   Returns {dol, pct, cost} where cost is per-share (multiply by 100 for contract). */
+function strangleExit(s,v,d,targetDelta,mv,h){
+  var T=d/365;
+  var sg=strangleAtDelta(s,T,v,targetDelta);
+  var Kc=sg.Kc,Kp=sg.Kp,costPerShare=sg.cost;
+  var ns=s*(1+mv/100),rem=Math.max(d-h,0),eiv=v*(1-crush(h,d));
+  var val=rem>0
+    ?(bsC(ns,Kc,rem/365,eiv)+bsP(ns,Kp,rem/365,eiv))
+    :(Math.max(ns-Kc,0)+Math.max(Kp-ns,0));
+  var dol=(val-costPerShare)*100;
+  return{dol:dol,pct:costPerShare>0?dol/(costPerShare*100)*100:0,cost:costPerShare,Kc:Kc,Kp:Kp,otmPct:sg.otmPct};
+}
+/* B/E for strangle: spot must move beyond Kc+totalCost or below Kp-totalCost.
+   Returns {bePctUp, bePctDn, bePctSymmetric (max of two)}.
+   For ATM straddle (otmPct=0) this collapses to ±premium/spot. */
+function strangleBE(spot,Kc,Kp,costPerShare){
+  var beUp=Kc+costPerShare,beDn=Kp-costPerShare;
+  return{
+    beUp:beUp,beDn:beDn,
+    bePctUp:(beUp-spot)/spot*100,
+    bePctDn:(spot-beDn)/spot*100
+  };
+}
+
 /* Category: p=profit, n=loss, y=near B/E, o=stop */
 function cat(dol,costPos,stopPct){
   var thresh=costPos*0.12;
@@ -789,12 +813,35 @@ function clr(c){return c==='p'?'gp':c==='n'?'rn':c==='o'?'on':'yn';}
 
 /* Build scenario table rows */
 function buildRows(spot,iv3,dte,contracts,costPer,stopPct,bestDay,selDay,maxDays,targetId){
-  var stopInfo={},sh='',maxShow=Math.min(dte,maxDays||10);
+  var stopInfo={},sh='';
+  var paidPerShare=costPer/100;
+  // For non-ATM strangles, use _stdlTrackExit with the user's paid cost.
+  // For ATM (STDL_DELTA=50), this is mathematically equivalent to atmExit at the user's cost.
+  function exitFor(mv,h){
+    if(typeof STDL_DELTA!=='undefined'&&STDL_DELTA<50){
+      return _stdlTrackExit(spot,iv3,dte,mv,h,paidPerShare);
+    }
+    return atmExit(spot,iv3,dte,mv,h);
+  }
+  // Choose which days to display.
+  // Short DTE: show all days. Longer: sample key days. Always include bestDay and selDay.
+  var dayList=[];
+  if(dte<=7){
+    for(var d=1;d<=dte;d++)dayList.push(d);
+  } else {
+    // Sample: 1, 2, 3, 5, 7, and then every few days up to expiry
+    var samples=[1,2,3,5,7];
+    if(dte>=10)samples.push(Math.round(dte/2));
+    if(bestDay&&samples.indexOf(bestDay)<0)samples.push(bestDay);
+    if(selDay&&selDay>0&&samples.indexOf(selDay)<0)samples.push(selDay);
+    samples.push(dte);
+    dayList=samples.filter(function(d,i,a){return d>=1&&d<=dte&&a.indexOf(d)===i;}).sort(function(a,b){return a-b;});
+  }
   function row(day,isExp){
     var isBest=day===bestDay,isSel=selDay>0&&day===selDay;
     var anyStop=false,cols=[];
     SCENS.forEach(function(sc){
-      var r=atmExit(spot,iv3,dte,sc.mid,day);
+      var r=exitFor(sc.mid,day);
       var dol=r.dol*contracts;
       var c=cat(dol,costPer*contracts,stopPct);
       if(c==='o'){anyStop=true;if(!stopInfo[sc.k])stopInfo[sc.k]=day;}
@@ -803,15 +850,14 @@ function buildRows(spot,iv3,dte,contracts,costPer,stopPct,bestDay,selDay,maxDays
     var rc='srow'+(anyStop?' stop':isBest?' best':isSel?' cur':'')+(isExp?' exp':'');
     var dn=isExp?'Exp':'D'+day;
     var note=anyStop?'⚠ Stop':isBest?'★ Best':isSel?'◀':isExp?'intrinsic':Math.round(crush(day,dte)*100)+'% crush';
-    sh+='<div class="'+rc+'" onclick="tapRow('+day+')"><div class="dcell"><span class="dname">'+dn+'</span><span class="dnote">'+note+'</span></div>';
+    sh+='<div class="'+rc+'" onclick="tapRow('+day+')"><div class="dcell" style="min-height:38px;padding:5px 4px"><span class="dname" style="font-size:12px">'+dn+'</span><span class="dnote" style="font-size:8px">'+note+'</span></div>';
     cols.forEach(function(col){
       var pctStr=(col.pct>=0?'+':'')+Math.round(col.pct)+'%';
-      sh+='<div class="vcell '+col.col+'" style="min-height:44px;padding:6px 2px"><span class="vamt '+clr(col.c)+'" style="font-size:13px;font-weight:800">'+pctStr+'</span></div>';
+      sh+='<div class="vcell '+col.col+'" style="min-height:38px;padding:4px 2px"><span class="vamt '+clr(col.c)+'" style="font-size:12px;font-weight:800">'+pctStr+'</span></div>';
     });
     sh+='</div>';
   }
-  for(var d=1;d<=maxShow;d++)row(d,d>=dte);
-  if(dte>maxShow)row(dte,true);
+  dayList.forEach(function(d){row(d,d>=dte);});
   $(targetId).innerHTML=sh;
   return stopInfo;
 }
@@ -878,29 +924,47 @@ function go1(){
   var costPer=costIn*100,contracts=capital>0&&costPer>0?Math.max(1,Math.floor(capital/costPer)):1;
   var costPctOfSpot=costIn/spot*100;
   var valAssess=straddleValue(dte,costPctOfSpot);
-  $('c-info').innerHTML='<b>'+T1.toUpperCase()+'</b> · $'+costIn.toFixed(2)+'/share · <b>$'+costPer.toFixed(0)+'/contract</b> · Cost is <b>'+costPctOfSpot.toFixed(2)+'% of spot</b> → <span style="color:'+valAssess.color+';font-weight:700">'+valAssess.label+'</span> ('+valAssess.note+')';
-  $('c-nc').textContent=contracts+(contracts===1?' contract':' contracts');
+  var pkgLbl=STDL_DELTA===50?'Straddle':STDL_DELTA+'Δ Strangle';
+  // Delta-aware exit + B/E for verdicts
+  var deltaTrack=STDL_DELTA<50;
+  function gExit(mv,h){
+    return deltaTrack?_stdlTrackExit(spot,iv3,dte,mv,h,costIn):atmExit(spot,iv3,dte,mv,h);
+  }
+  // Strike info string for OTM strangle
+  var strikeInfo='';
+  if(deltaTrack){
+    var sgInfo=strangleAtDelta(spot,dte/365,iv3,stdlDeltaFrac());
+    strikeInfo=' · Strikes $'+sgInfo.Kp.toFixed(2)+'/$'+sgInfo.Kc.toFixed(2);
+  }
+  $('c-info').innerHTML='<b>'+T1.toUpperCase()+' '+pkgLbl+'</b>'+strikeInfo+' · $'+costIn.toFixed(2)+'/share · <b>$'+costPer.toFixed(0)+'/package</b> · Cost is <b>'+costPctOfSpot.toFixed(2)+'% of spot</b> → <span style="color:'+valAssess.color+';font-weight:700">'+valAssess.label+'</span> ('+valAssess.note+')';
+  $('c-nc').textContent=contracts+(contracts===1?' '+(STDL_DELTA===50?'straddle':'strangle'):' '+(STDL_DELTA===50?'straddles':'strangles'));
   $('c-dep').textContent='$'+fmt(costPer*contracts);
   // At target using explosive mid D1
-  var rRef=atmExit(spot,iv3,dte,SCENS[2].mid,1),tp=rRef.dol*contracts;
+  var rRef=gExit(SCENS[2].mid,1),tp=rRef.dol*contracts;
   var hit=tp>=target;
   $('c-tgt').textContent=(hit?'Yes +$':' No -$')+fmt(Math.abs(tp-target));
   $('c-tgt').className='si-val '+(hit?'pos':'neg');
-  // B/E
-  var bePct=costIn/spot*100;
-  $('c-be').textContent='+/- '+bePct.toFixed(2)+'%';
+  // B/E — different formula for OTM strangle (asymmetric around strikes, not spot)
+  if(deltaTrack){
+    var sg=strangleAtDelta(spot,dte/365,iv3,stdlDeltaFrac());
+    var be=strangleBE(spot,sg.Kc,sg.Kp,costIn);
+    $('c-be').textContent='+'+be.bePctUp.toFixed(2)+'% / -'+be.bePctDn.toFixed(2)+'%';
+  } else {
+    var bePct=costIn/spot*100;
+    $('c-be').textContent='+/- '+bePct.toFixed(2)+'%';
+  }
   $('c-stop').textContent='-'+stopPct+'% (-$'+fmt(costPer*contracts*stopPct/100)+')';
   // Verdict
-  var rExp=atmExit(spot,iv3,dte,SCENS[2].mid,1),rMom=atmExit(spot,iv3,dte,SCENS[1].mid,1);
+  var rExp=gExit(SCENS[2].mid,1),rMom=gExit(SCENS[1].mid,1);
   var cv=$('c-cv'),cvv=$('c-cvv');
   if(rExp.dol*contracts>0){cv.className='ctx-box cv ok';cvv.textContent='Explosive clears B/E';}
   else if(rMom.dol*contracts>0){cv.className='ctx-box cv tight';cvv.textContent='Needs Momentum+';}
   else{cv.className='ctx-box cv no';cvv.textContent='Needs big move';}
   // Best day (using explosive mid)
   var bp=-Infinity,bd=1;
-  for(var d=1;d<=dte;d++){var r=atmExit(spot,iv3,dte,SCENS[2].mid,d);if(r.dol*contracts>bp){bp=r.dol*contracts;bd=d;}}
+  for(var d=1;d<=dte;d++){var r=gExit(SCENS[2].mid,d);if(r.dol*contracts>bp){bp=r.dol*contracts;bd=d;}}
   var selDay=SEL>0&&SEL<=dte?SEL:0;
-  var si=buildRows(spot,iv3,dte,contracts,costPer,stopPct,bd,selDay,10,'t-rows');
+  var si=buildRows(spot,iv3,dte,contracts,costPer,stopPct,bd,selDay,10,'c-rows');
   var sk=Object.keys(si),al=$('c-alert');
   if(sk.length>0){al.style.display='block';$('c-alert-t').textContent='Stop Zone (-'+stopPct+'% of premium)';$('c-alert-b').textContent=' '+sk.map(function(k){return k[0].toUpperCase()+k.slice(1)+' D'+si[k];}).join(' · ');}
   else al.style.display='none';
@@ -924,9 +988,44 @@ function straddleValue(dte,costPct){
   // Find closest benchmark bracket
   var b=BENCH[0];
   for(var i=0;i<BENCH.length;i++){if(BENCH[i].dte<=dte)b=BENCH[i];}
-  if(costPct<b.cheap)return{label:'CHEAP ✓',color:'#14532d',bg:'#dcfce7',note:'Good entry — below fair value'};
-  if(costPct<=b.fair[1])return{label:'FAIR',color:'#92400e',bg:'#fef9c3',note:'Fair price — acceptable'};
+  // Scale benchmark by chosen delta — strangles at 45Δ cost ~85% of ATM, 40Δ ~70%
+  var scale=1;
+  if(typeof STDL_DELTA!=='undefined'){
+    if(STDL_DELTA===45)scale=0.85;
+    else if(STDL_DELTA===40)scale=0.70;
+  }
+  var cheap=b.cheap*scale,fairLo=b.fair[0]*scale,fairHi=b.fair[1]*scale;
+  if(costPct<cheap)return{label:'CHEAP ✓',color:'#14532d',bg:'#dcfce7',note:'Good entry — below fair value'};
+  if(costPct<=fairHi)return{label:'FAIR',color:'#92400e',bg:'#fef9c3',note:'Fair price — acceptable'};
   return{label:'EXPENSIVE',color:'#991b1b',bg:'#fee2e2',note:'Overpaying — high IV'};
+}
+
+/* Delta-aware wrappers used by go2 (Size It) and go1 (Track It).
+   When STDL_DELTA=50 these collapse to the original atmExit + prem-based cost. */
+function _stdlExit(s,v,d,mv,h){
+  return strangleExit(s,v,d,stdlDeltaFrac(),mv,h);
+}
+function _stdlCostPerContract(s,d,v){
+  // Per-contract cost for the chosen delta strangle (both legs)
+  var sg=strangleAtDelta(s,d/365,v,stdlDeltaFrac());
+  return sg.cost*100;
+}
+/* Track-It variant: P&L computed from delta-implied strikes but against
+   the user's actual paid cost (per share). Returns {dol, pct, Kc, Kp, beUp, beDn}. */
+function _stdlTrackExit(s,v,d,mv,h,paidCostPerShare){
+  var T=d/365;
+  var sg=strangleAtDelta(s,T,v,stdlDeltaFrac());
+  var Kc=sg.Kc,Kp=sg.Kp;
+  var ns=s*(1+mv/100),rem=Math.max(d-h,0),eiv=v*(1-crush(h,d));
+  var val=rem>0
+    ?(bsC(ns,Kc,rem/365,eiv)+bsP(ns,Kp,rem/365,eiv))
+    :(Math.max(ns-Kc,0)+Math.max(Kp-ns,0));
+  var dol=(val-paidCostPerShare)*100;
+  return{
+    dol:dol,
+    pct:paidCostPerShare>0?dol/(paidCostPerShare*100)*100:0,
+    Kc:Kc,Kp:Kp,otmPct:sg.otmPct
+  };
 }
 
 function go2(){
@@ -942,10 +1041,10 @@ function go2(){
   var dteRows='';
   var allDTEData=[];
   DTES.forEach(function(dte){
-    var cp=prem(spot,dte,iv3)*100;if(cp<=0)return;
+    var cp=_stdlCostPerContract(spot,dte,iv3);if(cp<=0)return;
     var bp=-Infinity,bd=1;
     for(var d=1;d<=dte;d++){
-      var r=atmExit(spot,iv3,dte,moveMid,d);
+      var r=_stdlExit(spot,iv3,dte,moveMid,d);
       if(r.dol>bp){bp=r.dol;bd=d;}
     }
     var contracts=bp>0?Math.ceil(target/bp):null;
@@ -953,12 +1052,17 @@ function go2(){
     var totalPnl=contracts?bp*contracts:null;
     var hits=totalPnl>=target;
     // D1 no-move loss as % of capital
-    var noMoveD1=contracts?atmExit(spot,iv3,dte,0,1).dol*contracts:0;
+    var noMoveD1=contracts?_stdlExit(spot,iv3,dte,0,1).dol*contracts:0;
     var stopDol=capNeeded?capNeeded*stopPct/100:0;
     var riskRatio=capNeeded?Math.abs(noMoveD1)/capNeeded*100:0;
-    // Risk label
-    var risk=dte<=2?'Very High':dte<=5?'High':dte<=10?'Medium':'Lower';
-    var riskClr=dte<=2?'#991b1b':dte<=5?'#c2410c':dte<=10?'#92400e':'#166534';
+    // Risk label — based on D1 no-move loss as % of capital (economic risk, not calendar days)
+    // riskRatio = |noMoveD1| / capNeeded * 100 (computed above)
+    var risk,riskClr;
+    if(riskRatio>=60){risk='Very High';riskClr='#991b1b';}
+    else if(riskRatio>=40){risk='High';riskClr='#c2410c';}
+    else if(riskRatio>=20){risk='Medium';riskClr='#92400e';}
+    else if(riskRatio>=10){risk='Lower';riskClr='#166534';}
+    else{risk='Very Low';riskClr='#14532d';}
     if(hits&&(!bestDTE||capNeeded<bestCapital)){
       bestDTE=dte;bestCP=cp;bestContracts=contracts;bestCapital=capNeeded;bestPnl=totalPnl;bestDay=bd;
     }
@@ -976,11 +1080,7 @@ function go2(){
     var val=straddleValue(d.dte,costPct);
     var valBadge='<span style="background:'+val.bg+';color:'+val.color+';font-size:9px;font-weight:700;padding:3px 8px;border-radius:6px;margin-left:6px">'+val.label+'</span>';
     if(!d.hits){
-      dteRows+='<div style="background:#fafafa;border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:6px;opacity:.6">';
-      dteRows+='<div style="display:flex;align-items:center;justify-content:space-between">';
-      dteRows+='<span style="font-size:14px;font-weight:700;color:#334155">'+d.dte+' DTE</span>';
-      dteRows+='<span style="font-size:11px;color:var(--red)">Cannot hit target</span>';
-      dteRows+='</div></div>';
+      // Hide DTEs that can't hit target — silently skip
       return;
     }
     dteRows+='<div style="background:'+cardBg+';border:'+cardBorder+';border-radius:10px;padding:12px;margin-bottom:8px">';
@@ -1022,7 +1122,7 @@ function go2(){
     dteRows+='<div style="font-size:9px;color:#1e293b;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin:10px 0 6px">If '+moveMid.toFixed(1)+'% move happens on...</div>';
     dteRows+='<div style="display:grid;grid-template-columns:repeat('+timelineDays.length+',1fr);gap:5px">';
     timelineDays.forEach(function(day){
-      var pnlHere=atmExit(spot,iv3,d.dte,moveMid,day).dol*d.contracts;
+      var pnlHere=_stdlExit(spot,iv3,d.dte,moveMid,day).dol*d.contracts;
       var hitsTgt=pnlHere>=target;
       var lbl=day>=d.dte?'Expiry':'Day '+day;
       var tlClr=hitsTgt?'#14532d':pnlHere>0?'#15803d':'#b91c1c';
@@ -1036,11 +1136,16 @@ function go2(){
     });
     dteRows+='</div>';
     // No-move D1 loss
-    var noMv=atmExit(spot,iv3,d.dte,0,1).dol*d.contracts;
+    var noMv=_stdlExit(spot,iv3,d.dte,0,1).dol*d.contracts;
     dteRows+='<div style="margin-top:7px;font-size:10px;color:#b91c1c;font-weight:600;padding:5px 8px;background:#fef2f2;border-radius:6px">No move D1: '+fp(noMv)+' ('+Math.abs(noMv/d.capNeeded*100).toFixed(0)+'% of capital at risk)</div>';
 
     dteRows+='</div>'; // close card
   });
+  // Empty-state: no DTE hit target
+  if(!dteRows){
+    var hiInput=moveHi.toFixed(1);
+    dteRows='<div style="background:#fef2f2;border:1px solid #fca5a5;border-radius:10px;padding:12px;text-align:center"><div style="font-size:12px;font-weight:700;color:#b91c1c;margin-bottom:4px">No DTE hits target at this move range</div><div style="font-size:11px;color:#7f1d1d;font-weight:600">'+(STDL_DELTA===50?'Straddle':STDL_DELTA+'Δ strangle')+' needs a bigger move (your high: '+hiInput+'%) or higher target to be profitable. Try widening the move range or lowering target.</div></div>';
+  }
   $('sz-dte-rows').innerHTML=dteRows;
 
   // Answer card
@@ -1049,15 +1154,21 @@ function go2(){
     var stopDollar=bestCP*bestContracts*stopPct/100;
     var bestCostPct=bestCP/spot*100;
     var bestVal=straddleValue(bestDTE,bestCostPct);
+    // Strike info for chosen delta
+    var bestSg=strangleAtDelta(spot,bestDTE/365,iv3,stdlDeltaFrac());
     // Expected move cone
     renderMoveCone(spot,bestCP,moveLo,moveHi,bestContracts,target);
-    $('sz-title').textContent=bestDTE+' DTE ATM Straddle';
-    $('sz-sub').textContent=T2.toUpperCase()+' @ $'+spot.toFixed(0)+' · Expecting '+moveLo+'%–'+moveHi+'% move · Exit Day '+bestDay+' · Cost '+bestCostPct.toFixed(2)+'% of spot → '+bestVal.label;
+    var titleLbl=STDL_DELTA===50?'ATM Straddle':STDL_DELTA+'Δ Strangle';
+    var strikeInfo=STDL_DELTA===50
+      ?'ATM strike $'+bestSg.Kc.toFixed(0)
+      :'Strikes $'+bestSg.Kp.toFixed(2)+' / $'+bestSg.Kc.toFixed(2)+' (±'+bestSg.otmPct.toFixed(2)+'%)';
+    $('sz-title').textContent=bestDTE+' DTE '+titleLbl;
+    $('sz-sub').textContent=T2.toUpperCase()+' @ $'+spot.toFixed(0)+' · '+strikeInfo+' · Expecting '+moveLo+'%–'+moveHi+'% move · Exit Day '+bestDay+' · Cost '+bestCostPct.toFixed(2)+'% of spot → '+bestVal.label;
     $('sz-grid').innerHTML=
       sbox('Capital Needed','$'+fmt(bestCapital),'amber')+
-      sbox('Contracts',bestContracts+(bestContracts===1?' contract':' contracts'),'blue')+
-      sbox('Cost / Contract','$'+bestCP.toFixed(2)+' ('+bestCostPct.toFixed(2)+'%)','text')+
-      sbox('Straddle Value',bestVal.label,bestVal.label==='CHEAP ✓'?'green':bestVal.label==='FAIR'?'amber':'red')+
+      sbox('Contracts',bestContracts+(bestContracts===1?' '+(STDL_DELTA===50?'straddle':'strangle'):' '+(STDL_DELTA===50?'straddles':'strangles')),'blue')+
+      sbox('Cost / Package','$'+bestCP.toFixed(2)+' ('+bestCostPct.toFixed(2)+'%)','text')+
+      sbox('Premium Value',bestVal.label,bestVal.label==='CHEAP ✓'?'green':bestVal.label==='FAIR'?'amber':'red')+
       sbox('Max P&L',fp(bestPnl),'green')+
       sbox('Max Loss (stop)','$'+fmt(stopDollar)+' ('+stopPct+'%)','red');
 
@@ -1072,10 +1183,10 @@ function go2(){
 
     var sh='';
     moves.forEach(function(mv){
-      var d1=atmExit(spot,iv3,bestDTE,mv,1).dol*bestContracts;
-      var d2=atmExit(spot,iv3,bestDTE,mv,Math.min(2,bestDTE)).dol*bestContracts;
-      var d3=atmExit(spot,iv3,bestDTE,mv,Math.min(3,bestDTE)).dol*bestContracts;
-      var dE=atmExit(spot,iv3,bestDTE,mv,bestDTE).dol*bestContracts;
+      var d1=_stdlExit(spot,iv3,bestDTE,mv,1).dol*bestContracts;
+      var d2=_stdlExit(spot,iv3,bestDTE,mv,Math.min(2,bestDTE)).dol*bestContracts;
+      var d3=_stdlExit(spot,iv3,bestDTE,mv,Math.min(3,bestDTE)).dol*bestContracts;
+      var dE=_stdlExit(spot,iv3,bestDTE,mv,bestDTE).dol*bestContracts;
       var stopThresh=-(bestCP*bestContracts*stopPct/100);
       function pclr(v){return v>=target?'#14532d':v>0?'#15803d':v>stopThresh?'#b91c1c':'#7f1d1d';}
       function pbg(v){return v>=target?'#f0fdf4':v>0?'#f0fdf4':v>stopThresh?'#fef2f2':'#fef2f2';}
@@ -1378,7 +1489,7 @@ setInterval(function(){
 
 /* ── DIRECTIONAL P&L TABLE (single leg call or put) ── */
 function buildDirectionalRows(spot,K,iv3,dte,contracts,costPer,stopPct,bestDay,isCall,targetId){
-  var DMOVES=[0.5,1,1.5,2,3,5,7,10];
+  var DMOVES=[0.5,1,1.5,2,3,5];
   // Dynamic day slabs — fewer columns for readability
   var DAYS=[];
   if(dte<=3){DAYS=[1,dte];}
@@ -1393,11 +1504,11 @@ function buildDirectionalRows(spot,K,iv3,dte,contracts,costPer,stopPct,bestDay,i
   var hd=$('g-stbl-hd');
   if(hd){
     hd.style.gridTemplateColumns=colW;
-    var hdh='<div class="shd" style="font-size:10px">Move</div>';
+    var hdh='<div class="shd" style="font-size:10px;padding:6px 4px">Move</div>';
     DAYS.forEach(function(d){
       var isBest=d===bestDay,isExp=d===dte;
       var cls=isExp?'ex':isBest?'mo':'dr';
-      hdh+='<div class="shd '+cls+'">'+(isExp?'Exp':'D'+d)+(isBest?'<span class="rng">★</span>':'')+'</div>';
+      hdh+='<div class="shd '+cls+'" style="padding:6px 4px">'+(isExp?'Exp':'D'+d)+(isBest?'<span class="rng" style="margin-top:1px">★</span>':'')+'</div>';
     });
     hd.innerHTML=hdh;
   }
@@ -1419,11 +1530,11 @@ function buildDirectionalRows(spot,K,iv3,dte,contracts,costPer,stopPct,bestDay,i
     });
     var rowCls='srow'+(isStop?' stop':cells.some(function(c,i){return DAYS[i]===bestDay&&c.c==='p'})?' best':'');
     sh+='<div class="'+rowCls+'" style="grid-template-columns:'+colW+'">';
-    sh+='<div class="dcell"><span class="dname" style="font-size:12px">'+(isCall?'+':'-')+mv+'%</span></div>';
+    sh+='<div class="dcell" style="min-height:32px;padding:4px 4px"><span class="dname" style="font-size:12px">'+(isCall?'+':'-')+mv+'%</span></div>';
     cells.forEach(function(cell,ci){
       var pctStr=(cell.pct>=0?'+':'')+Math.round(cell.pct)+'%';
       var colCls=ci%2===0?'vcell dr':'vcell mo';
-      sh+='<div class="'+colCls+'" style="min-height:44px;padding:6px 2px"><span class="vamt '+clr(cell.c)+'" style="font-size:13px;font-weight:800">'+pctStr+'</span></div>';
+      sh+='<div class="'+colCls+'" style="min-height:32px;padding:4px 2px"><span class="vamt '+clr(cell.c)+'" style="font-size:12px;font-weight:800">'+pctStr+'</span></div>';
     });
     sh+='</div>';
   });
@@ -1648,9 +1759,36 @@ function processSignal(valid,capital,target,stopPct,sym){
       $('g-pnl-label').textContent=(isCall?'Call':'Put')+' P&L by Day — '+dte+' DTE $'+K+' Strike';
     }
 
+    // ── Equivalent straddle/strangle context strip ──
+    // Shows what 50Δ/45Δ/40Δ packages would cost at this DTE — informational only.
+    var ctxEl=$('g-stdl-context');
+    if(ctxEl){
+      var ctxRows='';
+      [50,45,40].forEach(function(d){
+        var sg=strangleAtDelta(spot,T,iv3,d/100);
+        var pkgCost=sg.cost*100;
+        var pkgCostPct=sg.cost/spot*100;
+        var pkgContracts=capital>0&&pkgCost>0?Math.max(1,Math.floor(capital/pkgCost)):0;
+        var lbl=d===50?'Straddle (ATM)':d+'Δ Strangle';
+        var strikes=d===50
+          ?'$'+Math.round(sg.Kc)
+          :'$'+sg.Kp.toFixed(0)+'/$'+sg.Kc.toFixed(0);
+        ctxRows+='<div style="background:rgba(0,0,0,.04);padding:8px 10px;border-radius:7px">';
+        ctxRows+='<div style="font-size:9px;color:#374151;text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:3px">'+lbl+'</div>';
+        ctxRows+='<div style="font-size:13px;font-weight:800;color:'+color+'">$'+pkgCost.toFixed(0)+'/pkg</div>';
+        ctxRows+='<div style="font-size:9px;color:#475569;font-weight:600;margin-top:2px">'+strikes+' · '+pkgCostPct.toFixed(2)+'% of spot</div>';
+        if(pkgContracts>0)ctxRows+='<div style="font-size:9px;color:#475569;font-weight:600">'+pkgContracts+'c · $'+fmt(pkgCost*pkgContracts)+'</div>';
+        ctxRows+='</div>';
+      });
+      ctxEl.innerHTML=
+        '<div style="font-size:9px;color:#374151;text-transform:uppercase;letter-spacing:.12em;font-weight:700;margin-bottom:6px">Non-directional alternatives at '+dte+' DTE</div>'
+        +'<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">'+ctxRows+'</div>';
+    }
+
   } else {
     sg.innerHTML='<div style="grid-column:1/-1;padding:10px;font-size:12px;color:#1e293b;font-weight:600">No trade recommended — wait for stronger signal</div>';
     if($('g-rows'))$('g-rows').innerHTML='';
+    if($('g-stdl-context'))$('g-stdl-context').innerHTML='';
     $('g-pnl-label').textContent='P&L by Day';
   }
 
@@ -1684,14 +1822,30 @@ function processSignal(valid,capital,target,stopPct,sym){
 
 /* ── TAB 5: BACKTEST ── */
 var AV_KEY='SBJ9BETAMVAZQM9D';
-var T5='qqq',BT_DTE=0,BT_MODE='open';
+var T5='qqq',BT_DTE=0,BT_MODE='open',BT_DELTA=50;
+function btDeltaFrac(){return BT_DELTA/100;}
+function btPkgLbl(){return BT_DELTA===50?'ATM straddle':BT_DELTA+'Δ strangle';}
+function setBtDelta(d){
+  BT_DELTA=d;
+  [40,45,50].forEach(function(x){
+    var el=$('bt-delta-'+x);
+    if(el)el.className='tab'+(d===x?' on':'');
+  });
+  // Refresh title to reflect new delta
+  refreshBtModeTitle();
+  go5();
+}
+function refreshBtModeTitle(){
+  var pkg=btPkgLbl();
+  $('bt-mode-title').textContent=BT_MODE==='open'
+    ?'If I bought '+pkg+' at open each day...'
+    :'If I bought '+pkg+' ~3:55pm prior day, closed next EOD...';
+}
 function setBtMode(m){
   BT_MODE=m;
   $('bt-mode-open').className='tab'+(m==='open'?' on':'');
   $('bt-mode-overnight').className='tab'+(m==='overnight'?' on':'');
-  $('bt-mode-title').textContent=m==='open'
-    ?'If I bought ATM straddle at open each day...'
-    :'If I bought ATM straddle ~3:55pm prior day, closed next EOD...';
+  refreshBtModeTitle();
   go5();
 }
 var BT_DAYS=[
@@ -1816,7 +1970,26 @@ function btSim(openPx,high,low,close,iv3,capital){
   // Cost at open: use actual DTE
   // For 0-DTE use a tiny fraction to avoid math issues (0.1 days)
   var dteForCost=Math.max(dte,0.1);
-  var cost=prem(openPx,dteForCost,iv3)*100;
+
+  // Delta-aware strike selection: 50Δ → Kc=Kp=openPx (ATM straddle), 40/45Δ → OTM strangle
+  var isAtm=BT_DELTA===50;
+  var Kc,Kp,cost;
+  if(isAtm){
+    Kc=openPx;Kp=openPx;
+    cost=prem(openPx,dteForCost,iv3)*100;
+  } else {
+    var sg=strangleAtDelta(openPx,dteForCost/365,iv3,btDeltaFrac());
+    // Round to $1 grid only at >=5-DTE; at 0/1-DTE use exact strikes
+    // (at very short DTE, rounding collapses 45Δ/50Δ to the same strikes)
+    if(dte>=5){
+      Kc=Math.round(sg.Kc);
+      Kp=Math.round(sg.Kp);
+    } else {
+      Kc=sg.Kc;
+      Kp=sg.Kp;
+    }
+    cost=(bsC(openPx,Kc,dteForCost/365,iv3)+bsP(openPx,Kp,dteForCost/365,iv3))*100;
+  }
   var contracts=capital>0&&cost>0?Math.max(1,Math.floor(capital/cost)):1;
   var totalCost=cost*contracts;
 
@@ -1845,21 +2018,35 @@ function btSim(openPx,high,low,close,iv3,capital){
     var rem=Math.max(remDays,0); // pass as days - callput divides by 365 internally
     var val;
     if(rem<0.01){
-      val=(Math.max(np-openPx,0)+Math.max(openPx-np,0))*100;
+      val=(Math.max(np-Kc,0)+Math.max(Kp-np,0))*100;
+    } else if(isAtm){
+      val=(callput(np,Kc,rem,eiv,true)+callput(np,Kp,rem,eiv,false))*100;
     } else {
-      val=(callput(np,openPx,rem,eiv,true)+callput(np,openPx,rem,eiv,false))*100;
+      // For OTM strangle use full BS pricing (callput approximation degrades for OTM)
+      val=(bsC(np,Kc,rem/365,eiv)+bsP(np,Kp,rem/365,eiv))*100;
     }
     return (val-cost)*contracts;
   }
 
   var pnlBest=pnlAt(bestDir==='UP'?bestMove:-dnMove, remAtBest, ivCrushIntra);
   var pnlEOD=pnlAt(eodMove, remAtEOD, ivCrushEOD);
-  var bePct=(cost/100)/openPx*100;
+  // B/E based on strikes (ATM: ±cost/spot; OTM: from Kc-openPx + premium and openPx-Kp + premium)
+  var costPerShare=cost/100;
+  var bePct;
+  if(isAtm){
+    bePct=costPerShare/openPx*100;
+  } else {
+    // need move beyond Kc+premium (up) or below Kp-premium (down)
+    var beUpPct=(Kc+costPerShare-openPx)/openPx*100;
+    var beDnPct=(openPx-(Kp-costPerShare))/openPx*100;
+    bePct=Math.min(beUpPct,beDnPct); // closer side determines whether you cleared
+  }
   var beClears=bestMove>=bePct;
   var eodClears=eodAbs>=bePct;
 
   return{
     cost:cost,contracts:contracts,totalCost:totalCost,dte:dte,
+    strike:Math.round(openPx),Kc:Kc,Kp:Kp,
     upMove:upMove,dnMove:dnMove,eodMove:eodMove,eodAbs:eodAbs,
     bestMove:bestMove,bestDir:bestDir,
     pnlBest:pnlBest,pnlEOD:pnlEOD,
@@ -1873,26 +2060,39 @@ function btSim(openPx,high,low,close,iv3,capital){
    eodMove  = day N+1 close distance from strike (the trade actually closed here). */
 function btSimOvernight(entryClose,nextOpen,nextHigh,nextLow,nextClose,iv3,capital){
   var dte=BT_DTE;
-  // strike rounded to nearest $1 — realistic strike grid
-  var K=Math.round(entryClose);
-  // entry cost computed at day-N close (DTE days to expiry)
   var dteForCost=Math.max(dte,0.1);
-  var cost=prem(entryClose,dteForCost,iv3)*100;
+  // Delta-aware strikes: 50Δ → single ATM strike at round(entryClose); 40/45Δ → OTM strangle
+  var isAtm=BT_DELTA===50;
+  var Kc,Kp,K,cost;
+  if(isAtm){
+    K=Math.round(entryClose);
+    Kc=K;Kp=K;
+    cost=prem(entryClose,dteForCost,iv3)*100;
+  } else {
+    var sg=strangleAtDelta(entryClose,dteForCost/365,iv3,btDeltaFrac());
+    // Round to $1 grid only at >=5-DTE
+    if(dte>=5){
+      Kc=Math.round(sg.Kc);
+      Kp=Math.round(sg.Kp);
+    } else {
+      Kc=sg.Kc;
+      Kp=sg.Kp;
+    }
+    K=Math.round(entryClose); // reference midpoint for move calcs
+    cost=(bsC(entryClose,Kc,dteForCost/365,iv3)+bsP(entryClose,Kp,dteForCost/365,iv3))*100;
+  }
   var contracts=capital>0&&cost>0?Math.max(1,Math.floor(capital/cost)):1;
   var totalCost=cost*contracts;
-  // moves relative to strike K (not entry close — strike is the pivot)
-  var upMove=(nextHigh-K)/K*100;
-  var dnMove=(K-nextLow)/K*100;
-  var eodMove=(nextClose-K)/K*100;
-  var openMove=(nextOpen-K)/K*100;
+  // moves: ATM mode uses rounded strike K (preserves original behavior); OTM uses entry close (strike midpoint is non-integer)
+  var pivot=isAtm?K:entryClose;
+  var upMove=(nextHigh-pivot)/pivot*100;
+  var dnMove=(pivot-nextLow)/pivot*100;
+  var eodMove=(nextClose-pivot)/pivot*100;
+  var openMove=(nextOpen-pivot)/pivot*100;
   var eodAbs=Math.abs(eodMove);
   var bestMove=Math.max(upMove,dnMove);
   var bestDir=upMove>=dnMove?'UP':'DOWN';
-  // 1 full day has elapsed at next-EOD exit
-  // For 0-DTE entered at prior close → expired at next morning, fully crushed
-  // For 1-DTE entered at prior close → expires at next EOD (intrinsic only)
-  // For 5/8-DTE → DTE - 1 remaining at next close
-  var remAtBest=dte===0?0:dte===1?0.05:dte-0.6; // intraday next day, ~midday
+  var remAtBest=dte===0?0:dte===1?0.05:dte-0.6;
   var remAtEOD=dte===0?0:dte===1?0:dte-1;
   var ivCrushBest=dte===0?1.0:dte===1?0.6:0.20;
   var ivCrushEOD=dte===0?1.0:dte===1?1.0:0.30;
@@ -1901,22 +2101,32 @@ function btSimOvernight(entryClose,nextOpen,nextHigh,nextLow,nextClose,iv3,capit
     var rem=Math.max(remDays,0);
     var val;
     if(rem<0.01){
-      val=(Math.max(spotAtExit-K,0)+Math.max(K-spotAtExit,0))*100;
+      val=(Math.max(spotAtExit-Kc,0)+Math.max(Kp-spotAtExit,0))*100;
+    } else if(isAtm){
+      val=(callput(spotAtExit,Kc,rem,eiv,true)+callput(spotAtExit,Kp,rem,eiv,false))*100;
     } else {
-      val=(callput(spotAtExit,K,rem,eiv,true)+callput(spotAtExit,K,rem,eiv,false))*100;
+      val=(bsC(spotAtExit,Kc,rem/365,eiv)+bsP(spotAtExit,Kp,rem/365,eiv))*100;
     }
     return (val-cost)*contracts;
   }
-  // Best intraday: take whichever extreme is further from K
   var bestSpot=bestDir==='UP'?nextHigh:nextLow;
   var pnlBest=pnlAt(bestSpot, remAtBest, ivCrushBest);
   var pnlEOD=pnlAt(nextClose, remAtEOD, ivCrushEOD);
-  var bePct=(cost/100)/K*100;
+  // B/E
+  var costPerShare=cost/100;
+  var bePct;
+  if(isAtm){
+    bePct=costPerShare/K*100;
+  } else {
+    var beUpPct=(Kc+costPerShare-pivot)/pivot*100;
+    var beDnPct=(pivot-(Kp-costPerShare))/pivot*100;
+    bePct=Math.min(beUpPct,beDnPct);
+  }
   var beClears=bestMove>=bePct;
   var eodClears=eodAbs>=bePct;
   return{
     cost:cost,contracts:contracts,totalCost:totalCost,dte:dte,
-    strike:K,entryClose:entryClose,openMove:openMove,
+    strike:K,Kc:Kc,Kp:Kp,entryClose:entryClose,openMove:openMove,
     upMove:upMove,dnMove:dnMove,eodMove:eodMove,eodAbs:eodAbs,
     bestMove:bestMove,bestDir:bestDir,
     pnlBest:pnlBest,pnlEOD:pnlEOD,
@@ -1979,12 +2189,20 @@ function go5(){
 
     var dayData;
     var headerMeta;
+    var strikeStr;
+    function fmtK(k){ return Number.isInteger(k)?('$'+k):('$'+k.toFixed(2)); }
+    if(BT_DELTA===50){
+      strikeStr='Strike '+fmtK(r.strike);
+    } else {
+      strikeStr='Strikes '+fmtK(r.Kp)+'/'+fmtK(r.Kc);
+    }
     if(BT_MODE==='overnight'){
-      dayData=r._exitDay; // for any downstream references
-      headerMeta='Strike $'+r.strike+' · Entry $'+r.entryClose.toFixed(2)+' · '+BT_DTE+'-DTE · $'+r.cost.toFixed(0)+'/c · '+r.contracts+'c';
+      dayData=r._exitDay;
+      headerMeta=strikeStr+' · Entry $'+r.entryClose.toFixed(2)+' · '+BT_DTE+'-DTE · $'+r.cost.toFixed(0)+'/c · '+r.contracts+'c';
     } else {
       dayData=validDays.find(function(d){return d.label===r.label;});
-      headerMeta='Open $'+dayData.o.toFixed(2)+' · '+BT_DTE+'-DTE · $'+r.cost.toFixed(0)+'/c · '+r.contracts+'c';
+      var openStr=BT_DELTA===50?('Open $'+dayData.o.toFixed(2)):(strikeStr+' · Open $'+dayData.o.toFixed(2));
+      headerMeta=openStr+' · '+BT_DTE+'-DTE · $'+r.cost.toFixed(0)+'/c · '+r.contracts+'c';
     }
 
     cards+='<div style="background:var(--p1);border:1px solid var(--border);border-radius:12px;padding:12px">';
@@ -2068,7 +2286,8 @@ function go5(){
   var tweet='';
   var sym=T5.toUpperCase();
   var dteLabel=BT_DTE===0?'0-DTE':BT_DTE+'-DTE';
-  var entryPhrase=BT_MODE==='overnight'?'straddle bought prior-day close, exit next EOD':'straddle at open';
+  var pkgPhrase=BT_DELTA===50?'straddle':BT_DELTA+'Δ strangle';
+  var entryPhrase=BT_MODE==='overnight'?(pkgPhrase+' bought prior-day close, exit next EOD'):(pkgPhrase+' at open');
   var nDays=results.length;
   var unitLbl=BT_MODE==='overnight'?'overnights':'days';
 
@@ -2599,30 +2818,36 @@ function startStripe(){
 
 
 /* ── STRADDLE TAB MODE ── */
+/* ── Strdl/Strngl delta selector ── */
+var STDL_DELTA=50; // 40 | 45 | 50 — 50 = ATM straddle (default, original behavior)
+function setStdlDelta(d){
+  STDL_DELTA=d;
+  [40,45,50].forEach(function(x){
+    var el=$('st-delta-'+x);
+    if(el)el.className='tab'+(d===x?' on':'');
+  });
+  go2();
+}
+function stdlDeltaFrac(){return STDL_DELTA/100;}
+function stdlLabel(){return STDL_DELTA===50?'Straddle':'Strangle '+STDL_DELTA+'Δ';}
+
 var ST_MODE='size';
+// setStraddleMode kept for safety in case any old reference exists; Track It removed.
 function setStraddleMode(mode){
-  ST_MODE=mode;
-  $('st-mode-size').className='tab'+(mode==='size'?' on':'');
-  $('st-mode-track').className='tab'+(mode==='track'?' on':'');
-  $('st-size-inputs').style.display=mode==='size'?'':'none';
-  $('st-track-inputs').style.display=mode==='track'?'':'none';
-  $('st-size-results').style.display=mode==='size'?'':'none';
-  $('st-track-results').style.display=mode==='track'?'':'none';
-  var lbl=$('st-mode-label');
-  if(lbl)lbl.textContent=mode==='size'?'How much capital do I need?':'P&L for my straddle';
-  if(mode==='size')go2();else go1();
+  ST_MODE='size';
+  go2();
 }
 function setTSt(t){
   ['spy','qqq'].forEach(function(x){$('t-st-'+x).className='tk '+x+(t===x?' on':'');});
-  // Sync both underlying ticker selectors
+  // Sync the hidden Tab 1 ticker selector if present (kept for any in-pane1 references)
   if(typeof T1!=='undefined'){T1=t;['spy','qqq'].forEach(function(x){var el=$('t1-'+x);if(el)el.className='tk '+x+(t===x?' on':'');});}
   if(typeof T2!=='undefined'){T2=t;['spy','qqq'].forEach(function(x){var el=$('t2-'+x);if(el)el.className='tk '+x+(t===x?' on':'');});}
   var d=DEFS[t];
   var p=LIVE[t]>0?LIVE[t]:d.spot;
-  // Update all price inputs
-  [$('r1'),$('c1')].forEach(function(el){if(el)el.value=p.toFixed(2);});
-  [$('r2'),$('c3')].forEach(function(el){if(el)el.value=d.iv;});
-  if(ST_MODE==='size')go2();else go1();
+  // Update Size-It inputs only
+  var r1=$('r1');if(r1)r1.value=p.toFixed(2);
+  var r2=$('r2');if(r2)r2.value=d.iv;
+  go2();
 }
 
 /* ── INIT ── */
