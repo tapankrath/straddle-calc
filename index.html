@@ -40,7 +40,7 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appear
 .tab.on{background:var(--text);color:#fff}
 .pane{display:none}.pane.on{display:block}
 /* MKT STATUS PILL */
-.mkt-pill{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:900;padding:3px 8px;border-radius:20px;letter-spacing:.05em;transition:all .5s;white-space:nowrap}
+.mkt-pill{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:900;padding:4px 10px;border-radius:20px;letter-spacing:.06em;transition:all .5s;white-space:nowrap;text-transform:uppercase}
 .mkt-pill.bull{background:#f0fdf4;color:#15803d;border:1.5px solid #86efac}
 .mkt-pill.bear{background:#fef2f2;color:#b91c1c;border:1.5px solid #fca5a5}
 .mkt-pill.flat{background:#fffbeb;color:#b45309;border:1.5px solid #fcd34d}
@@ -248,10 +248,9 @@ input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;bac
     <span style="font-size:22px;font-weight:900;color:#0a0f1e;letter-spacing:-.03em;font-family:'Inter',-apple-system,sans-serif">GammaEdge</span>
     <span style="font-size:9px;font-weight:700;color:#64748b;letter-spacing:.08em;text-transform:uppercase;margin-top:2px">Options Intelligence</span>
   </div>
-  <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
-    <a href="portfolioedge.html" target="_blank" rel="noopener" style="background:#0a0f1e;color:#fff;border:none;border-radius:6px;padding:6px 10px;font-size:10px;font-weight:800;letter-spacing:.04em;text-decoration:none;display:inline-flex;align-items:center;gap:3px;font-family:'Inter',-apple-system,sans-serif;white-space:nowrap">Adjust Portfolio →</a>
-    <span style="font-size:9px;font-weight:900;color:#64748b;letter-spacing:.08em;text-transform:uppercase">MKT NOW</span>
-    <span class="mkt-pill wait" id="mktPill">—</span>
+  <div style="display:flex;align-items:center;gap:5px;flex-shrink:0">
+    <a href="portfolioedge.html" target="_blank" rel="noopener" style="background:#0a0f1e;color:#fff;border:none;border-radius:6px;padding:5px 9px;font-size:10px;font-weight:800;letter-spacing:.04em;text-decoration:none;display:inline-flex;align-items:center;gap:3px;font-family:'Inter',-apple-system,sans-serif;white-space:nowrap">Adjust Portfolio →</a>
+    <span class="mkt-pill wait" id="mktPill">MKT —</span>
   </div>
 </div>
 
@@ -898,12 +897,12 @@ function updateMktNow(bull,bear){
   var cls,txt;
   var spy=LIVE_CHG['spy'],qqq=LIVE_CHG['qqq'];
   if(spy===undefined&&qqq===undefined){
-    cls='wait';txt='—';
+    cls='wait';txt='MKT —';
   } else {
     var avg=((spy||0)+(qqq||0))/((spy!==undefined?1:0)+(qqq!==undefined?1:0)||1);
-    if(avg>=0.3){cls='bull';txt='🟢 BULLISH';}
-    else if(avg<=-0.3){cls='bear';txt='🔴 BEARISH';}
-    else{cls='flat';txt='🟡 FLAT';}
+    if(avg>=0.3){cls='bull';txt='MKT ▲';}
+    else if(avg<=-0.3){cls='bear';txt='MKT ▼';}
+    else{cls='flat';txt='MKT —';}
   }
   el.className='mkt-pill '+cls;
   el.textContent=txt;
