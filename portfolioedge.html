@@ -47,13 +47,14 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 /* ── UPLOAD ZONE ── */
 .upload-section{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
 @media(max-width:700px){.upload-section{grid-template-columns:1fr}.pos-row{grid-template-columns:1fr 1fr;gap:6px}.pos-row>*:last-child{grid-column:1/-1}}
-.drop-zone{border:2px dashed var(--border);border-radius:14px;padding:28px 20px;text-align:center;cursor:pointer;transition:all .2s;position:relative;background:var(--s1)}
-.drop-zone:hover,.drop-zone.drag{border-color:var(--acc);background:rgba(0,150,58,.03)}
+.drop-zone{border:2px dashed #cbd5e1;border-radius:16px;padding:32px 24px;text-align:center;cursor:pointer;transition:all .25s;position:relative;background:linear-gradient(145deg,#ffffff,#f8fafc);box-shadow:0 2px 10px rgba(0,0,0,.04)}
+.drop-zone:hover,.drop-zone.drag{border-color:var(--acc);background:linear-gradient(145deg,#f0fdf4,#f8fff9);box-shadow:0 4px 18px rgba(22,101,52,.1);transform:translateY(-1px)}
 .drop-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;z-index:10}
-.drop-zone .drop-icon,.drop-zone .drop-label,.drop-zone .drop-sub{pointer-events:none;position:relative;z-index:1}
-.drop-icon{font-size:1.8rem;margin-bottom:8px;display:block}
-.drop-label{font-size:.88rem;color:var(--txt);font-weight:800;margin-bottom:3px}
-.drop-sub{font-size:.78rem;color:#374151;font-weight:600}
+.drop-zone .drop-icon,.drop-zone .drop-label,.drop-zone .drop-sub,.drop-zone .drop-hint{pointer-events:none;position:relative;z-index:1}
+.drop-icon{font-size:2.2rem;margin-bottom:10px;display:block;filter:drop-shadow(0 2px 4px rgba(0,0,0,.1))}
+.drop-label{font-size:.9rem;color:var(--txt);font-weight:800;margin-bottom:4px;letter-spacing:-.01em}
+.drop-sub{font-size:.76rem;color:#64748b;font-weight:500;margin-bottom:8px}
+.drop-hint{display:inline-flex;align-items:center;gap:5px;background:rgba(22,101,52,.07);border:1px solid rgba(22,101,52,.15);color:var(--acc);font-size:.65rem;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:.04em}
 .preview-wrap{position:relative}
 .preview-wrap img{width:100%;border-radius:10px;border:1px solid var(--b1);display:block;max-height:240px;object-fit:contain;background:var(--s2)}
 .preview-clear{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.9);border:1px solid var(--b2);border-radius:50%;width:26px;height:26px;color:var(--mut);cursor:pointer;font-size:.75rem;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.1)}
@@ -63,8 +64,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 .manual-section{background:var(--p1);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
 .manual-title{font-size:10px;font-family:var(--sans);font-weight:800;letter-spacing:.15em;color:#374151;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px}
 .positions-grid{display:flex;flex-direction:column;gap:8px}
-.pos-row{display:grid;grid-template-columns:90px 80px 80px 95px 90px 1fr auto;gap:8px;align-items:center}
-.pos-row input,.pos-row select{background:var(--p2);border:1.5px solid var(--border);border-radius:8px;color:var(--text);padding:9px 12px;font-family:var(--sans);font-size:15px;font-weight:700;width:100%;transition:border-color .15s}
+.pos-row{display:grid;grid-template-columns:90px 80px 80px 95px 115px 1fr auto;gap:8px;align-items:center}
+.pos-row input,.pos-row select{background:var(--p2);border:1.5px solid var(--border);border-radius:8px;color:var(--text);padding:8px 10px;font-family:var(--sans);font-size:13px;font-weight:700;width:100%;transition:border-color .15s}
 .pos-row input:focus,.pos-row select:focus{outline:none;border-color:var(--green);background:#fff;box-shadow:0 0 0 3px rgba(22,101,52,.1)}
 .pos-row input::placeholder{color:var(--mut)}
 .field-label{font-size:.68rem;color:#374151;font-family:var(--sans);font-weight:700;letter-spacing:.07em;text-transform:uppercase;margin-bottom:3px}
@@ -207,8 +208,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
         <div class="drop-zone" id="dropZone" ondragover="onDrag(event,true)" ondragleave="onDrag(event,false)" ondrop="onDrop(event)">
           <input type="file" id="fileInput" accept="image/*" onchange="onFile(event)">
           <span class="drop-icon">📸</span>
-          <div class="drop-label">Drop your brokerage screenshot here</div>
-          <div class="drop-sub">or click to browse · PNG, JPG, WEBP</div>
+          <div class="drop-label">Upload your positions screenshot</div>
+          <div class="drop-sub">Drag &amp; drop or tap to browse</div>
+          <div class="drop-hint">✦ AI reads any brokerage · PNG, JPG, WEBP</div>
         </div>
       </div>
       <div id="previewCol" style="display:none;width:160px;flex-shrink:0">
@@ -218,7 +220,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
     </div>
     <div class="manual-section" id="manualSection">
       <div class="manual-title"><span>📋</span><span>Or enter manually</span><span style="color:var(--b2);font-weight:400"> — instead of screenshot</span></div>
-      <div style="display:grid;grid-template-columns:90px 80px 80px 95px 90px 1fr;gap:8px;margin-bottom:6px">
+      <div style="display:grid;grid-template-columns:90px 80px 80px 95px 115px 1fr;gap:8px;margin-bottom:6px">
         <div class="field-label">Ticker</div><div class="field-label">Type</div>
         <div class="field-label">Size</div><div class="field-label">Last / Avg Cost</div>
         <div class="field-label">P&amp;L ($)</div><div class="field-label">Notes</div>
@@ -302,7 +304,14 @@ function getApiKey(){ return localStorage.getItem(API_KEY_STORAGE)||''; }
 function setApiKey(k){ localStorage.setItem(API_KEY_STORAGE, k.trim()); }
 // Use getApiKey() everywhere instead of ANTHROPIC_KEY
 const FINNHUB_KEY = 'd81r01pr01qrojfcs5cgd81r01pr01qrojfcs5d0';
-const CLAUDE_MODEL = 'claude-sonnet-4-6';
+// Model fallback list — tries newest first, falls back if unavailable.
+// To update: add the new model string at the front of this array.
+const CLAUDE_MODELS = [
+  'claude-opus-4-5',
+  'claude-sonnet-4-5',
+  'claude-haiku-4-5-20251001'
+];
+var CLAUDE_MODEL = CLAUDE_MODELS[0]; // updated at runtime if a model fails
 var mode = 'auto';
 var imageB64 = null;
 var imageType = 'image/png';
@@ -687,17 +696,16 @@ async function analyze(){
   } catch(e){
     var msg = e.message || 'Something went wrong.';
     var extra = '';
-    if(msg.includes('Add your Anthropic') || msg.includes('ANTHROPIC_KEY') || msg.includes('api_key')){
-      extra = '<div style="margin-top:10px;line-height:1.8">'
-        +'<b>One-time setup:</b><br>'
-        +'Open <code style="background:#0a0a0f;padding:3px 8px;border-radius:4px;color:#00ff88">optionlens.html</code> in a text editor<br>'
-        +'Find the line: <code style="color:#00aaff">const ANTHROPIC_KEY = \'\';</code><br>'
-        +'Paste your key: <code style="color:#00aaff">const ANTHROPIC_KEY = \'sk-ant-YOUR-KEY\';</code>'
+    if(msg.toLowerCase().includes('api key') || msg.toLowerCase().includes('x-api-key') || msg.toLowerCase().includes('invalid') || msg.includes('401')){
+      extra = '<div style="margin-top:8px;line-height:1.8">'
+        +'<b>Fix:</b> Tap <b>⚙ API Key</b> in the nav bar and re-paste your key.<br>'
+        +'Get one at <a href="https://console.anthropic.com" target="_blank" style="color:#1a5fa8;font-weight:700">console.anthropic.com → API Keys</a>. Key starts with <code style="background:rgba(0,0,0,.06);padding:2px 6px;border-radius:4px;font-size:.75rem">sk-ant-</code>'
         +'</div>';
     }
     var el = document.getElementById('errorBox');
     el.style.display = 'block';
     el.innerHTML = '⚠ ' + msg + extra;
+    el.scrollIntoView({behavior:'smooth', block:'nearest'});
   } finally {
     btn.disabled = false;
     btn.className = 'analyze-btn';
@@ -712,27 +720,46 @@ async function analyze(){
 // ── API HELPERS ──
 async function callClaude(messages, systemPrompt, useVision){
   if(!getApiKey()){showApiKeyModal();throw new Error('Please add your Anthropic API key first.');}
-  var body = {
-    model: CLAUDE_MODEL,
-    max_tokens: 4096,
-    system: systemPrompt || '',
-    messages: messages
-  };
-  var r = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': getApiKey(),
-      'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-direct-browser-access': 'true'
-    },
-    body: JSON.stringify(body),
-    signal: AbortSignal.timeout(90000)
-  });
-  var d = await r.json();
-  if(d.error) throw new Error(d.error.message || JSON.stringify(d.error));
-  var text = (d.content||[]).filter(function(b){return b.type==='text';}).map(function(b){return b.text;}).join('');
-  return text;
+  // Try each model in the fallback list
+  for(var mi = 0; mi < CLAUDE_MODELS.length; mi++){
+    var modelToTry = CLAUDE_MODELS[mi];
+    var body = {
+      model: modelToTry,
+      max_tokens: 4096,
+      system: systemPrompt || '',
+      messages: messages
+    };
+    var r = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': getApiKey(),
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify(body),
+      signal: AbortSignal.timeout(90000)
+    });
+    var d = await r.json();
+    if(d.error){
+      var emsg = d.error.message || JSON.stringify(d.error);
+      // Auth errors — no point retrying other models
+      if(d.error.type === 'authentication_error' || emsg.toLowerCase().includes('x-api-key') || emsg.toLowerCase().includes('invalid') || r.status === 401){
+        throw new Error('Invalid API key — please tap ⚙ API Key in the top-right and re-enter your Anthropic key (starts with sk-ant-).');
+      }
+      // Model not found — try next in list
+      if(d.error.type === 'not_found_error' || emsg.toLowerCase().includes('model') || r.status === 404){
+        console.warn('Model not available:', modelToTry, '— trying next fallback');
+        continue;
+      }
+      throw new Error(emsg);
+    }
+    // Success — pin this model for subsequent calls this session
+    CLAUDE_MODEL = modelToTry;
+    var text = (d.content||[]).filter(function(b){return b.type==='text';}).map(function(b){return b.text;}).join('');
+    return text;
+  }
+  throw new Error('No available Claude model found. Check console.anthropic.com for current model names.');
 }
 
 async function fetchLivePrice(sym){
@@ -800,8 +827,8 @@ async function serverAnalyze(body){
   };
 
   setStatus('Building adjustment plan with AI…');
-  var systemPrompt = 'You are an expert options portfolio advisor. Analyze the portfolio and provide specific actionable recommendations.\n\nReturn ONLY valid JSON, no markdown, no explanation.';
-  var userPrompt = 'Portfolio positions:\n'+JSON.stringify(enriched, null, 2)+'\n\nIntent: '+(modeDescriptions[mode]||modeDescriptions.auto)+'\n\nReturn a JSON plan in this exact format:\n{\n  "summary": {\n    "headline": "brief summary",\n    "urgency": "high|medium|low",\n    "totalPnl": 0,\n    "mode": "'+mode+'"\n  },\n  "positions": [\n    {\n      "sym": "TICKER",\n      "strategyLabel": "e.g. Covered Call",\n      "currentMetrics": {\n        "pnl": 0,\n        "pnlPct": 0,\n        "livePrice": 0\n      },\n      "steps": [\n        {\n          "action": "CLOSE|ROLL|HOLD|TRIM|ENTER",\n          "details": "specific instruction with strikes/dates/prices",\n          "urgency": "now|today|this-week|optional"\n        }\n      ],\n      "scenarios": {\n        "below": "what happens if stock drops 5%",\n        "at": "what happens at current price",\n        "above": "what happens if stock rises 5%"\n      }\n    }\n  ]\n}';
+  var systemPrompt = 'You are an expert options portfolio advisor. Analyze the portfolio and provide specific actionable recommendations. Return ONLY valid JSON, no markdown, no code fences, no explanation. Every numeric field must be a number, not a string.';
+  var userPrompt = 'Portfolio positions:\n'+JSON.stringify(enriched, null, 2)+'\n\nIntent: '+(modeDescriptions[mode]||modeDescriptions.auto)+'\n\nReturn a JSON plan in EXACTLY this format (no extra keys, no markdown):\n{\n  "summary": {\n    "headline": "brief 1-sentence summary",\n    "urgency": "high",\n    "totalPnl": 1250,\n    "mode": "'+mode+'"\n  },\n  "positions": [\n    {\n      "sym": "AAPL",\n      "strategyLabel": "Covered Call",\n      "currentMetrics": {\n        "pnl": 850,\n        "pnlPct": 12.4,\n        "livePrice": 213.50\n      },\n      "steps": [\n        {\n          "action": "ENTER",\n          "details": "Sell 1 AAPL Jun $220 Call @ ~$3.20 — collect $320 premium",\n          "urgency": "today"\n        }\n      ],\n      "scenarios": {\n        "below": {"label": "Stock < $210", "pnl": 320, "note": "Keep full premium, stock held"},\n        "at": {"label": "Stock @ $213", "pnl": 320, "note": "Call expires worthless, keep premium"},\n        "above": {"label": "Stock > $220", "pnl": 970, "note": "Called away at $220, keep premium"}\n      }\n    }\n  ]\n}\n\nIMPORTANT: scenarios.below/at/above must each have {label: string, pnl: number, note: string}. pnl values are DOLLAR amounts (positive=profit, negative=loss). Be specific with strikes, expiries, and premiums in step details.';
 
   var messages = [{role:'user', content: userPrompt}];
   var text = await callClaude(messages, systemPrompt);
