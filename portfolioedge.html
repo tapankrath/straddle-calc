@@ -38,7 +38,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 .nav-title{font-size:.75rem;font-family:var(--sans);font-weight:800;color:#94a3b8;letter-spacing:.12em;text-transform:uppercase}
 
 /* ── LAYOUT ── */
-.wrap{max-width:680px;margin:0 auto;padding:16px}
+.wrap{max-width:680px;margin:0 auto;padding:16px;overflow:hidden;box-sizing:border-box}
 .page-header{margin-bottom:28px}
 .page-header h1{font-size:1.8rem;font-weight:900;letter-spacing:-.04em;color:var(--txt);margin-bottom:6px;font-family:var(--sans)}
 .page-header p{color:#374151;font-size:.9rem;line-height:1.65;max-width:560px;font-weight:500}
@@ -46,7 +46,34 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 
 /* ── UPLOAD ZONE ── */
 .upload-section{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
-@media(max-width:700px){.upload-section{grid-template-columns:1fr}.pos-row{grid-template-columns:1fr 1fr;gap:6px}.pos-row>*:last-child{grid-column:1/-1}}
+@media(max-width:700px){
+  .upload-section{grid-template-columns:1fr}
+  .pos-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:6px;
+    width:100%;
+    box-sizing:border-box;
+  }
+  .pos-row>*{min-width:0;width:100%;box-sizing:border-box}
+  /* Ticker full width */
+  .pos-row>*:nth-child(1){grid-column:1/-1}
+  /* Type + Size side by side */
+  .pos-row>*:nth-child(2){grid-column:1/2}
+  .pos-row>*:nth-child(3){grid-column:2/3}
+  /* Cost + P&L side by side */
+  .pos-row>*:nth-child(4){grid-column:1/2}
+  .pos-row>*:nth-child(5){grid-column:2/3}
+  /* Notes full width */
+  .pos-row>*:nth-child(6){grid-column:1/-1}
+  /* Remove btn full width */
+  .pos-row>*:nth-child(7){grid-column:1/-1;text-align:right}
+  .field-labels-row{display:none!important}
+  .pos-row input,.pos-row select{font-size:16px}/* prevent iOS zoom */
+  .analyze-btn{width:100%;box-sizing:border-box}
+  .manual-section{overflow:hidden}
+  .positions-grid{width:100%;overflow:hidden}
+}
 .drop-zone{border:2px dashed #cbd5e1;border-radius:16px;padding:32px 24px;text-align:center;cursor:pointer;transition:all .25s;position:relative;background:linear-gradient(145deg,#ffffff,#f8fafc);box-shadow:0 2px 10px rgba(0,0,0,.04)}
 .drop-zone:hover,.drop-zone.drag{border-color:var(--acc);background:linear-gradient(145deg,#f0fdf4,#f8fff9);box-shadow:0 4px 18px rgba(22,101,52,.1);transform:translateY(-1px)}
 .drop-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;z-index:10}
@@ -181,13 +208,15 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 </head>
 <body>
 
-<nav style="background:#0a0f1e;padding:0 16px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;box-shadow:0 2px 8px rgba(0,0,0,.2)">
+<nav style="background:#0a0f1e;padding:0 16px;height:58px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;box-shadow:0 2px 8px rgba(0,0,0,.2)">
   <div style="display:flex;align-items:baseline;gap:8px">
     <span style="font-size:18px;font-weight:900;color:#ffffff;letter-spacing:-.02em;font-family:var(--sans)">PortfolioEdge</span>
     <span style="font-size:10px;font-weight:700;color:#64748b;letter-spacing:.1em;text-transform:uppercase">Adjustment Engine</span>
   </div>
-  <a href="https://tapankrath.github.io/GammaEdge" target="_blank" style="background:transparent;border:1px solid #334155;border-radius:6px;padding:5px 10px;font-size:10px;font-weight:700;color:#94a3b8;cursor:pointer;font-family:var(--sans);text-decoration:none;display:inline-flex;align-items:center;gap:4px">← GammaEdge</a>
-  <button onclick="showApiKeyModal()" id="api-status-btn" style="background:transparent;border:1px solid #334155;border-radius:6px;padding:5px 10px;font-size:10px;font-weight:700;color:#94a3b8;cursor:pointer;font-family:var(--sans)">⚙ API Key</button>
+  <div style="display:flex;align-items:center;gap:8px">
+    <a href="https://tapankrath.github.io/GammaEdge" target="_blank" style="background:#1e293b;border:1.5px solid #475569;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:800;color:#e2e8f0;cursor:pointer;font-family:var(--sans);text-decoration:none;display:inline-flex;align-items:center;gap:5px;letter-spacing:.01em" onmouseover="this.style.background='#334155';this.style.color='#fff'" onmouseout="this.style.background='#1e293b';this.style.color='#e2e8f0'">← GammaEdge</a>
+    <button onclick="showApiKeyModal()" id="api-status-btn" style="background:#1e293b;border:1.5px solid #475569;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:800;color:#e2e8f0;cursor:pointer;font-family:var(--sans);letter-spacing:.01em" onmouseover="this.style.background='#334155'" onmouseout="this.style.background='#1e293b'">⚙ API Key</button>
+  </div>
 </nav>
 
 <div class="wrap">
@@ -220,7 +249,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
     </div>
     <div class="manual-section" id="manualSection">
       <div class="manual-title"><span>📋</span><span>Or enter manually</span><span style="color:var(--b2);font-weight:400"> — instead of screenshot</span></div>
-      <div style="display:grid;grid-template-columns:90px 80px 80px 95px 115px 1fr;gap:8px;margin-bottom:6px">
+      <div class="field-labels-row" style="display:grid;grid-template-columns:90px 80px 80px 95px 115px 1fr;gap:8px;margin-bottom:6px">
         <div class="field-label">Ticker</div><div class="field-label">Type</div>
         <div class="field-label">Size</div><div class="field-label">Last / Avg Cost</div>
         <div class="field-label">P&amp;L ($)</div><div class="field-label">Notes</div>
@@ -281,6 +310,13 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 
   <!-- RESULTS -->
   <div class="results" id="results"></div>
+
+  <!-- GO BACK (shown after results) -->
+  <div id="goBackWrap" style="display:none;margin-top:8px;margin-bottom:28px">
+    <button onclick="goBackToHome()" style="width:100%;padding:12px;background:#fff;border:1.5px solid #e2e8f0;border-radius:10px;color:#374151;font-weight:700;font-family:var(--sans);font-size:.88rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 1px 4px rgba(0,0,0,.05);transition:all .2s" onmouseover="this.style.borderColor='#94a3b8';this.style.background='#f8fafc'" onmouseout="this.style.borderColor='#e2e8f0';this.style.background='#fff'">
+      ← Start Over / New Analysis
+    </button>
+  </div>
 
   <!-- SCENARIO MODAL -->
   <div class="modal-overlay" id="modalOverlay" style="display:none" onclick="if(event.target===this)closeModal()">
@@ -1005,6 +1041,9 @@ function renderResults(plan, extractedHtml){
   var el = document.getElementById('results');
   el.innerHTML = html;
   el.className = 'results show';
+  // Show go-back button
+  var gb = document.getElementById('goBackWrap');
+  if(gb) gb.style.display='block';
   el.scrollIntoView({ behavior:'smooth', block:'start' });
 }
 
@@ -1048,9 +1087,49 @@ document.addEventListener('focusin',function(e){
   }
 });
 
-// Update API status indicator on load. Do NOT auto-pop the modal —
-// it blocks the manual-entry flow. The modal opens automatically only
-// when an action actually needs the Anthropic key (image extract / plan build).
+
+// ── GO BACK TO HOME ──
+function goBackToHome(){
+  // Hide results + go-back button
+  var res = document.getElementById('results');
+  if(res){ res.innerHTML=''; res.className='results'; }
+  var gb = document.getElementById('goBackWrap');
+  if(gb) gb.style.display='none';
+  // Hide intent wrap and analyze button
+  var iw = document.getElementById('intentWrap');
+  if(iw) iw.style.display='none';
+  var ab = document.getElementById('analyzeBtn');
+  if(ab){ ab.style.display='none'; }
+  // Reset extract button
+  var eb = document.getElementById('extractBtn');
+  if(eb){ eb.disabled=false; eb.innerHTML='<span>🔍</span> <span>Analyze My Portfolio</span>'; eb.style.background=''; }
+  // Show upload wrap
+  var uw = document.getElementById('uploadWrap');
+  if(uw) uw.style.display='block';
+  // Show manual section
+  var ms = document.getElementById('manualSection');
+  if(ms) ms.style.display='block';
+  // Hide extracted summary
+  var es = document.getElementById('extractedSummary');
+  if(es){ es.style.display='none'; es.innerHTML=''; }
+  // Hide collapsed bar
+  var ic = document.getElementById('inputCollapsed');
+  if(ic) ic.style.display='none';
+  // Clear rows and add a fresh one
+  var pg = document.getElementById('posGrid');
+  if(pg) pg.innerHTML='';
+  rowId=0;
+  _extractedPositions=[];
+  clearImage();
+  addRow();
+  // Hide status/error
+  hideStatus(); hideError();
+  // Reset intent
+  currentIntent='auto';
+  // Scroll to top
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
 window.addEventListener('load',function(){
   updateApiStatus();
 });
